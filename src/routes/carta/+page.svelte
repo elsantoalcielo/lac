@@ -1,149 +1,10 @@
-<script>
-  import { capitalize } from "../../lib/capitalizer";
+<script lang="ts">
+  import type { PageData } from "./$types";
+  export let data: PageData;
 
-  let menu = {
-    title: undefined,
-    sections: [
-      {
-        title: undefined,
-        dishes: [
-          {
-            name: "Enciams amb formatge de cabra, mel i cacahuets",
-            description: undefined,
-            price: "4,95",
-            vegetarian: true,
-            allergens: [
-              {
-                name: "milk",
-              },
-              {
-                name: "nuts",
-              },
-            ],
-          },
-          {
-            name: "Amanida de tomàquet amb bonítol escabetxat aquí",
-            description: undefined,
-            price: "5.50",
-            allergens: [
-              {
-                name: "fish",
-              },
-            ],
-          },
-          {
-            name: "Burrata amb tomàquet",
-            price: "6",
-            vegetarian: true,
-            allergens: [
-              {
-                name: "milk",
-              },
-            ],
-          },
-          {
-            name: "Coca amb escalibada i sardines marinades aquí",
-            price: "5,65",
-            allergens: [
-              {
-                name: "gluten",
-              },
-              {
-                name: "milk",
-              },
-              {
-                name: "fish",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: undefined,
-        dishes: [
-          {
-            name: "Sopa de ceba amb galeta de formatge",
-            description: undefined,
-            price: "4,65",
-            vegetarian: true,
-            allergens: [
-              {
-                name: "gluten",
-              },
-              {
-                name: "milk",
-              },
-            ],
-          },
-          {
-            name: "Crema de carbassa amb toc de vainilla",
-            description: undefined,
-            price: "4,65",
-            vegetarian: true,
-          },
-          {
-            name: "Timbal de verdures amb pernil ibèric",
-            price: "5,75",
-          },
-          {
-            name: "Pasta amb salsa de formatges o pesto vermell",
-            price: "5",
-            vegetarian: true,
-            allergens: [
-              {
-                name: "gluten",
-              },
-              {
-                name: "milk",
-              },
-              {
-                name: "nuts",
-              },
-            ],
-          },
-          {
-            name: "Avui també arròs de galta de porc",
-            price: "6,95",
-          },
-        ],
-      },
-      {
-        title: undefined,
-        dishes: [
-          {
-            name: "Mandonguilles fetes aquí amb sípia",
-            price: "10",
-            allergens: [
-              {
-                name: "milk",
-              },
-            ],
-          },
-          {
-            name: "Tataki de tonyina amb verdures",
-            price: "11",
-            allergens: [
-              {
-                name: "fish",
-              },
-            ],
-          },
-          {
-            name: "Secret de porc amb patata i verdures",
-            price: "12",
-          },
-          {
-            name: "Peix del dia",
-            price: "13",
-          },
-          {
-            name: "Bistec de vedella de Girona amb patata i verdura",
-            price: "14",
-          },
-        ],
-      },
-    ],
-  };
+  import { capitalize } from "$lib/capitalizer";
+
+  let menu = data;
 </script>
 
 <div class="menu">
@@ -318,7 +179,6 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-
   }
 
   @media (min-width: 992px), (orientation: landscape) {
@@ -356,7 +216,8 @@
     font-style: italic;
   }
 
-  .allergens img, .allergen-list img {
+  .allergens img,
+  .allergen-list img {
     width: 20px;
     margin-left: 5px;
     vertical-align: text-top;
