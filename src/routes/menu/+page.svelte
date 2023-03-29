@@ -164,23 +164,25 @@
       {/if}
       {#each section.dishes as dish}
         <div class="dish">
-          <div class="details">
-            <div class="name">{capitalize(dish.name)}</div>
-            {#if dish.vegetarian}
-              <div class="vegetarian">(v)</div>
-            {/if}
-            {#if dish.allergens}
-              <div class="allergens">
-                {#each dish.allergens as allergen}
-                  <img
-                    src="/img/allergens/{allergen.name}.jpg"
-                    alt={allergen.name}
-                  />
-                {/each}
-              </div>
-            {/if}
-            <div class="price">{dish.price} €</div>
+          <div class="name">
+            {capitalize(dish.name)}
+            <span class="vegetarian">
+              {#if dish.vegetarian}
+                (v)
+              {/if}
+            </span>
           </div>
+          <div class="allergens">
+            {#if dish.allergens}
+              {#each dish.allergens as allergen}
+                <img
+                  src="/img/allergens/{allergen.name}.jpg"
+                  alt={allergen.name}
+                />
+              {/each}
+            {/if}
+          </div>
+          <div class="price">{dish.price} €</div>
           {#if dish.description}
             <div class="description">{dish.description}</div>
           {/if}
@@ -190,7 +192,7 @@
     </div>
   {/each}
 
-  <div class="allergens">
+  <div class="allergen-list">
     <div>
       <img src="/img/allergens/gluten.jpg" alt="gluten" /><span>Gluten</span>
     </div>
@@ -250,6 +252,10 @@
   @import url(../../css/reset.css);
   @import url(../../../static/fonts/fonts.css);
 
+  .logo {
+    margin-top: 10px;
+  }
+
   .logo img {
     width: 200px;
   }
@@ -283,19 +289,60 @@
 
   .dish {
     margin: 10px 0 0 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
-  .dish .details {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  @media (max-width: 992px) and (orientation: portrait) {
+    .dish {
+      display: grid;
+      grid-template-columns: auto auto;
+      width: 90%;
+      border-bottom: dotted 1px gray;
+      padding-bottom: 10px;
+    }
+
+    .dish:nth-last-child(2) {
+      border-bottom: none;
+    }
+
+    .dish .name {
+      grid-column: 1 / 3;
+    }
+
+    .dish .price {
+      text-align: right;
+    }
+
+    .allergen-list {
+      display: flex;
+      max-width: 90%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+  }
+
+  @media (min-width: 992px), (orientation: landscape) {
+    .dish {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .dish .price {
+      margin-left: 10px;
+    }
+
+    .allergen-list {
+      display: flex;
+      max-width: 80%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   .dish .name {
     font-size: large;
+    text-align: left;
   }
 
   .dish .vegetarian {
@@ -305,30 +352,22 @@
     margin-left: 10px;
   }
 
-  .dish .price {
-    margin-left: 10px;
-  }
-
   .dish .description {
     font-style: italic;
   }
 
-  .allergens {
-    display: flex;
-    font-family: Lora;
-    font-size: smaller;
-    max-width: 80%;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .allergens img {
+  .allergens img, .allergen-list img {
     width: 20px;
     margin-left: 5px;
     vertical-align: text-top;
   }
 
-  .allergens span {
+  .allergen-list {
+    font-family: Lora;
+    font-size: smaller;
+  }
+
+  .allergen-list span {
     margin-left: 5px;
     margin-right: 10px;
   }
