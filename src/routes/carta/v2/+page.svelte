@@ -26,10 +26,15 @@
       {#each section.dishes as dish}
         <div class="dish">
           <div class="name">
+            {#if dish.featured}
+            <span class="featured">
+              <img src="/img/star.svg" alt="featured" />
+            </span>
+            {/if}
             {capitalize(dish.name)}
             <span class="vegetarian">
               {#if dish.vegetarian}
-                <img src="/img/vegetarian.png" alt="vegetarian" />
+                <img src="/img/vegetarian.png" alt="vegetarian" title="vegetarian" />
               {/if}
             </span>
           </div>
@@ -38,7 +43,7 @@
               {#each dish.allergens as allergen}
                 <img
                   src="/img/allergens/{allergen.name}.jpg"
-                  alt={allergen.name}
+                  alt="{allergen.name}" title="{allergen.name}"
                 />
               {/each}
             {/if}
@@ -178,6 +183,12 @@
   .vegetarian img {
     width: 20px;
     margin-left: 5px;
+    margin-bottom: 2px;
+    vertical-align: bottom;
+  }
+
+  .featured img {
+    width: 20px;
     margin-bottom: 2px;
     vertical-align: bottom;
   }
