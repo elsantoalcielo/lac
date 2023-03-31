@@ -21,7 +21,7 @@
   {#each menu.sections as section}
     <div class="section">
       {#if section.title}
-        <div class="title">{section.title}</div>
+<!--        <div class="title">{section.title}</div>   -->
       {/if}
       {#each section.dishes as dish}
         <div class="dish">
