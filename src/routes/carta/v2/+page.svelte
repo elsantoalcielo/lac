@@ -163,18 +163,23 @@
   .dish .price {
     text-align: right;
 
-    align-self: end;
     width: 24%;
   }
 
-/*  .dish {
-    padding-bottom: 5px;
+  .dish {
+    padding-bottom: 10px;
     border-bottom: dotted 1px #bd613c;
-  } */
+  }
+
+  .dish:nth-last-child(2) {
+    border-bottom: none;
+  }
 
   .vegetarian img {
     width: 20px;
     margin-left: 5px;
+    margin-bottom: 2px;
+    vertical-align: bottom;
   }
 
   .allergens {
