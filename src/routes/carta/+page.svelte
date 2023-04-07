@@ -44,9 +44,11 @@
             {/if}
           </div>
           <div class="price">{dish.price} €</div>
+          <!--
           {#if dish.description}
             <div class="description">{dish.description}</div>
           {/if}
+          -->
         </div>
       {/each}
       <div class="filigrana" />
