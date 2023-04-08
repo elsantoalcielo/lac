@@ -2,23 +2,50 @@
   import type { PageData } from "./$types";
   export let data: PageData;
 
-  import { capitalize } from "$lib/capitalizer";
   import Allergens from "$lib/components/allergens.svelte";
 
   let menu = data;
 
   const addDish = (section: any) => {
-    section.dishes.push({ name: "temporal", price: "0" });
+    section.dishes.push({ name: "", price: "" });
     menu = menu;
   };
+
+  const deleteDish = (section: any, index: number) => {
+    section.dishes.splice(index, 1);
+    menu = menu;
+  }
+
+  const save = () => {
+
+  }
 </script>
+
+<div class="buttons">
+  <button on:click={save}>SAVE</button>
+</div>
 
 {#each menu.sections as section}
   <div class="section">
-    <div class="title" contenteditable="true">{section.title}</div>
-    {#each section.dishes as dish}
+    <div
+      class="title"
+      contenteditable="true"
+      bind:textContent={section.title}
+    />
+    {#each section.dishes as dish, index}
       <div class="dish">
-        <div class="name" contenteditable="true" bind:innerHTML={dish.name} />
+        <div class="name" contenteditable="true" bind:textContent={dish.name} />
+        <button class="delete" on:click={() => deleteDish(section, index)}>x</button>
+        <div
+          class="description"
+          contenteditable="true"
+          bind:textContent={dish.description}
+        />
+        <div
+          class="price"
+          contenteditable="true"
+          bind:textContent={dish.price}
+        />
         <div
           class="vegetarian {dish.vegetarian ? 'true' : ''}"
           on:click={() => (dish.vegetarian = !dish.vegetarian)}
@@ -26,7 +53,12 @@
           (v)
         </div>
         <Allergens />
-        <div class="price" contenteditable="true" bind:innerHTML={dish.price} />
+        <div
+          class="featured {dish.featured ? 'true' : ''}"
+          on:click={() => (dish.featured = !dish.featured)}
+        >
+          &#9733;
+        </div>
       </div>
     {/each}
     <button on:click={() => addDish(section)}>+ DISH</button>
@@ -42,6 +74,11 @@
     margin: 10px;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
       sans-serif;
+  }
+
+  .buttons {
+    position: fixed;
+    right: 10px;
   }
 
   .section {
@@ -60,6 +97,22 @@
   .dish .name {
     width: fit-content;
     font-size: 20px;
+    display: inline;
+  }
+
+  .dish .name:empty::before {
+    content: 'nom del plat';
+    color: gray;
+  }
+
+  .dish .description {
+    width: fit-content;
+    min-width: 20px;
+  }
+
+  .dish .price:empty::before {
+    content: 'preu';
+    color: gray;
   }
 
   .dish .price::after {
@@ -74,6 +127,24 @@
   .vegetarian.true {
     color: green;
     font-size: larger;
+    font-weight: bold;
+  }
+
+  .featured {
+    width: fit-content;
+    margin-top: 5px;
+    color: gray;
+    cursor: pointer;
+  }
+
+  .featured.true {
+    color: yellow;
+    background-color: black;
+  }
+
+  button.delete {
+    margin-left: 20px;
+    color: red;
     font-weight: bold;
   }
 </style>
