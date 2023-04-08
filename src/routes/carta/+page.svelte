@@ -37,8 +37,8 @@
             {#if dish.allergens}
               {#each dish.allergens as allergen}
                 <img
-                  src="/img/allergens/{allergen.name}.jpg"
-                  alt={allergen.name}
+                  src="/img/allergens/{allergen}.jpg"
+                  alt={allergen}
                 />
               {/each}
             {/if}
