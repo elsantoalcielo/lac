@@ -17,8 +17,8 @@
   }
 
   const save = () => {
-
   }
+
 </script>
 
 <div class="buttons">
@@ -52,7 +52,7 @@
         >
           (v)
         </div>
-        <Allergens />
+        <Allergens bind:values={dish.allergens} />
         <div
           class="featured {dish.featured ? 'true' : ''}"
           on:click={() => (dish.featured = !dish.featured)}
