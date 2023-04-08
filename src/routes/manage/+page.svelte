@@ -14,11 +14,17 @@
   const deleteDish = (section: any, index: number) => {
     section.dishes.splice(index, 1);
     menu = menu;
-  }
+  };
 
-  const save = () => {
-  }
-
+  const save = async () => {
+    const response = await fetch("/api/current-menu", {
+      method: "PUT",
+      body: JSON.stringify({ data: menu }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+  };
 </script>
 
 <div class="buttons">
@@ -27,38 +33,16 @@
 
 {#each menu.sections as section}
   <div class="section">
-    <div
-      class="title"
-      contenteditable="true"
-      bind:textContent={section.title}
-    />
+    <div class="title" contenteditable="true" bind:textContent={section.title} />
     {#each section.dishes as dish, index}
       <div class="dish">
         <div class="name" contenteditable="true" bind:textContent={dish.name} />
         <button class="delete" on:click={() => deleteDish(section, index)}>x</button>
-        <div
-          class="description"
-          contenteditable="true"
-          bind:textContent={dish.description}
-        />
-        <div
-          class="price"
-          contenteditable="true"
-          bind:textContent={dish.price}
-        />
-        <div
-          class="vegetarian {dish.vegetarian ? 'true' : ''}"
-          on:click={() => (dish.vegetarian = !dish.vegetarian)}
-        >
-          (v)
-        </div>
+        <div class="description" contenteditable="true" bind:textContent={dish.description} />
+        <div class="price" contenteditable="true" bind:textContent={dish.price} />
+        <div class="vegetarian {dish.vegetarian ? 'true' : ''}" on:click={() => (dish.vegetarian = !dish.vegetarian)}>(v)</div>
         <Allergens bind:values={dish.allergens} />
-        <div
-          class="featured {dish.featured ? 'true' : ''}"
-          on:click={() => (dish.featured = !dish.featured)}
-        >
-          &#9733;
-        </div>
+        <div class="featured {dish.featured ? 'true' : ''}" on:click={() => (dish.featured = !dish.featured)}>&#9733;</div>
       </div>
     {/each}
     <button on:click={() => addDish(section)}>+ DISH</button>
@@ -72,8 +56,7 @@
 <style>
   :global(body) {
     margin: 10px;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-      sans-serif;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   }
 
   .buttons {
@@ -101,7 +84,7 @@
   }
 
   .dish .name:empty::before {
-    content: 'nom del plat';
+    content: "nom del plat";
     color: gray;
   }
 
@@ -111,7 +94,7 @@
   }
 
   .dish .price:empty::before {
-    content: 'preu';
+    content: "preu";
     color: gray;
   }
 
