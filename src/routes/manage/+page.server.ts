@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
 import { MongoClient } from 'mongodb';
+import { translate } from '$lib/utils';
 
 const AUTHORIZED_USERS = env.AUTHORIZED_USERS.split(',');
 
@@ -13,13 +14,13 @@ export const load: PageServerLoad = async (event) => {
     throw redirect(303, '/auth/signin?csrf=true');
   }
 
-  let menu = null;
+  let menu: Menu = null;
 
   const client = new MongoClient(env.MONGODB_URI);
   try {
     const database = client.db('amagat');
     const movies = database.collection('current-menu');
-    menu = await movies.findOne();
+    menu = await movies.findOne() as Menu;
   } finally {
     await client.close();
   }

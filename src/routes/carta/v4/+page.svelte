@@ -2,7 +2,7 @@
   import type { PageData } from "../$types";
   export let data: PageData;
 
-  import { capitalize } from "$lib/capitalizer";
+  import { capitalize } from "$lib/utils";
 
   let menu = data;         menu.title = 'CARTA DE LA SETMANA';
 </script>

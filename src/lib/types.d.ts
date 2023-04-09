@@ -1,10 +1,15 @@
 type Menu = {
   sections: Section[];
-}
+} | null;
 
 type Section = {
   title?: string;
   dishes: Dish[];
+  translations?: {
+    [language: string]: {
+      title: string;
+    }
+  }
 }
 
 type Dish = {
@@ -14,6 +19,12 @@ type Dish = {
   vegetarian?: boolean;
   allergens?: Allergen[];
   featured?: boolean;
+  translations?: {
+    [language: string]: {
+      name: string;
+      description: string;
+    }
+  }
 }
 
 enum Allergen {

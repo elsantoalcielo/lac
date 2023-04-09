@@ -2,8 +2,9 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
 import { MongoClient } from 'mongodb';
+import { translate } from '$lib/utils';
 
-export const load = (async ({ params }) => {
+export const load = (async ({ url }) => {
 
   const client = new MongoClient(env.MONGODB_URI);
 
@@ -12,7 +13,9 @@ export const load = (async ({ params }) => {
   try {
     const database = client.db('amagat');
     const movies = database.collection('current-menu');
-    menu = await movies.findOne();
+    menu = await movies.findOne() as Menu;
+
+    translate(menu, url.searchParams.get('l'));
   } finally {
     await client.close();
   }
