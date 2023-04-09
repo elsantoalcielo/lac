@@ -116,7 +116,7 @@
 
 <style>
   @import url(../../../css/reset.css);
-  @import url(/fonts/fonts.css);
+  @import url(../../../../static/fonts/fonts.css);
 
   .menu {
     display: grid;
