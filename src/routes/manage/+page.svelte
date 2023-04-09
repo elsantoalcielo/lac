@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   export let data: PageData;
+  import { signOut } from "@auth/sveltekit/client";
 
   import Allergens from "$lib/components/allergens.svelte";
 
@@ -29,6 +30,7 @@
 
 <div class="buttons">
   <button on:click={save}>SAVE</button>
+  <button on:click={signOut}>log out</button>
 </div>
 
 {#each menu.sections as section}
@@ -62,6 +64,10 @@
   .buttons {
     position: fixed;
     right: 10px;
+  }
+
+  .buttons button {
+    margin-left: 20px;
   }
 
   .section {
