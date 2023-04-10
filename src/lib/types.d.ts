@@ -5,10 +5,12 @@ type Menu = {
 type Section = {
   title?: string;
   dishes: Dish[];
-  translations?: {
-    [language: string]: {
-      title: string;
-    }
+  translations?: SectionTranslation
+}
+
+export type SectionTranslation = {
+  [language: string]: {
+    title: string;
   }
 }
 
@@ -19,7 +21,12 @@ type Dish = {
   vegetarian?: boolean;
   allergens?: Allergen[];
   featured?: boolean;
-  translations?: {
+  translations?: DishTranslations;
+}
+
+// https://github.com/sveltejs/kit/issues/3766
+declare global {
+  type DishTranslations = {
     [language: string]: {
       name: string;
       description: string;

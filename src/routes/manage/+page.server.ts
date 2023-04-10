@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
 import { MongoClient } from 'mongodb';
-import { translate } from '$lib/utils';
+import { translateAndCapitalize } from '$lib/utils';
 
 const AUTHORIZED_USERS = env.AUTHORIZED_USERS.split(',');
 

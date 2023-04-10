@@ -4,8 +4,10 @@
   import { signOut } from "@auth/sveltekit/client";
 
   import Allergens from "$lib/components/allergens.svelte";
+  import Translations from "$lib/components/translations.svelte";
+    import type { Menu } from "$lib/types";
 
-  let menu = data;
+  let menu: Menu = data as Menu;
 
   const addDish = (section: any) => {
     section.dishes.push({ name: "", price: "" });
@@ -46,6 +48,7 @@
         <Allergens bind:values={dish.allergens} />
         <div class="featured {dish.featured ? 'true' : ''}" on:click={() => (dish.featured = !dish.featured)}>&#9733;</div>
       </div>
+      <Translations bind:translations={dish.translations}/>
     {/each}
     <button on:click={() => addDish(section)}>+ DISH</button>
   </div>

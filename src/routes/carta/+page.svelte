@@ -1,10 +1,9 @@
 <script lang="ts">
+  import { translateAllergen } from "$lib/utils";
   import type { PageData } from "./$types";
   export let data: PageData;
 
-  import { capitalize } from "$lib/utils";
-
-  let menu = data;
+  const { menu, footer, language } = data;
 </script>
 
 <div class="menu">
@@ -21,12 +20,12 @@
   {#each menu.sections as section}
     <div class="section">
       {#if section.title}
-<!--        <div class="title">{section.title}</div>   -->
+        <!--        <div class="title">{section.title}</div>   -->
       {/if}
       {#each section.dishes as dish}
         <div class="dish">
           <div class="name">
-            {capitalize(dish.name)}
+            {dish.name}
             <span class="vegetarian">
               {#if dish.vegetarian}
                 (v)
@@ -36,10 +35,7 @@
           <div class="allergens">
             {#if dish.allergens}
               {#each dish.allergens as allergen}
-                <img
-                  src="/img/allergens/{allergen}.jpg"
-                  alt={allergen}
-                />
+                <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
               {/each}
             {/if}
           </div>
@@ -57,58 +53,46 @@
 
   <div class="allergen-list">
     <div>
-      <img src="/img/allergens/gluten.jpg" alt="gluten" /><span>Gluten</span>
+      <img src="/img/allergens/gluten.jpg" alt="gluten" /><span>{translateAllergen("gluten", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/crustaceans.jpg" alt="crustaceans" /><span
-        >Crustacis</span
-      >
+      <img src="/img/allergens/crustaceans.jpg" alt="crustaceans" /><span>{translateAllergen("crustaceans", language)}</span>
     </div>
-    <div><img src="/img/allergens/eggs.jpg" alt="eggs" /><span>Ous</span></div>
-    <div><img src="/img/allergens/fish.jpg" alt="fish" /><span>Peix</span></div>
+    <div><img src="/img/allergens/eggs.jpg" alt="eggs" /><span>{translateAllergen("eggs", language)}</span></div>
+    <div><img src="/img/allergens/fish.jpg" alt="fish" /><span>{translateAllergen("fish", language)}</span></div>
     <div>
-      <img src="/img/allergens/peanuts.jpg" alt="peanuts" /><span>Cacauet</span>
+      <img src="/img/allergens/peanuts.jpg" alt="peanuts" /><span>{translateAllergen("peanuts", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/soybeans.jpg" alt="soybeans" /><span>Soja</span>
+      <img src="/img/allergens/soybeans.jpg" alt="soybeans" /><span>{translateAllergen("soybeans", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/milk.jpg" alt="milk" /><span>Làctics</span>
+      <img src="/img/allergens/milk.jpg" alt="milk" /><span>{translateAllergen("milk", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/nuts.jpg" alt="nuts" /><span>Fruits secs</span>
+      <img src="/img/allergens/nuts.jpg" alt="nuts" /><span>{translateAllergen("nuts", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/celery.jpg" alt="celery" /><span>Api</span>
+      <img src="/img/allergens/celery.jpg" alt="celery" /><span>{translateAllergen("celery", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/mustard.jpg" alt="mustard" /><span>Mostassa</span
-      >
+      <img src="/img/allergens/mustard.jpg" alt="mustard" /><span>{translateAllergen("mustard", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/sesame.jpg" alt="sesame" /><span
-        >Llavors de sèsam</span
-      >
+      <img src="/img/allergens/sesame.jpg" alt="sesame" /><span>{translateAllergen("sesame", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/sulphites.jpg" alt="sulphites" /><span
-        >Sulfits</span
-      >
+      <img src="/img/allergens/sulphites.jpg" alt="sulphites" /><span>{translateAllergen("sulphites", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/lupin.jpg" alt="lupin" /><span>Tramussos</span>
+      <img src="/img/allergens/lupin.jpg" alt="lupin" /><span>{translateAllergen("lupin", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/molluscs.jpg" alt="molluscs" /><span
-        >Mol·luscs</span
-      >
+      <img src="/img/allergens/molluscs.jpg" alt="molluscs" /><span>Mol·luscs</span>
     </div>
   </div>
 
-  <div class="footer">
-    Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA,
-    consulteu-nos, si us plau
-  </div>
+  <div class="footer">{footer}</div>
 </div>
 
 <style>
