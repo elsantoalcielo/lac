@@ -15,8 +15,8 @@ export const load = (async ({ url }) => {
 
   try {
     const database = client.db('amagat');
-    const movies = database.collection('current-menu');
-    menu = await movies.findOne() as Menu;
+    const collection = database.collection('current-menu');
+    menu = await collection.findOne() as Menu;
 
     translateAndCapitalize(menu, language);
   } finally {

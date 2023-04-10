@@ -11,8 +11,8 @@ export const load = (async ({ params }) => {
 
   try {
     const database = client.db('amagat');
-    const movies = database.collection('current-menu');
-    menu = await movies.findOne();
+    const collection = database.collection('current-menu');
+    menu = await collection.findOne();
   } finally {
     await client.close();
   }

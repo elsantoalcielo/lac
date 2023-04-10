@@ -19,8 +19,8 @@ export const load: PageServerLoad = async (event) => {
   const client = new MongoClient(env.MONGODB_URI);
   try {
     const database = client.db('amagat');
-    const movies = database.collection('current-menu');
-    menu = await movies.findOne() as Menu;
+    const collection = database.collection('current-menu');
+    menu = await collection.findOne() as Menu;
   } finally {
     await client.close();
   }
