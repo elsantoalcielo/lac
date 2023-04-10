@@ -31,7 +31,6 @@
         values.splice(index, 1);
       }
     }
-    console.log("LFV " + JSON.stringify(values))
   };
 </script>
 
