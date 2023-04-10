@@ -8,7 +8,8 @@ export function capitalize(source: string, language: string | null): string {
   const SKIP_LIST: SkipList = {
     ca: ['amb', 'de', 'i', 'o'],
     es: ['con', 'de', 'y', 'o'],
-    en: ['with', 'of', 'and', 'or']
+    en: ['with', 'of', 'and', 'or'],
+    fi: ['ja', 'tai']
   };
 
   const skipList = language ? SKIP_LIST[language] : SKIP_LIST.ca;
@@ -16,7 +17,7 @@ export function capitalize(source: string, language: string | null): string {
     return source.split(' ').map((word) => skipList.indexOf(word) == -1 ? word.toUpperCase() : word).join(' ');
   }
   else {
-    return source;
+    return source.toUpperCase();
   }
 }
 
