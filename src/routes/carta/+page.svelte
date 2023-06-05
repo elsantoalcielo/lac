@@ -202,6 +202,10 @@
     font-style: italic;
   }
 
+  .allergens {
+    display: flex;
+  }
+
   .allergens img,
   .allergen-list img {
     width: 20px;
@@ -212,6 +216,10 @@
   .allergen-list {
     font-family: Lora;
     font-size: smaller;
+  }
+
+  .allergen-list div {
+    display: flex
   }
 
   .allergen-list span {
