@@ -24,6 +24,12 @@ type Dish = {
   translations?: DishTranslations;
 }
 
+interface MongoDBIded {
+  _id: string;
+}
+
+interface PersistentDish extends Dish, MongoDBIded {}
+
 // https://github.com/sveltejs/kit/issues/3766
 declare global {
   type DishTranslations = {
