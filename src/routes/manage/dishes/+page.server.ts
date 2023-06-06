@@ -21,7 +21,6 @@ export const load: PageServerLoad = async (event) => {
     const database = client.db('amagat');
     const collection = database.collection('dishes');
     dishes = await collection.find().toArray();
-    console.log("LFV" + JSON.stringify(dishes))
   } finally {
     await client.close();
   }
