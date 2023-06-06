@@ -3,7 +3,7 @@
   export let data: PageData;
   import { signOut } from "@auth/sveltekit/client";
 
-  import Allergens from "$lib/components/allergens.svelte";
+  import Allergens from "$lib/components/allergens-old.svelte";
   import Translations from "$lib/components/translations.svelte";
     import type { Menu } from "$lib/types";
 
