@@ -1,31 +1,108 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   export let data: PageData;
-  import { signOut } from "@auth/sveltekit/client";
+  import type { PersistentDish } from "$lib/types";
 
+  import { SlideToggle } from "@skeletonlabs/skeleton";
   import Allergens from "$lib/components/allergens.svelte";
-  import Translations from "$lib/components/translations.svelte";
-  import type { Dish, Menu } from "$lib/types";
 
-  let dishes: Dish[] = data.dishes as Dish[];
+  let dishes: PersistentDish[] = data.dishes as PersistentDish[];
+  let dirty = new Array(dishes.length);
+
+  const setDirty = (index: number) => {
+    dirty[index] = true;
+  };
+
+  const saveDish = async (index: number) => {
+    const response = await fetch("/api/dishes", {
+      method: "PUT",
+      body: JSON.stringify({ data: dishes[index] }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    dirty[index] = false;
+  };
+
+  const deleteDish = async (index: number) => {
+    const response = await fetch("/api/dishes", {
+      method: "DELETE",
+      body: JSON.stringify({ data: dishes[index] }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    dishes.splice(index, 1);
+    dirty.splice(index, 1);
+    dishes = dishes;
+  };
+
+  const addDish = () => {
+    dishes.push({});
+    dirty[dishes.length - 1] = true;
+    dishes = dishes;
+  };
 </script>
 
-<div class="list">
-  {#each dishes as dish}
-    <div class="dish">
-      {dish.name}
+<div>
+  {#each dishes as dish, index}
+    <div class="card m-4 relative">
+      <header class="card-header h3">
+        <div contenteditable="true" bind:textContent={dish.name} on:keypress={() => setDirty(index)} />
+      </header>
+      <section class="p-4 h4">
+        <div contenteditable="true" bind:textContent={dish.description} on:keypress={() => setDirty(index)} />
+      </section>
+      <section class="p-4 h4 flex flex-row space-x-1">
+        <div contenteditable="true" bind:textContent={dish.price} on:keypress={() => setDirty(index)} />
+        <div>€</div>
+      </section>
+      <section class="p-4 h4 flex items-center space-x-2">
+        <SlideToggle name="st_{index}" bind:checked={dish.vegetarian} on:change={() => setDirty(index)} size="sm" active="bg-green-700" />
+        <div>
+          {#if dish.vegetarian}
+            <span style="color: green; font-weight: bold;">Vegetarian </span>
+          {:else}
+            Non vegetarian
+          {/if}
+        </div>
+      </section>
+      <section class="p-4">
+        <div class="flex allergens">
+          {#if dish.allergens}
+            {#each dish.allergens as allergen}
+              <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
+            {/each}
+          {/if}
+        </div>
+      </section>
+      <section class="p-4">
+        <Allergens bind:values={dish.allergens} />
+      </section>
+      {#if dirty[index]}
+        <footer class="card-footer">
+          <button class="btn variant-filled" on:click={() => saveDish(index)}>save</button>
+        </footer>
+      {/if}
+      <button class="btn btn-sm variant-filled-error absolute bottom-2 right-2" on:click={() => deleteDish(index)}>delete</button>
     </div>
   {/each}
 </div>
 
+<button class="btn variant-filled fixed bottom-4 right-4" on:click={addDish}>Add</button>
+
 <style>
-
-  .list {
+  :global(body) {
     margin: 10px;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   }
 
-  .dish {
-    margin-bottom: 10px;
+  .allergens img,
+  .allergen-list img {
+    width: 30px;
+    margin-left: 5px;
+    vertical-align: text-top;
   }
-
 </style>
