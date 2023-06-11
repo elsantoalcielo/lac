@@ -5,9 +5,13 @@
 
   import Allergens from "$lib/components/allergens-old.svelte";
   import Translations from "$lib/components/translations.svelte";
-    import type { Menu } from "$lib/types";
+  import type { Dish, Menu } from "$lib/types";
 
-  let menu: Menu = data as Menu;
+  import { Autocomplete, popup } from "@skeletonlabs/skeleton";
+  import type { AutocompleteOption, PopupSettings } from "@skeletonlabs/skeleton";
+
+  let menu: Menu = data.menu as Menu;
+  let dishes = data.dishes;
 
   const addDish = (section: any) => {
     section.dishes.push({ name: "", price: "" });
@@ -19,6 +23,16 @@
     menu = menu;
   };
 
+  const updateDish = async (dish: Dish) => {
+    const response = await fetch("/api/dishes", {
+      method: "PUT",
+      body: JSON.stringify({ data: dish }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+  }
+
   const save = async () => {
     const response = await fetch("/api/current-menu", {
       method: "PUT",
@@ -28,6 +42,24 @@
       },
     });
   };
+
+  const dishOptions: AutocompleteOption[] = dishes.map((dish: Dish): AutocompleteOption => {
+    return { label: dish.name, value: dish };
+  });
+
+  let popupSettings: PopupSettings = {
+    event: "focus-click",
+    target: "popupAutocomplete",
+    placement: "bottom",
+  };
+
+  let selectedDish = new Array(menu?.sections.length);
+  selectedDish.fill("");
+
+  const onDishSelected = (event: any, section: any) => {
+    section.dishes.push(event.detail.value);
+    menu = menu;
+  };
 </script>
 
 <div class="buttons">
@@ -35,22 +67,35 @@
   <button on:click={signOut}>log out</button>
 </div>
 
-{#each menu.sections as section}
+{#each menu.sections as section, index}
   <div class="section">
     <div class="title" contenteditable="true" bind:textContent={section.title} />
     {#each section.dishes as dish, index}
       <div class="dish">
+        <div class="index">{index + 1}.</div>
         <div class="name" contenteditable="true" bind:textContent={dish.name} />
         <button class="delete" on:click={() => deleteDish(section, index)}>x</button>
+        <button class="update" on:click={() => updateDish(dish)}>update</button>
         <div class="description" contenteditable="true" bind:textContent={dish.description} />
         <div class="price" contenteditable="true" bind:textContent={dish.price} />
         <div class="vegetarian {dish.vegetarian ? 'true' : ''}" on:click={() => (dish.vegetarian = !dish.vegetarian)}>(v)</div>
         <Allergens bind:values={dish.allergens} />
         <div class="featured {dish.featured ? 'true' : ''}" on:click={() => (dish.featured = !dish.featured)}>&#9733;</div>
+        <Translations bind:translations={dish.translations} />
       </div>
-      <Translations bind:translations={dish.translations}/>
     {/each}
     <button on:click={() => addDish(section)}>+ DISH</button>
+
+    <input
+      class="input"
+      type="search"
+      bind:value={selectedDish[index]}
+      placeholder="Search..."
+      use:popup={{ ...popupSettings, target: `popupAutocomplete_${index}` }}
+    />
+    <div class="card w-full max-h-48 p-4 overflow-y-auto" data-popup="popupAutocomplete_{index}">
+      <Autocomplete bind:input={selectedDish[index]} options={dishOptions} on:selection={(event) => onDishSelected(event, section)} />
+    </div>
   </div>
 {/each}
 
@@ -84,6 +129,14 @@
 
   .dish {
     margin: 15px 0;
+    margin-left: 25px;
+  }
+
+  .dish .index {
+    position: absolute;
+    margin-left: -25px;
+    margin-top: 5px;
+    font-size: smaller;
   }
 
   .dish .name {
@@ -139,4 +192,10 @@
     color: red;
     font-weight: bold;
   }
+
+  button.update {
+    margin-left: 20px;
+    font-weight: bold;
+  }
+
 </style>

@@ -6,6 +6,10 @@
   // NOTE: this will be renamed skeleton.css in the v2.x release.
   import "@skeletonlabs/skeleton/styles/skeleton.css";
 
+  import { computePosition, autoUpdate, offset, shift, flip, arrow } from "@floating-ui/dom";
+  import { storePopup } from "@skeletonlabs/skeleton";
+  storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
   import "../app.postcss";
 
   import Analytics from "$lib/components/analytics.svelte";

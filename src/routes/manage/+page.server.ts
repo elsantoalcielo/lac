@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
 import { MongoClient } from 'mongodb';
-import { translateAndCapitalize } from '$lib/utils';
+import type { Menu } from '$lib/types';
 
 const AUTHORIZED_USERS = env.AUTHORIZED_USERS.split(',');
 
@@ -14,16 +14,20 @@ export const load: PageServerLoad = async (event) => {
     throw redirect(303, '/auth/signin?csrf=true');
   }
 
-  let menu: Menu = null;
+  let menu;
+  let dishes;
 
   const client = new MongoClient(env.MONGODB_URI);
   try {
     const database = client.db('amagat');
-    const collection = database.collection('current-menu');
-    menu = await collection.findOne() as Menu;
+    const currentMenuCollection = database.collection('current-menu');
+    menu = await currentMenuCollection.findOne();
+
+    const dishesCollection = database.collection('dishes');
+    dishes = await dishesCollection.find().toArray();
   } finally {
     await client.close();
   }
 
-  return JSON.parse(JSON.stringify(menu))
+  return JSON.parse(JSON.stringify({menu, dishes}))
 }
