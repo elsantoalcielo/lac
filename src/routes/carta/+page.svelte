@@ -138,7 +138,7 @@
     margin: 10px 0 0 0;
   }
 
-  @media (max-width: 992px) and (orientation: portrait) {
+  @media (max-width: 768px) {
     .dish {
       display: grid;
       grid-template-columns: auto auto;
@@ -167,7 +167,7 @@
     }
   }
 
-  @media (min-width: 992px), (orientation: landscape) {
+  @media (min-width: 768px) {
     .dish {
       display: flex;
       flex-direction: row;
