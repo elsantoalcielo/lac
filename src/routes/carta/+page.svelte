@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Language from "$lib/components/language.svelte";
   import { translateAllergen } from "$lib/utils";
   import type { PageData } from "./$types";
   export let data: PageData;
@@ -93,11 +94,21 @@
   </div>
 
   <div class="footer">{footer}</div>
+
+  <div class="language">
+    <Language language={data.language}/>
+  </div>
 </div>
 
 <style>
   @import url(../../css/reset.css);
   @import url(../../../static/fonts/fonts.css);
+
+  .language {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
 
   .logo {
     margin-top: 10px;
@@ -138,7 +149,7 @@
     margin: 10px 0 0 0;
   }
 
-  @media (max-width: 992px) and (orientation: portrait) {
+  @media (max-width: 768px) {
     .dish {
       display: grid;
       grid-template-columns: auto auto;
@@ -167,7 +178,7 @@
     }
   }
 
-  @media (min-width: 992px), (orientation: landscape) {
+  @media (min-width: 768px) {
     .dish {
       display: flex;
       flex-direction: row;
@@ -219,7 +230,7 @@
   }
 
   .allergen-list div {
-    display: flex
+    display: flex;
   }
 
   .allergen-list span {

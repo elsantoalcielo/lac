@@ -10,6 +10,9 @@
   <a href="https://www.instagram.com/lamagatcafe/">
     <div class="instagram" />
   </a>
+  <a href="carta">
+    <div class="carta" />
+  </a>
 </div>
 
 <style>
@@ -124,7 +127,23 @@
     filter: drop-shadow(0px 10px 5px black);
   }
 
-  .instagram:hover {
+  .carta {
+    width: 180px;
+    height: 76px;
+    position: absolute;
+    bottom: 20px;
+    right: 120px;
+    background-image: url(/img/carta.svg);
+    background-repeat: no-repeat;
+    background-size: 125px 125px;
+    background-position: 27px -25px;
+    background-color: white;
+    border-radius: 20px 20px;
+    filter: drop-shadow(0px 10px 5px black);
+  }
+
+
+  .instagram:hover, .carta:hover {
     filter: invert(1);
   }
 </style>
