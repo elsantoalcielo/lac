@@ -18,6 +18,24 @@
     menu = menu;
   };
 
+  const upDish = (section: any, index: number) => {
+    if (index > 0) {
+      let temporal = section.dishes[index - 1];
+      section.dishes[index - 1] = section.dishes[index];
+      section.dishes[index] = temporal;
+      menu = menu;
+    }
+  }
+
+  const downDish = (section: any, index: number) => {
+    if (index < section.dishes.length - 1) {
+      let temporal = section.dishes[index + 1];
+      section.dishes[index + 1] = section.dishes[index];
+      section.dishes[index] = temporal;
+      menu = menu;
+    }
+  }
+
   const deleteDish = (section: any, index: number) => {
     section.dishes.splice(index, 1);
     menu = menu;
@@ -31,7 +49,7 @@
         "content-type": "application/json",
       },
     });
-  }
+  };
 
   const save = async () => {
     const response = await fetch("/api/current-menu", {
@@ -74,6 +92,8 @@
       <div class="dish">
         <div class="index">{index + 1}.</div>
         <div class="name" contenteditable="true" bind:textContent={dish.name} />
+        <button class="up" on:click={() => upDish(section, index)}>^</button>
+        <button class="down" on:click={() => downDish(section, index)}>v</button>
         <button class="delete" on:click={() => deleteDish(section, index)}>x</button>
         <button class="update" on:click={() => updateDish(dish)}>update</button>
         <div class="description" contenteditable="true" bind:textContent={dish.description} />
@@ -187,6 +207,11 @@
     background-color: black;
   }
 
+  button.up, button.down {
+    margin-left: 20px;
+    font-weight: bold;
+  }
+
   button.delete {
     margin-left: 20px;
     color: red;
@@ -197,5 +222,4 @@
     margin-left: 20px;
     font-weight: bold;
   }
-
 </style>
