@@ -3,7 +3,6 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
 import { MongoClient } from 'mongodb';
-import { translateAndCapitalize } from '$lib/utils';
 
 const AUTHORIZED_USERS = env.AUTHORIZED_USERS.split(',');
 
@@ -20,7 +19,7 @@ export const load: PageServerLoad = async (event) => {
   try {
     const database = client.db('amagat');
     const collection = database.collection('dishes');
-    dishes = await collection.find().toArray();
+    dishes = await collection.find().sort({ name: 'asc' }).toArray();
   } finally {
     await client.close();
   }
