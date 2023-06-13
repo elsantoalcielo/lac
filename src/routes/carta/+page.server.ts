@@ -7,7 +7,7 @@ import type { Menu } from '$lib/types';
 
 export const load = (async ({ url }) => {
 
-  const language = url.searchParams.get('l');
+  const language = url.searchParams.get('l') || 'ca';
 
   const client = new MongoClient(env.MONGODB_URI);
 
