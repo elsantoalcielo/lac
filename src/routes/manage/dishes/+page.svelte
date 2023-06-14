@@ -3,7 +3,7 @@
   export let data: PageData;
   import type { PersistentDish } from "$lib/types";
 
-  import { SlideToggle } from "@skeletonlabs/skeleton";
+  import { Accordion, AccordionItem, AppBar, AppShell, SlideToggle } from "@skeletonlabs/skeleton";
   import Allergens from "$lib/components/allergens.svelte";
 
   let dishes: PersistentDish[] = data.dishes as PersistentDish[];
@@ -44,59 +44,88 @@
     dirty[dishes.length - 1] = true;
     dishes = dishes;
   };
+
+  let filterValue: string;
+
+  const filter = () => {
+    console.log("LFV " + filterValue);
+  };
 </script>
 
-<div>
-  {#each dishes as dish, index}
-    <div class="card m-4 relative">
-      <header class="card-header h3">
-        <div contenteditable="true" bind:textContent={dish.name} on:keypress={() => setDirty(index)} />
-      </header>
-      <section class="p-4 h4">
-        <div contenteditable="true" bind:textContent={dish.description} on:keypress={() => setDirty(index)} />
-      </section>
-      <section class="p-4 h4 flex flex-row space-x-1">
-        <div contenteditable="true" bind:textContent={dish.price} on:keypress={() => setDirty(index)} />
-        <div>€</div>
-      </section>
-      <section class="p-4 h4 flex items-center space-x-2">
-        <SlideToggle name="st_{index}" bind:checked={dish.vegetarian} on:change={() => setDirty(index)} size="sm" active="bg-green-700" />
-        <div>
-          {#if dish.vegetarian}
-            <span style="color: green; font-weight: bold;">Vegetarian </span>
-          {:else}
-            Non vegetarian
-          {/if}
+<AppShell>
+  <svelte:fragment slot="header">
+    <AppBar background="bg-yellow-500">
+      <h2 class="h2">Dishes</h2>
+      <svelte:fragment slot="trail">
+        <input class="input p-1 w-40 font-sans" type="search" bind:value={filterValue} on:keyup={filter} />
+      </svelte:fragment>
+    </AppBar>
+  </svelte:fragment>
+  <div>
+    {#each dishes as dish, index}
+      {#if !filterValue || dish.name.toUpperCase().indexOf(filterValue.toUpperCase()) > -1}
+        <div class="card m-4 relative">
+          <Accordion>
+            <AccordionItem>
+              <svelte:fragment slot="summary">
+                <header class="card-header h3">
+                  <div contenteditable="true" bind:textContent={dish.name} on:keypress={() => setDirty(index)} />
+                </header>
+              </svelte:fragment>
+              <svelte:fragment slot="content">
+                <section class="px-4 py-1 h4">
+                  <div contenteditable="true" bind:textContent={dish.description} on:keypress={() => setDirty(index)} />
+                </section>
+                <section class="px-4 py-1 h4 flex flex-row space-x-1">
+                  <div contenteditable="true" bind:textContent={dish.price} on:keypress={() => setDirty(index)} />
+                  <div>€</div>
+                </section>
+                <section class="px-4 py-1 h4 flex items-center space-x-2">
+                  <SlideToggle name="st_{index}" bind:checked={dish.vegetarian} on:change={() => setDirty(index)} size="sm" active="bg-green-700" />
+                  <div>
+                    {#if dish.vegetarian}
+                      <span style="color: green; font-weight: bold;">Vegetarian </span>
+                    {:else}
+                      Non vegetarian
+                    {/if}
+                  </div>
+                </section>
+                <section class="px-4 py-1">
+                  <div class="flex allergens">
+                    {#if dish.allergens}
+                      {#each dish.allergens as allergen}
+                        <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
+                      {/each}
+                    {/if}
+                  </div>
+                </section>
+                <section class="px-4 py-1">
+                  <Allergens bind:values={dish.allergens} />
+                </section>
+                {#if dirty[index]}
+                  <footer class="card-footer">
+                    <button class="btn variant-filled" on:click={() => saveDish(index)}>save</button>
+                  </footer>
+                {/if}
+                <button class="btn btn-sm variant-filled-error absolute bottom-2 right-2" on:click={() => deleteDish(index)}>delete</button>
+              </svelte:fragment>
+            </AccordionItem>
+          </Accordion>
         </div>
-      </section>
-      <section class="p-4">
-        <div class="flex allergens">
-          {#if dish.allergens}
-            {#each dish.allergens as allergen}
-              <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
-            {/each}
-          {/if}
-        </div>
-      </section>
-      <section class="p-4">
-        <Allergens bind:values={dish.allergens} />
-      </section>
-      {#if dirty[index]}
-        <footer class="card-footer">
-          <button class="btn variant-filled" on:click={() => saveDish(index)}>save</button>
-        </footer>
       {/if}
-      <button class="btn btn-sm variant-filled-error absolute bottom-2 right-2" on:click={() => deleteDish(index)}>delete</button>
-    </div>
-  {/each}
-</div>
+    {/each}
+  </div>
 
-<button class="btn variant-filled fixed bottom-4 right-4" on:click={addDish}>Add</button>
+  <button class="btn variant-filled fixed bottom-4 right-4" on:click={addDish}>Add</button>
+</AppShell>
 
 <style>
   :global(body) {
     margin: 10px;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  }
+
+  div {
   }
 
   .allergens img,
