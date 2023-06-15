@@ -96,7 +96,7 @@
   <div class="footer">{footer}</div>
 
   <div class="language">
-    <Language language={data.language}/>
+    <Language language={data.language} />
   </div>
 </div>
 
@@ -253,5 +253,21 @@
     width: 100px;
     height: 25px;
     margin-top: 10px;
+  }
+
+  /* printing */
+
+  @page {
+    size: A4 landscape;
+  }
+
+  @media print {
+    .language {
+      display: none;
+    }
+
+    .footer {
+      font-size: smaller;
+    }
   }
 </style>
