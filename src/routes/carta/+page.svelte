@@ -269,5 +269,9 @@
     .footer {
       font-size: smaller;
     }
+
+    .filigrana {
+      -webkit-print-color-adjust: exact !important;
+    }
   }
 </style>
