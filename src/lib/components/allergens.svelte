@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+
   const allergensList = [
     "gluten",
     "crustaceans",
@@ -18,6 +20,8 @@
 
   export let values: string[] = [];
 
+  const dispatch = createEventDispatcher();
+
   const toggle = (allergen: string) => {
     const index = values.indexOf(allergen);
     if (index == -1) {
@@ -26,7 +30,11 @@
       values.splice(index, 1);
     }
     values = values;
+
+    dispatch('toggle');
   };
+
+
 </script>
 
 <div class="flex h-7 space-x-2 cursor-pointer">

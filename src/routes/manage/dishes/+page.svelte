@@ -47,8 +47,8 @@
 
   let filterValue: string;
 
-  const filter = () => {
-    console.log("LFV " + filterValue);
+  const onClickName = (event: any) => {
+    event.stopPropagation();
   };
 </script>
 
@@ -57,7 +57,7 @@
     <AppBar background="bg-yellow-500">
       <h2 class="h2">Dishes</h2>
       <svelte:fragment slot="trail">
-        <input class="input p-1 w-40 font-sans" type="search" bind:value={filterValue} on:keyup={filter} />
+        <input class="input p-1 w-40 font-sans" type="search" bind:value={filterValue} />
       </svelte:fragment>
     </AppBar>
   </svelte:fragment>
@@ -69,7 +69,7 @@
             <AccordionItem>
               <svelte:fragment slot="summary">
                 <header class="card-header h3">
-                  <div contenteditable="true" bind:textContent={dish.name} on:keypress={() => setDirty(index)} />
+                  <div contenteditable="true" bind:textContent={dish.name} on:keypress={() => setDirty(index)} on:click={onClickName} />
                 </header>
               </svelte:fragment>
               <svelte:fragment slot="content">
@@ -100,7 +100,7 @@
                   </div>
                 </section>
                 <section class="px-4 py-1">
-                  <Allergens bind:values={dish.allergens} />
+                  <Allergens bind:values={dish.allergens} on:toggle={() => setDirty(index)} />
                 </section>
                 {#if dirty[index]}
                   <footer class="card-footer">
