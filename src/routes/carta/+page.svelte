@@ -89,7 +89,7 @@
       <img src="/img/allergens/lupin.jpg" alt="lupin" /><span>{translateAllergen("lupin", language)}</span>
     </div>
     <div>
-      <img src="/img/allergens/molluscs.jpg" alt="molluscs" /><span>Mol·luscs</span>
+      <img src="/img/allergens/molluscs.jpg" alt="molluscs" /><span>{translateAllergen("molluscs", language)}</span>
     </div>
   </div>
 
