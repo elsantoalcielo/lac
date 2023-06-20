@@ -31,6 +31,8 @@ export const load = (async ({ url }) => {
       break;
     case "fi": footer = "Kaikki hinnat sisältävät ALV:n. Jos sinulla on allergia tai intoleranssi, ole hyvä ja kysy meiltä";
       break;
+    case "ko": footer = "모든 가격은 부가가치세가 포함됩니다. 알레르기나 불내증이 있으신 경우, 상담해 주세요";
+      break;
     default: footer = "Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA, consulteu-nos, si us plau";
       break;
   }

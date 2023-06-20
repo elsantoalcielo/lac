@@ -119,6 +119,22 @@ export function translateAllergen(allergen: string, language: string | undefined
       sulphites: "Sulfiitit",
       lupin: "Lupiini",
       molluscs: "Nilviäiset",
+    },
+    ko: {
+      gluten: "글루텐",
+      crustaceans: "갑각류",
+      eggs: "계란",
+      fish: "어류",
+      peanuts: "땅콩",
+      soybeans: "대두",
+      milk: "우유",
+      nuts: "견과류",
+      celery: "셀러리",
+      mustard: "겨자",
+      sesame: "참깨",
+      sulphites: "황산화물",
+      lupin: "루팡",
+      molluscs: "소라류"
     }
   }
 

@@ -13,4 +13,5 @@
   <option value="es">castellano</option>
   <option value="en">english</option>
   <option value="fi">suomi</option>
+  <option value="ko">한국어</option>
 </select>
