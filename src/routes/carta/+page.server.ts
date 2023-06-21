@@ -23,22 +23,34 @@ export const load = (async ({ url }) => {
     await client.close();
   }
 
+  let title;
   let footer;
   switch (language) {
-    case "es": footer = "Todos los precios incluyen el IVA. Si tenéis alguna alergia o intolerancia, consultadnos, por favor";
+    case "es":
+      title = "Nuestra propuesta gastronómica";
+      footer = "Todos los precios incluyen el IVA. Si tenéis alguna ALERGIA o INTOLERANCIA, consultadnos, por favor";
       break;
-    case "en": footer = "All prices include VAT. If you have any allergies or intolerances, please consult us";
+    case "en":
+      title = "Our gastronomic proposal";
+      footer = "All prices include VAT. If you have any ALLERGIES or INTOLERANCES, please consult us";
       break;
-    case "fi": footer = "Kaikki hinnat sisältävät ALV:n. Jos sinulla on allergia tai intoleranssi, ole hyvä ja kysy meiltä";
+    case "fi":
+      title = "Gastronominen ehdotuksemme";
+      footer = "Kaikki hinnat sisältävät ALV:n. Jos sinulla on ALLERGIA tai INTOLERANSSI, ole hyvä ja kysy meiltä";
       break;
-    case "ko": footer = "모든 가격은 부가가치세가 포함됩니다. 알레르기나 불내증이 있으신 경우, 상담해 주세요";
+    case "ko":
+      title = "우리의 요리 제안";
+      footer = "모든 가격은 부가가치세가 포함됩니다. 알레르기나 불내증이 있으신 경우, 상담해 주세요";
       break;
-    default: footer = "Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA, consulteu-nos, si us plau";
+    default:
+      title = "La nostra proposta gastronòmica";
+      footer = "Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA, consulteu-nos, si us plau";
       break;
   }
 
   return {
     menu: JSON.parse(JSON.stringify(menu)),
+    title: title,
     footer: footer,
     language: language,
   } as any

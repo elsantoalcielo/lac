@@ -4,11 +4,14 @@
   import type { PageData } from "./$types";
   export let data: PageData;
 
-  const { menu, footer, language } = data;
+  const { menu, title, footer, language } = data;
 </script>
 
+<svelte:head>
+  <title>L'Amagat Cafè - {title}</title>
+</svelte:head>
 <div class="menu">
-  <div class="logo">
+  <div class="logo" on:click={() => location.href = '/'}>
     <img src="/img/logo.png" alt="Logo" />
   </div>
 
@@ -112,6 +115,7 @@
 
   .logo {
     margin-top: 10px;
+    cursor: pointer;
   }
 
   .logo img {
