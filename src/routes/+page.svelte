@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>L'Amagat Cafè</title>
+  <meta name="description" content="Lloc petit i bufó al cor del Guinardó. Proposta senzilla però feta amb amor. Cafè, entrepans, plats, i bona atenció">
+</svelte:head>
 <div class="page">
   <div class="header">
     <div class="logo">
