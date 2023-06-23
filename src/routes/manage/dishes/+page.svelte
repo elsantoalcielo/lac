@@ -59,6 +59,7 @@
       <svelte:fragment slot="trail">
         <input class="input p-1 w-40 font-sans" type="search" bind:value={filterValue} />
       </svelte:fragment>
+      <button class="btn variant-filled fixed top-4 right-4" on:click={addDish}>Add</button>
     </AppBar>
   </svelte:fragment>
   <div>
@@ -130,7 +131,6 @@
     {/each}
   </div>
 
-  <button class="btn variant-filled fixed bottom-4 right-4" on:click={addDish}>Add</button>
 </AppShell>
 
 <style>
