@@ -102,6 +102,20 @@
                 <section class="px-4 py-1">
                   <Allergens bind:values={dish.allergens} on:toggle={() => setDirty(index)} />
                 </section>
+                <section class="px-4 py-1 font-sans">
+                  {#if dish.translations}
+                    {#each Object.entries(dish.translations) as [language, translation]}
+                      <div class="flex">
+                        <div class="w-8">
+                          {language}
+                        </div>
+                        <div>
+                          {translation.name}
+                        </div>
+                      </div>
+                    {/each}
+                  {/if}
+                </section>
                 {#if dirty[index]}
                   <footer class="card-footer">
                     <button class="btn variant-filled" on:click={() => saveDish(index)}>save</button>
