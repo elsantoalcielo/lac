@@ -2,9 +2,19 @@ type Menu = {
   sections: Section[];
 } | null;
 
+type SandwichMenu = {
+  sections: SandwichSection[];
+} | null;
+
 type Section = {
   title?: string;
   dishes: Dish[];
+  translations?: SectionTranslation
+}
+
+type SandwichSection = {
+  title?: string;
+  sandwiches: Sandwich[];
   translations?: SectionTranslation
 }
 
@@ -24,6 +34,17 @@ type Dish = {
   translations?: DishTranslations;
 }
 
+type Sandwich = {
+  name: string;
+  description?: string;
+  price: {
+    large: string,
+    medium: string
+  },
+  allergens?: Allergen[];
+  translations?: SandwichTranslations;
+}
+
 interface MongoDBIded {
   _id: string;
 }
@@ -38,6 +59,10 @@ declare global {
       description: string;
     }
   }
+}
+
+declare global {
+  type SandwichTranslations = DishTranslations
 }
 
 enum Allergen {

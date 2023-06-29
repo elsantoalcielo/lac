@@ -2,8 +2,8 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
 import { MongoClient } from 'mongodb';
-import { translateAndCapitalizeMenu } from '$lib/utils';
-import type { Menu } from '$lib/types';
+import type { SandwichMenu } from '$lib/types';
+import { translateSandwichMenu } from '$lib/utils';
 
 export const load = (async ({ url }) => {
 
@@ -11,14 +11,14 @@ export const load = (async ({ url }) => {
 
   const client = new MongoClient(env.MONGODB_URI);
 
-  let menu = null;
+  let sandwichMenu = null;
 
   try {
     const database = client.db('amagat');
-    const collection = database.collection('current-menu');
-    menu = await collection.findOne() as Menu;
+    const collection = database.collection('current-sandwich-menu');
+    sandwichMenu = await collection.findOne() as SandwichMenu;
 
-    translateAndCapitalizeMenu(menu, language);
+    translateSandwichMenu(sandwichMenu, language);
   } finally {
     await client.close();
   }
@@ -27,29 +27,29 @@ export const load = (async ({ url }) => {
   let footer;
   switch (language) {
     case "es":
-      title = "Nuestra propuesta gastronómica";
+      title = "Nuestra carta de bocadillos";
       footer = "Todos los precios incluyen el IVA. Si tenéis alguna ALERGIA o INTOLERANCIA, consultadnos, por favor";
       break;
     case "en":
-      title = "Our gastronomic proposal";
+      title = "Our selection of sandwiches";
       footer = "All prices include VAT. If you have any ALLERGIES or INTOLERANCES, please consult us";
       break;
     case "fi":
-      title = "Gastronominen ehdotuksemme";
+      title = "Voileipävalikoimamme";
       footer = "Kaikki hinnat sisältävät ALV:n. Jos sinulla on ALLERGIA tai INTOLERANSSI, ole hyvä ja kysy meiltä";
       break;
     case "ko":
-      title = "우리의 요리 제안";
+      title = "우리의 샌드위치 메뉴";
       footer = "모든 가격은 부가가치세가 포함됩니다. 알레르기나 불내증이 있으신 경우, 상담해 주세요";
       break;
     default:
-      title = "La nostra proposta gastronòmica";
+      title = "La nostra carta d'entrepans";
       footer = "Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA, consulteu-nos, si us plau";
       break;
   }
 
   return {
-    menu: JSON.parse(JSON.stringify(menu)),
+    sandwichMenu: JSON.parse(JSON.stringify(sandwichMenu)),
     title: title,
     footer: footer,
     language: language,

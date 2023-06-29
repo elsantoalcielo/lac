@@ -1,4 +1,4 @@
-import type { Menu } from "./types";
+import type { Menu, SandwichMenu } from "./types";
 
 type SkipList = {
   [language: string]: string[]
@@ -21,7 +21,7 @@ export function capitalize(source: string, language: string | null): string {
   }
 }
 
-export function translateAndCapitalize(menu: Menu, language: string | null): void {
+export function translateAndCapitalizeMenu(menu: Menu, language: string | null): void {
 
   if (language && language != "ca") {
     menu?.sections.forEach((section) => {
@@ -50,6 +50,24 @@ export function translateAndCapitalize(menu: Menu, language: string | null): voi
       }
     })
   })
+}
+
+export function translateSandwichMenu(sandwichMenu: SandwichMenu, language: string | null): void {
+
+  if (language && language != "ca") {
+    sandwichMenu?.sections.forEach((section) => {
+      if (section.translations && section.translations[language]) {
+        section.title = section.translations[language].title || section.title;
+      }
+
+      section.sandwiches.forEach((sandwich) => {
+        if (sandwich.translations && sandwich.translations[language]) {
+          sandwich.name = sandwich.translations[language].name || sandwich.name;
+          sandwich.description = sandwich.translations[language].description || sandwich.description;
+        }
+      })
+    })
+  }
 }
 
 export enum AllergenName { gluten, crustaceans, eggs, fish, peanuts, soybeans, milk, nuts, celery, mustard, sesame, sulphites, molluscs };
