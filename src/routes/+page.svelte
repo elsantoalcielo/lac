@@ -1,6 +1,6 @@
 <svelte:head>
   <title>L'Amagat Cafè</title>
-  <meta name="description" content="Lloc petit i bufó al cor del Guinardó. Proposta senzilla però feta amb amor. Cafè, entrepans, plats, i bona atenció">
+  <meta name="description" content="Lloc petit i bufó al cor del Guinardó. Proposta senzilla però feta amb amor. Cafè, entrepans, plats, i bona atenció" />
 </svelte:head>
 <div class="page">
   <div class="header">
@@ -20,6 +20,8 @@
 </div>
 
 <style>
+  @import url(../css/reset.css);
+
   @media (max-width: 992px) and (orientation: portrait) {
     .page {
       height: 100vh;
@@ -146,8 +148,8 @@
     filter: drop-shadow(0px 10px 5px black);
   }
 
-
-  .instagram:hover, .carta:hover {
+  .instagram:hover,
+  .carta:hover {
     filter: invert(1);
   }
 </style>
