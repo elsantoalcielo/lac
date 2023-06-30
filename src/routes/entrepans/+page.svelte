@@ -29,17 +29,15 @@
       {/if}
       <div class="w-[90%]">
         <div class="flex mt-1.5">
-          <div class="basis-1/2" />
-          <div class="basis-1/4 text-right">MITJÀ</div>
-          <div class="basis-1/4 text-right">GRAN</div>
+          <div class="basis-3/5" />
+          <div class="basis-1/5 text-right">MITJÀ</div>
+          <div class="basis-1/5 text-right">GRAN</div>
         </div>
         {#each section.sandwiches as sandwich}
           <div class="flex mt-1.5">
-            <div class="flex basis-1/2 items-center">
-              <div class="text-lg">
+            <div class="flex basis-3/5 items-center">
+              <div class="flex items-center md:text-lg">
                 {sandwich.name}
-              </div>
-              <div class="flex items-center">
                 {#if sandwich.allergens}
                   {#each sandwich.allergens as allergen}
                     <img class="w-5 h-5 ml-1.5" src="/img/allergens/{allergen}.jpg" alt={allergen} />
@@ -47,18 +45,23 @@
                 {/if}
               </div>
             </div>
-            <div class="basis-1/4 text-xl flex items-center justify-end">
+            <div class="basis-1/5 flex items-center justify-end md:text-lg">
               {#if sandwich.price.medium}
                 {sandwich.price.medium} €
               {/if}
             </div>
-            <div class="flex flex-wrap basis-1/4 items-center justify-end text-xl">
+            <div class="basis-1/5 flex flex-wrap items-center justify-end md:text-lg">
               {#if sandwich.large_variant}
-                <div class="text-sm md:mr-2">{sandwich.large_variant}</div>
+                <div class="sm:mr-2 text-sm font-['Lora']">{sandwich.large_variant}</div>
               {/if}
               <div>{sandwich.price.large} €</div>
             </div>
           </div>
+          {#if sandwich.description}
+          <div class="ml-2 text-sm md:text-base font-['Lora']">
+            ({sandwich.description})
+          </div>
+          {/if}
         {/each}
       </div>
     </div>
