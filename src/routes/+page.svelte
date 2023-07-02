@@ -14,6 +14,9 @@
   <a href="https://www.instagram.com/lamagatcafe/">
     <div class="instagram" />
   </a>
+  <a href="entrepans">
+    <div class="sandwiches" />
+  </a>
   <a href="carta">
     <div class="carta" />
   </a>
@@ -118,6 +121,36 @@
     }
   }
 
+  .carta {
+    width: 76px;
+    height: 76px;
+    position: absolute;
+    bottom: 20px;
+    right: 210px;
+    background-image: url(/img/carta.svg);
+    background-repeat: no-repeat;
+    background-size: 55px 55px;
+    background-position: 10px 10px;
+    background-color: white;
+    border-radius: 20px 20px;
+    filter: drop-shadow(0px 10px 5px black);
+  }
+
+  .sandwiches {
+    width: 76px;
+    height: 76px;
+    position: absolute;
+    bottom: 20px;
+    right: 120px;
+    background-image: url(/img/sandwich.svg);
+    background-repeat: no-repeat;
+    background-size: 55px 55px;
+    background-position: 11px 11px;
+    background-color: white;
+    border-radius: 20px 20px;
+    filter: drop-shadow(0px 10px 5px black);
+  }
+
   .instagram {
     width: 76px;
     height: 76px;
@@ -133,23 +166,34 @@
     filter: drop-shadow(0px 10px 5px black);
   }
 
-  .carta {
-    width: 180px;
-    height: 76px;
-    position: absolute;
-    bottom: 20px;
-    right: 120px;
-    background-image: url(/img/carta.svg);
-    background-repeat: no-repeat;
-    background-size: 125px 125px;
-    background-position: 27px -25px;
-    background-color: white;
-    border-radius: 20px 20px;
-    filter: drop-shadow(0px 10px 5px black);
+  @media (min-width: 992px), (orientation: landscape) {
+    .carta {
+      right: 120px;
+    }
+
+    .sandwiches {
+      right: 20px;
+    }
+
+    .instagram {
+      top: 20px;
+    }
   }
 
+  @media (orientation: portrait) {
+    .carta {
+      left: 20px;
+    }
+
+    .sandwiches {
+      left: 120px;
+    }
+  }
+
+  .carta:hover,
   .instagram:hover,
-  .carta:hover {
+  .sandwiches:hover
+   {
     filter: invert(1);
   }
 </style>
