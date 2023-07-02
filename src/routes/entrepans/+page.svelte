@@ -25,7 +25,11 @@
   {#each sandwichMenu.sections as section}
     <div class="flex flex-col items-center mb-3 w-full">
       {#if section.title}
-        <div class="mb-1 text-2xl border-dotted border-black border-b-[1px] text-center">{section.title}</div>
+        <div class="flex items-center">
+          <div><img src="/img/filigrana_s.svg" class="h-5 mr-3" alt="decoration"></div>
+          <div class="mb-1 text-2xl text-center">{section.title}</div>
+          <div><img src="/img/filigrana_s.svg" class="h-5 ml-3" alt="decoration"></div>
+        </div>
       {/if}
       <div class="w-[90%]">
         <div class="flex mt-1.5">
@@ -58,9 +62,9 @@
             </div>
           </div>
           {#if sandwich.description}
-          <div class="ml-2 text-sm md:text-base font-['Lora']">
-            ({sandwich.description})
-          </div>
+            <div class="ml-2 text-sm md:text-base font-['Lora']">
+              ({sandwich.description})
+            </div>
           {/if}
         {/each}
       </div>
