@@ -130,7 +130,7 @@
     background-image: url(/img/carta.svg);
     background-repeat: no-repeat;
     background-size: 55px 55px;
-    background-position: 10px 10px;
+    background-position: 12px 10px;
     background-color: white;
     border-radius: 20px 20px;
     filter: drop-shadow(0px 10px 5px black);
