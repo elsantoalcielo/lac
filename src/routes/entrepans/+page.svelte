@@ -26,9 +26,9 @@
     <div class="flex flex-col items-center mb-3 w-full">
       {#if section.title}
         <div class="flex items-center">
-          <div><img src="/img/filigrana_s.svg" class="h-5 mr-3" alt="decoration"></div>
+          <div><img src="/img/filigrana_s.svg" class="h-5 mr-3" alt="decoration" /></div>
           <div class="mb-1 text-2xl text-center">{section.title}</div>
-          <div><img src="/img/filigrana_s.svg" class="h-5 ml-3" alt="decoration"></div>
+          <div><img src="/img/filigrana_s.svg" class="h-5 ml-3" alt="decoration" /></div>
         </div>
       {/if}
       <div class="w-[90%]">
@@ -54,16 +54,21 @@
                 {sandwich.price.medium} €
               {/if}
             </div>
-            <div class="basis-1/5 flex flex-wrap items-center justify-end md:text-lg">
-              {#if sandwich.large_variant}
-                <div class="sm:mr-2 text-xs font-['Lora']">{translateOther(sandwich.large_variant, language)}</div>
-              {/if}
+            <div class="basis-1/5 flex items-center justify-end md:text-lg">
               <div>{sandwich.price.large} €</div>
             </div>
           </div>
-          {#if sandwich.description}
-            <div class="ml-2 text-sm md:text-base font-['Lora']">
-              ({sandwich.description})
+          {#if sandwich.description || sandwich.large_variant}
+            <div class="flex mt-[-5px]">
+              <div class="basis-3/5 ml-2 text-sm md:text-base font-['Lora']">
+                {#if sandwich.description}
+                  ({sandwich.description})
+                {/if}
+              </div>
+              <div class="basis-1/5" />
+              {#if sandwich.large_variant}
+                <div class="basis-1/5 font-['Lora'] text-sm text-right">({translateOther(sandwich.large_variant, language).toLowerCase()})</div>
+              {/if}
             </div>
           {/if}
         {/each}
