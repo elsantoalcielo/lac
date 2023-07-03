@@ -5,9 +5,13 @@ import { MongoClient } from 'mongodb';
 import { translateAndCapitalizeMenu } from '$lib/utils';
 import type { Menu } from '$lib/types';
 
-export const load = (async ({ url }) => {
+export const load = (async ({ url, cookies }) => {
 
-  const language = url.searchParams.get('l') || 'ca';
+  const languageParam = url.searchParams.get('l');
+  const languageCookie = cookies.get('l');
+  const language = languageParam || languageCookie || 'ca';
+
+  cookies.set('l', language, { path: '/' });
 
   const client = new MongoClient(env.MONGODB_URI);
 
