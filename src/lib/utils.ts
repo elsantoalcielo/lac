@@ -162,3 +162,40 @@ export function translateAllergen(allergen: string, language: string | undefined
 
   return (TRANSLATIONS[language] && TRANSLATIONS[language][allergen]) || allergen;
 }
+
+
+export function translateOther(word: string, language: string | undefined): string {
+  const TRANSLATIONS: { [language: string]: { [word: string]: string } } = {
+    ca: {
+      medium: "Mitjà",
+      large: "Gran",
+      barra: "Barra"
+    },
+    es: {
+      medium: "Mediano",
+      large: "Grande",
+      barra: "Barra"
+    },
+    en: {
+      medium: "Medium",
+      large: "Large",
+      barra: "French loaf"
+    },
+    fi: {
+      medium: "Keskikokoinen",
+      large: "Suuri",
+      barra: "ranskalainen patonki"
+    },
+    ko: {
+      medium: "중간",
+      large: "큰",
+      barra: "프렌치 로프"
+    }
+  }
+
+  if (!language) {
+    language = "ca";
+  }
+
+  return (TRANSLATIONS[language] && TRANSLATIONS[language][word]) || word;
+}

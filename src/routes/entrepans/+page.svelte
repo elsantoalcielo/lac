@@ -1,6 +1,6 @@
 <script lang="ts">
   import Language from "$lib/components/language.svelte";
-  import { translateAllergen } from "$lib/utils";
+  import { translateAllergen, translateOther } from "$lib/utils";
   import type { PageData } from "./$types";
   export let data: PageData;
 
@@ -34,8 +34,8 @@
       <div class="w-[90%]">
         <div class="flex mt-1.5">
           <div class="basis-3/5" />
-          <div class="basis-1/5 text-right">MITJÀ</div>
-          <div class="basis-1/5 text-right">GRAN</div>
+          <div class="basis-1/5 text-right uppercase">{translateOther("medium", language)}</div>
+          <div class="basis-1/5 text-right uppercase">{translateOther("large", language)}</div>
         </div>
         {#each section.sandwiches as sandwich}
           <div class="flex mt-1.5">
@@ -56,7 +56,7 @@
             </div>
             <div class="basis-1/5 flex flex-wrap items-center justify-end md:text-lg">
               {#if sandwich.large_variant}
-                <div class="sm:mr-2 text-sm font-['Lora']">{sandwich.large_variant}</div>
+                <div class="sm:mr-2 text-xs font-['Lora']">{translateOther(sandwich.large_variant, language)}</div>
               {/if}
               <div>{sandwich.price.large} €</div>
             </div>
