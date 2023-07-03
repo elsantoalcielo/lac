@@ -10,6 +10,8 @@
   import { Autocomplete, popup } from "@skeletonlabs/skeleton";
   import type { AutocompleteOption, PopupSettings } from "@skeletonlabs/skeleton";
 
+  import { LANGUAGES } from "$lib/languages";
+
   let menu: Menu = data.menu as Menu;
   let dishes = data.dishes;
 
@@ -25,7 +27,7 @@
       section.dishes[index] = temporal;
       menu = menu;
     }
-  }
+  };
 
   const downDish = (section: any, index: number) => {
     if (index < section.dishes.length - 1) {
@@ -34,7 +36,7 @@
       section.dishes[index] = temporal;
       menu = menu;
     }
-  }
+  };
 
   const deleteDish = (section: any, index: number) => {
     section.dishes.splice(index, 1);
@@ -102,6 +104,11 @@
         <Allergens bind:values={dish.allergens} />
         <div class="featured {dish.featured ? 'true' : ''}" on:click={() => (dish.featured = !dish.featured)}>&#9733;</div>
         <Translations bind:translations={dish.translations} />
+        {#each LANGUAGES as language}
+          {#if dish.translations && dish.translations[language.locale] == undefined && language.locale != "ca"}
+            <div class="missing">{language.locale}</div>
+          {/if}
+        {/each}
       </div>
     {/each}
     <button on:click={() => addDish(section)}>+ DISH</button>
@@ -207,7 +214,8 @@
     background-color: black;
   }
 
-  button.up, button.down {
+  button.up,
+  button.down {
     margin-left: 20px;
     font-weight: bold;
   }
@@ -220,6 +228,16 @@
 
   button.update {
     margin-left: 20px;
+    font-weight: bold;
+  }
+
+  .missing {
+    border-radius: 10px 10px;
+    background-color: red;
+    padding: 2px;
+    width: 25px;
+    text-align: center;
+    color: white;
     font-weight: bold;
   }
 </style>
