@@ -93,6 +93,11 @@
   <div class="absolute right-1 top-1">
     <Language language={data.language} />
   </div>
+
+  <!-- <div class="absolute left-2 top-2 animate-pulse"> -->
+  <div class="landscape:hidden absolute left-4 top-4 w-8 animate-bounce">
+    <img src="/img/rotate.png" alt="rotate"/>
+  </div>
 </div>
 
 <style>
