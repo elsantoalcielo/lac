@@ -9,6 +9,7 @@ export function capitalize(source: string, language: string | null): string {
     ca: ['amb', 'de', 'i', 'o'],
     es: ['con', 'de', 'y', 'o'],
     en: ['with', 'of', 'and', 'or'],
+    fr: ['avec', 'de', 'et', 'ou', 'au', 'aux', 'du'],
     fi: ['ja', 'tai']
   };
 
@@ -122,6 +123,22 @@ export function translateAllergen(allergen: string, language: string | undefined
       lupin: "Lupin",
       molluscs: "Molluscs",
     },
+    fr: {
+      gluten: "Gluten",
+      crustaceans: "Crustacés",
+      eggs: "Oeufs",
+      fish: "Poisson",
+      peanuts: "Arachides",
+      soybeans: "Soja",
+      milk: "Lait",
+      nuts: "Fruits à coques",
+      celery: "Céleri",
+      mustard: "Moutarde",
+      sesame: "Sésame",
+      sulphites: "Sulfites",
+      lupin: "Lupin",
+      molluscs: "Mollusques",
+    },
     fi: {
       gluten: "Gluteeni",
       crustaceans: "Äyriäiset",
@@ -180,6 +197,11 @@ export function translateOther(word: string, language: string | undefined): stri
       medium: "Medium",
       large: "Large",
       barra: "French loaf"
+    },
+    fr: {
+      medium: "Moyen",
+      large: "Grand",
+      barra: "Baguette"
     },
     fi: {
       medium: "Keskikokoinen",

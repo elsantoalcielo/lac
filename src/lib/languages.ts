@@ -7,19 +7,23 @@ export const LANGUAGES: Language[] =
   [
     {
       locale: "ca",
-      name: "català",
+      name: "Català",
     },
     {
       locale: "es",
-      name: "castellano",
+      name: "Castellano",
     },
     {
       locale: "en",
-      name: "english",
+      name: "English",
+    },
+    {
+      locale: "fr",
+      name: "Français"
     },
     {
       locale: "fi",
-      name: "suomi",
+      name: "Suomi",
     },
     {
       locale: "ko",
