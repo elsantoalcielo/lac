@@ -10,11 +10,19 @@
   import { storePopup } from "@skeletonlabs/skeleton";
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
+  import { fade } from "svelte/transition";
+
   import "../app.postcss";
 
   import Analytics from "$lib/components/analytics.svelte";
+
+  export let data;
 </script>
 
 <Analytics />
 
-<slot />
+{#key data.pathname}
+  <div in:fade={{ duration: 100, delay: 150 }} out:fade={{ duration: 100 }}>
+    <slot />
+  </div>
+{/key}

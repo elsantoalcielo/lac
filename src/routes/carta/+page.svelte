@@ -11,8 +11,10 @@
   <title>L'Amagat Cafè - {title}</title>
 </svelte:head>
 <div class="menu">
-  <div class="logo" on:click={() => location.href = '/'}>
-    <img src="/img/logo.png" alt="Logo" />
+  <div class="logo">
+    <a href="/">
+      <img src="/img/logo.png" alt="Logo" />
+    </a>
   </div>
 
   {#if menu.title}
@@ -115,7 +117,6 @@
 
   .logo {
     margin-top: 10px;
-    cursor: pointer;
   }
 
   .logo img {

@@ -12,8 +12,10 @@
 </svelte:head>
 
 <div class="m-auto max-w-[1024px] flex flex-col items-center font-['Montserrat'] font-bold">
-  <div class="mt-2.5 cursor-pointer" on:click={() => (location.href = "/")}>
-    <img class="w-52" src="/img/logo.png" alt="Logo" />
+  <div class="mt-2.5">
+    <a href="/">
+      <img class="w-52" src="/img/logo.png" alt="Logo" />
+    </a>
   </div>
 
   {#if sandwichMenu.title}
@@ -101,7 +103,7 @@
 
   <!-- <div class="absolute left-2 top-2 animate-pulse"> -->
   <div class="landscape:hidden absolute left-4 top-4 w-8 animate-bounce">
-    <img src="/img/rotate.png" alt="rotate"/>
+    <img src="/img/rotate.png" alt="rotate" />
   </div>
 </div>
 
