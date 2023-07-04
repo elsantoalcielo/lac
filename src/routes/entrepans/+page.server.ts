@@ -35,12 +35,16 @@ export const load = (async ({ url, cookies }) => {
       footer = "Todos los precios incluyen el IVA. Si tenéis alguna ALERGIA o INTOLERANCIA, consultadnos, por favor";
       break;
     case "en":
-      title = "Our selection of sandwiches";
+      title = "Our choice of sandwiches";
       footer = "All prices include VAT. If you have any ALLERGIES or INTOLERANCES, please consult us";
       break;
     case "fr":
       title = "Notre sélection de sandwiches";
       footer = "Tous les prix incluent la TVA. Si vous avez des ALLERGIES ou des INTOLÉRANCES, veuillez nous consulter, s'il vous plaît";
+      break;
+    case "de":
+      title = "Unsere Sandwich-Karte";
+      footer = "Alle Preise enthalten die Mehrwertsteuer. Wenn Sie ALLERGIEN oder UNVERTRÄGLICHKEITEN haben, konsultieren Sie uns bitte";
       break;
     case "fi":
       title = "Voileipävalikoimamme";
