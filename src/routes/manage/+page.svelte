@@ -98,6 +98,9 @@
         <button class="down" on:click={() => downDish(section, index)}>v</button>
         <button class="delete" on:click={() => deleteDish(section, index)}>x</button>
         <button class="update" on:click={() => updateDish(dish)}>update</button>
+        {#if dish._id == undefined}
+          <span class="no_id">NO ID!!</span>
+        {/if}
         <div class="description" contenteditable="true" bind:textContent={dish.description} />
         <div class="price" contenteditable="true" bind:textContent={dish.price} />
         <div class="vegetarian {dish.vegetarian ? 'true' : ''}" on:click={() => (dish.vegetarian = !dish.vegetarian)}>(v)</div>
@@ -239,5 +242,12 @@
     text-align: center;
     color: white;
     font-weight: bold;
+  }
+
+  .no_id {
+    font-weight: bold;
+    color: red;
+    margin-left: 20px;
+    text-decoration: underline;
   }
 </style>
