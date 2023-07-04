@@ -26,6 +26,10 @@ export const LANGUAGES: Language[] =
       name: "Deutsch"
     },
     {
+      locale: "it",
+      name: "Italiano"
+    },
+    {
       locale: "fi",
       name: "Suomi",
     },

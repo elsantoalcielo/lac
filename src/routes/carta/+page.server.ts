@@ -46,6 +46,10 @@ export const load = (async ({ url, cookies }) => {
       title = "Unser gastronomischer Vorschlag";
       footer = "Alle Preise enthalten die Mehrwertsteuer. Wenn Sie ALLERGIEN oder UNVERTRÄGLICHKEITEN haben, konsultieren Sie uns bitte";
       break;
+    case "it":
+      title = "La nostra proposta gastronomica";
+      footer = "Tutti i prezzi includono l'IVA. Se avete qualche ALLERGIA o INTOLLERANZA, vi preghiamo di consultarci";
+      break;
     case "fi":
       title = "Gastronominen ehdotuksemme";
       footer = "Kaikki hinnat sisältävät ALV:n. Jos sinulla on ALLERGIA tai INTOLERANSSI, ole hyvä ja kysy meiltä";

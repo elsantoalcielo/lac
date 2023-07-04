@@ -46,6 +46,10 @@ export const load = (async ({ url, cookies }) => {
       title = "Unsere Sandwich-Karte";
       footer = "Alle Preise enthalten die Mehrwertsteuer. Wenn Sie ALLERGIEN oder UNVERTRÄGLICHKEITEN haben, konsultieren Sie uns bitte";
       break;
+    case "it":
+      title = "La nostra selezione di panini";
+      footer = "Tutti i prezzi includono l'IVA. Se avete qualche ALLERGIA o INTOLLERANZA, vi preghiamo di consultarci";
+      break;
     case "fi":
       title = "Voileipävalikoimamme";
       footer = "Kaikki hinnat sisältävät ALV:n. Jos sinulla on ALLERGIA tai INTOLERANSSI, ole hyvä ja kysy meiltä";
