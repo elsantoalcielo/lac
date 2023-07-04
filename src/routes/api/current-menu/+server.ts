@@ -12,7 +12,7 @@ export const PUT = (async ({ request }) => {
   const client = new MongoClient(env.MONGODB_URI);
   try {
     const database = client.db('amagat');
-    const currentMenu = database.collection('current-menu');
+    const currentMenu = database.collection(process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu');
     const dbResponse = await currentMenu.replaceOne(
       { "_id": data._id },
       data

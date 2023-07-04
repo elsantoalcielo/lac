@@ -20,7 +20,7 @@ export const load: PageServerLoad = async (event) => {
   const client = new MongoClient(env.MONGODB_URI);
   try {
     const database = client.db('amagat');
-    const currentMenuCollection = database.collection('current-menu');
+    const currentMenuCollection = database.collection(process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu');
     menu = await currentMenuCollection.findOne();
 
     const dishesCollection = database.collection('dishes');

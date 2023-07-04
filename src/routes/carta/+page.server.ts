@@ -19,7 +19,7 @@ export const load = (async ({ url, cookies }) => {
 
   try {
     const database = client.db('amagat');
-    const collection = database.collection('current-menu');
+    const collection = database.collection(process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu');
     menu = await collection.findOne() as Menu;
 
     translateAndCapitalizeMenu(menu, language);
