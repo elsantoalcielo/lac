@@ -155,6 +155,10 @@
   }
 
   @media (max-width: 768px) {
+    .section {
+      width: 100%;
+    }
+
     .dish {
       display: grid;
       grid-template-columns: auto auto;
