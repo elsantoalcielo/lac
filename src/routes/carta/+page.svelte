@@ -31,6 +31,9 @@
       {#each section.dishes as dish}
         <div class="dish">
           <div class="name">
+            {#if dish.featured}
+              <span class="featured">☆</span>
+            {/if}
             {dish.name}
             <span class="vegetarian">
               {#if dish.vegetarian}
@@ -152,6 +155,10 @@
 
   .dish {
     margin: 10px 0 0 0;
+  }
+
+  .featured {
+    font-size: x-large;
   }
 
   @media (max-width: 768px) {

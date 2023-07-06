@@ -51,6 +51,13 @@
         "content-type": "application/json",
       },
     });
+    if (!dish._id) {
+      const result = await response.json();
+      if (result.success == "ok") {
+        dish._id = result.id;
+        menu = menu;
+      }
+    }
   };
 
   const save = async () => {

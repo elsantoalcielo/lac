@@ -19,7 +19,7 @@ export const PUT = (async ({ request }) => {
       { upsert: true}
     )
     console.debug(JSON.stringify(dbResponse));
-    result = { success: 'ok' }
+    result = { success: 'ok', id: dbResponse.upsertedId }
   } catch (e) {
     console.error(e)
     result = { error: e }
