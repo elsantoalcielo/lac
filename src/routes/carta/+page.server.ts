@@ -58,8 +58,16 @@ export const load = (async ({ url, cookies }) => {
       title = "우리의 요리 제안";
       footer = "모든 가격은 부가가치세가 포함됩니다. 알레르기나 불내증이 있으신 경우, 상담해 주세요";
       break;
+    case "ga":
+      title = "A nosa proposta gastronómica";
+      footer = "Todos os prezos inclúen o IVE. Se tedes algunha ALERXIA ou INTOLERANCIA, consultade con nós, por favor";
+      break;
+    case "eu":
+      title = "Gure gastronomia proposamena";
+      footer = "Prezio guztiak BEZa barne dute. ALERGIA edo INTOLERANTZIA bat baduzue, mesedez, galdetu gaitzazue";
+      break;
     default:
-      title = "La nostra proposta gastronòmica";
+      title = "Gure gastronomia proposamena";
       footer = "Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA, consulteu-nos, si us plau";
       break;
   }

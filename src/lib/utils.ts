@@ -9,10 +9,12 @@ export function capitalize(source: string, language: string | null): string {
     ca: ['amb', 'de', 'i', 'o'],
     es: ['con', 'de', 'y', 'o'],
     en: ['with', 'of', 'and', 'or'],
-    fr: ['avec', 'de', 'et', 'ou', 'au', 'aux', 'du'],
+    fr: ['avec', 'de', 'et', 'ou', 'au', 'aux', 'du', 'la'],
     de: ['und', 'aus', 'mit', 'oder'],
-    it: ['di', 'con', 'e', 'o'],
-    fi: ['ja', 'tai']
+    it: ['di', 'del', 'con', 'e', 'o', 'al'],
+    fi: ['ja', 'tai'],
+    ga: ['con', 'de', 'e', 'ou'],
+    eu: ['eta', 'edo']
   };
 
   const skipList = language ? SKIP_LIST[language] : SKIP_LIST.ca;
@@ -204,6 +206,38 @@ export function translateAllergen(allergen: string, language: string | undefined
       sulphites: "황산화물",
       lupin: "루팡",
       molluscs: "소라류"
+    },
+    ga: {
+      gluten: "Glute",
+      crustaceans: "Crustáceos",
+      eggs: "Ovos",
+      fish: "Peixe",
+      peanuts: "Cacahuete",
+      soybeans: "Soia",
+      milk: "Lácteos",
+      nuts: "Froitos secos",
+      celery: "Apio",
+      mustard: "Mostaza",
+      sesame: "Sementes de sésamo",
+      sulphites: "Sulfitos",
+      lupin: "Altramuzos",
+      molluscs: "Moluscos"
+    },
+    eu: {
+      gluten: "Gluten",
+      crustaceans: "Krostakoak",
+      eggs: "Arrautzak",
+      fish: "Arrainak",
+      peanuts: "Kakaoueteak",
+      soybeans: "Soja",
+      milk: "Esnea",
+      nuts: "Fruitu lehorak",
+      celery: "Apioa",
+      mustard: "Mostaza",
+      sesame: "Sesamo iturriak",
+      sulphites: "Sulfitoak",
+      lupin: "Malkorrak",
+      molluscs: "Moluskoak"
     }
   }
 
@@ -256,7 +290,17 @@ export function translateOther(word: string, language: string | undefined): stri
       medium: "중간",
       large: "큰",
       barra: "프렌치 로프"
-    }
+    },
+    ga: {
+      medium: "Mediano",
+      large: "Grande",
+      barra: "Barra"
+    },
+    eu: {
+      medium: "Erdiko",
+      large: "Handia",
+      barra: "Ogi"
+    },
   }
 
   if (!language) {

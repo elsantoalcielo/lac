@@ -14,6 +14,14 @@ export const LANGUAGES: Language[] =
       name: "Castellano",
     },
     {
+      locale: "ga",
+      name: "Galego",
+    },
+    {
+      locale: "eu",
+      name: "Euskara",
+    },
+    {
       locale: "en",
       name: "English",
     },
