@@ -299,7 +299,7 @@ export function translateOther(word: string, language: string | undefined): stri
     eu: {
       medium: "Erdiko",
       large: "Handia",
-      barra: "Ogi"
+      barra: "Barrako ogia"
     },
   }
 
