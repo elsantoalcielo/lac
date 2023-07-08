@@ -1,6 +1,11 @@
+<script lang="ts">
+  import Opengraph from "$lib/components/opengraph.svelte";
+</script>
+
 <svelte:head>
   <title>L'Amagat Cafè</title>
   <meta name="description" content="Lloc petit i bufó al cor del Guinardó. Proposta senzilla però feta amb amor. Cafè, entrepans, plats, i bona atenció" />
+  <Opengraph title="L'Amagat Cafè" path="" />
 </svelte:head>
 <div class="page">
   <div class="header">
@@ -192,8 +197,7 @@
 
   .carta:hover,
   .instagram:hover,
-  .sandwiches:hover
-   {
+  .sandwiches:hover {
     filter: invert(1);
   }
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import Language from "$lib/components/language.svelte";
+  import Opengraph from "$lib/components/opengraph.svelte";
   import { translateAllergen, translateOther } from "$lib/utils";
   import type { PageData } from "./$types";
   export let data: PageData;
@@ -9,6 +10,8 @@
 
 <svelte:head>
   <title>L'Amagat Cafè - {title}</title>
+  <meta name="description" content="Lloc petit i bufó al cor del Guinardó. Proposta senzilla però feta amb amor. Cafè, entrepans, plats, i bona atenció" />
+  <Opengraph title="L'Amagat Cafè - {title}" path="entrepans{language ? '?l=' + language : ''}" />
 </svelte:head>
 
 <div class="m-auto max-w-[1024px] flex flex-col items-center font-['Montserrat'] font-bold">
