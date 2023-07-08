@@ -11,7 +11,7 @@
 <svelte:head>
   <title>L'Amagat Cafè - {title}</title>
   <meta name="description" content="Lloc petit i bufó al cor del Guinardó. Proposta senzilla però feta amb amor. Cafè, entrepans, plats, i bona atenció" />
-  <Opengraph title="{title}" path="entrepans{language ? '?l=' + language : ''}" />
+  <Opengraph title="L'Amagat Cafè - {title}" path="entrepans{language ? '?l=' + language : ''}" />
 </svelte:head>
 
 <div class="m-auto max-w-[1024px] flex flex-col items-center font-['Montserrat'] font-bold">
