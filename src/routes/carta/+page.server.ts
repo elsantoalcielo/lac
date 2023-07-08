@@ -67,7 +67,7 @@ export const load = (async ({ url, cookies }) => {
       footer = "Prezio guztiak BEZa barne dute. ALERGIA edo INTOLERANTZIA bat baduzue, mesedez, galdetu gaitzazue";
       break;
     default:
-      title = "Gure gastronomia proposamena";
+      title = "La nostra proposta gastronòmica";
       footer = "Tots els preus inclouen l'IVA. Si teniu alguna AL·LÈRGIA o INTOLERÀNCIA, consulteu-nos, si us plau";
       break;
   }
