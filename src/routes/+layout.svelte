@@ -22,7 +22,7 @@
 <Analytics />
 
 {#key data.pathname}
-  <div in:fade={{ duration: 100, delay: 150 }} out:fade={{ duration: 100 }}>
+  <div in:fade={{ duration: 100, delay: 150 }} out:fade={{ duration: 100 }} class="h-full">
     <slot />
   </div>
 {/key}

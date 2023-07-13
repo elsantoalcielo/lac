@@ -25,6 +25,9 @@
   <a href="carta">
     <div class="carta" />
   </a>
+  <a href="encarrecs/pastissos">
+    <div class="order" />
+  </a>
 </div>
 
 <style>
@@ -171,13 +174,31 @@
     filter: drop-shadow(0px 10px 5px black);
   }
 
+  .order {
+    width: 76px;
+    height: 76px;
+    position: absolute;
+    background-image: url(/img/order.svg);
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    background-position: 13px 13px;
+    background-color: white;
+    border-radius: 20px 20px;
+    filter: drop-shadow(0px 10px 5px black);
+  }
+
   @media (min-width: 992px), (orientation: landscape) {
     .carta {
-      right: 120px;
+      right: 220px;
     }
 
     .sandwiches {
+      right: 120px;
+    }
+
+    .order {
       right: 20px;
+      bottom: 20px;
     }
 
     .instagram {
@@ -188,10 +209,17 @@
   @media (orientation: portrait) {
     .carta {
       left: 20px;
+      bottom: 220px;
     }
 
     .sandwiches {
-      left: 120px;
+      left: 20px;
+      bottom: 120px;
+    }
+
+    .order {
+      left: 20px;
+      bottom: 20px;
     }
   }
 
