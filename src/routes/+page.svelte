@@ -20,7 +20,7 @@
   <a href="carta">
     <div class="carta" />
   </a>
-  <a href="/">
+  <a href="order">
     <div class="order" />
   </a>
 </div>
