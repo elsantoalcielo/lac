@@ -292,5 +292,10 @@
     .filigrana {
       -webkit-print-color-adjust: exact !important;
     }
+
+    :nth-last-child(1 of .section)
+     {
+      display: none;
+    }
   }
 </style>
