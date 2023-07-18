@@ -114,11 +114,13 @@
         <Allergens bind:values={dish.allergens} />
         <div class="featured {dish.featured ? 'true' : ''}" on:click={() => (dish.featured = !dish.featured)}>&#9733;</div>
         <Translations bind:translations={dish.translations} />
-        {#each LANGUAGES as language}
-          {#if dish.translations && dish.translations[language.locale] == undefined && language.locale != "ca"}
-            <div class="missing">{language.locale}</div>
-          {/if}
-        {/each}
+        <div class="flex gap-1">
+          {#each LANGUAGES as language}
+            {#if dish.translations && dish.translations[language.locale] == undefined && language.locale != "ca"}
+              <div class="missing">{language.locale}</div>
+            {/if}
+          {/each}
+        </div>
       </div>
     {/each}
     <button on:click={() => addDish(section)}>+ DISH</button>
