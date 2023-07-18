@@ -6,6 +6,7 @@
       name: "translated name",
       description: "translated description",
     };
+    newLanguage = "";
   };
 
   let open = false;
@@ -23,10 +24,8 @@
           <div class="description" contenteditable="true" bind:textContent={translation.description} />
         </div>
       {/each}
-      {#if translations.tmp == undefined}
-        <input bind:value={newLanguage} />
-        <button on:click={add} disabled={!newLanguage || newLanguage.length == 0}>+</button>
-      {/if}
+      <input bind:value={newLanguage} />
+      <button on:click={add} disabled={!newLanguage || newLanguage.length == 0}>+</button>
     </div>
   {/if}
 </div>
