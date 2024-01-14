@@ -28,38 +28,39 @@
 
   {#each menu.sections as section}
     <div class="section">
-      {#if section.title}
-        <!--        <div class="title">{section.title}</div>   -->
-      {/if}
-      {#each section.dishes as dish}
-        <div class="dish">
-          <div class="name">
-            {#if dish.featured}
-              <span class="featured">☆</span>
-            {/if}
-            {dish.name}
-            <span class="vegetarian">
-              {#if dish.vegetarian}
-                (v)
+      {#if section.title == "POSTRES"}
+        <div class="title">POSTRES CASOLANES</div>
+
+        {#each section.dishes as dish}
+          <div class="dish">
+            <div class="name">
+              {#if dish.featured}
+                <span class="featured">☆</span>
               {/if}
-            </span>
-          </div>
-          <div class="allergens">
-            {#if dish.allergens}
-              {#each dish.allergens as allergen}
-                <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
-              {/each}
-            {/if}
-          </div>
-          <div class="price">{dish.price} €</div>
-          <!--
+              {dish.name}
+              <span class="vegetarian">
+                {#if dish.vegetarian}
+                  (v)
+                {/if}
+              </span>
+            </div>
+            <div class="allergens">
+              {#if dish.allergens}
+                {#each dish.allergens as allergen}
+                  <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
+                {/each}
+              {/if}
+            </div>
+            <div class="price">{dish.price} €</div>
+            <!--
           {#if dish.description}
             <div class="description">{dish.description}</div>
           {/if}
           -->
-        </div>
-      {/each}
-      <div class="filigrana" />
+          </div>
+        {/each}
+        <div class="filigrana" />
+      {/if}
     </div>
   {/each}
 
@@ -154,6 +155,7 @@
 
   .section > .title {
     font-size: x-large;
+    margin-bottom: 20px;
   }
 
   .dish {
@@ -293,8 +295,9 @@
       -webkit-print-color-adjust: exact !important;
     }
 
-    :nth-child(1 of .section), :nth-child(2 of .section), :nth-child(3 of .section)
-     {
+    :nth-child(1 of .section),
+    :nth-child(2 of .section),
+    :nth-child(3 of .section) {
       display: none;
     }
 
