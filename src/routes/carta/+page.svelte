@@ -27,7 +27,7 @@
   {/if}
 
   {#each menu.sections as section}
-    <div class="section">
+  <div class="section" class:info-section={section.title.startsWith('_')}>
       {#if section.title}
         <!--        <div class="title">{section.title}</div>   -->
       {/if}
@@ -59,7 +59,9 @@
           -->
         </div>
       {/each}
-      <div class="filigrana" />
+      {#if !section.hideSeparation}
+        <div class="filigrana" />
+      {/if}
     </div>
   {/each}
 
@@ -156,6 +158,10 @@
     font-size: x-large;
   }
 
+  .info-section {
+    font-size: small;
+  }
+
   .dish {
     margin: 10px 0 0 0;
   }
@@ -219,6 +225,11 @@
   .dish .name {
     font-size: large;
     text-align: left;
+  }
+
+  .info-section > .dish .name {
+    font-size: medium;
+    font-style: italic;
   }
 
   .dish .vegetarian {
