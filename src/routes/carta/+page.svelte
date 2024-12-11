@@ -16,7 +16,7 @@
 <div class="menu">
   <div class="logo">
     <a href="/">
-      <img src="/img/logo.png" alt="Logo" />
+      <img src="/img/logo-n.png" alt="Logo" />
     </a>
   </div>
 
@@ -128,7 +128,7 @@
   }
 
   .logo img {
-    width: 200px;
+    width: 500px;
   }
 
   .menu {
