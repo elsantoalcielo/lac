@@ -295,9 +295,11 @@
       -webkit-print-color-adjust: exact !important;
     }
 
+    /* hide non-desert dishes */
     :nth-child(1 of .section),
     :nth-child(2 of .section),
-    :nth-child(3 of .section) {
+    :nth-child(3 of .section),
+    :nth-child(4 of .section) {
       display: none;
     }
 
