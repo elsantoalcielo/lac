@@ -96,6 +96,9 @@
     <div class="flex">
       <img class="w-5 h-5 ml-1.5" src="/img/allergens/milk.jpg" alt="milk" /><span class="ml-1.5 mr-3">{translateAllergen("milk", language)}</span>
     </div>
+    <div class="flex">
+      <img class="w-5 h-5 ml-1.5" src="/img/allergens/sesame.jpg" alt="sesame" /><span class="ml-1.5 mr-3">{translateAllergen("sesame", language)}</span>
+    </div>
   </div>
 
   <div class="mt-5 pt-2.5 border-dotted border-t-[1px] border-t-black max-w-[90%] text-center text-xl">{footer}</div>
