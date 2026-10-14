@@ -5,6 +5,8 @@ import { env } from '$env/dynamic/private'
 
 export const { handle } = SvelteKitAuth({
   secret: env.AUTH_SECRET,
+  // @auth/sveltekit 1.x no longer trusts the host by default in production
+  trustHost: true,
   providers: [
     Google({
       clientId: env.GOOGLE_OAUTH_CLIENT_ID,

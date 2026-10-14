@@ -143,3 +143,49 @@ Done. `.ai/log/log.ai.md` now has three entries: Entry 1 for the coffee page, En
 **Work/time split this turn:** 100% process/docs.
 
 **Work/time split this turn:** 100% process/docs.
+
+## Entry 4 — 2026-10-14 18:43
+
+**Prompt:** The Vercel preview returned 500 (`$state is not defined`); after the diagnosis, "Ok, go" to move the project to Svelte 5.
+
+**Actions taken:** Diagnosed the 500: SvelteKit 2.70 ships Svelte 5 runes in code reachable from `$app/stores` (imported by `analytics.svelte` via the root layout), which Svelte 4 cannot compile; reproduced it locally by running the built server with `adapter-node` in a scratch copy under the scratchpad directory (nothing there is part of the repo). Tried pinning older Kit versions: no good with `adapter-vercel` 6. Changed `package.json` to `svelte` ^5.57.2, `@sveltejs/vite-plugin-svelte` ^4.0.4, `svelte-check` ^4, plus an `overrides` entry for `@skeletonlabs/skeleton` (svelte `$svelte`). Removed `node_modules` and `package-lock.json` and reinstalled (npm kept the old tree); the lockfile moved every package to its newest in-range version. `src/hooks.server.ts`: added `trustHost: true`, because `@auth/sveltekit` 1.x sets it to `dev` in production regardless of `VERCEL`. Downloaded the Chromium build matching the new Playwright 1.64.1. Did not touch `.docs` or `.npmrc`. No commit.
+
+**Verify:** `npm install` succeeds (Svelte 5.57.2, Kit 2.70.3, plugin 4.0.4, svelte-check 4.7.6). `svelte-check`: 10 errors, the same old ones, none new. `vite build` with `adapter-vercel` passes. Scratch copy with `adapter-node` and dummy env values: `/`, `/cafes`, `/canelons/v1`, `/canelons/v2`, `/encarrecs/pastissos` and calculator return 200 with 0 `ReferenceError`; `/manage` 303 to sign-in; `/auth/providers` 200 listing Google; before `trustHost` the auth routes returned 500 `UntrustedHost`. Chromium: no page errors on 4 pages; one unidentified `ERR_CONNECTION_REFUSED` console message; `/cafes` screenshot looked unchanged. NOT verified: the Vercel build and runtime, MongoDB-backed pages, real Google sign-in and sign-out, Skeleton interactions, Playwright tests, lint.
+
+**Recap given to user:**
+
+The project is now on Svelte 5, and in my tests the pages that crashed on Vercel render correctly. The changes are uncommitted and I haven't tried them on Vercel.
+
+**What changed**
+- `package.json`: `svelte` ^5.57.2, `@sveltejs/vite-plugin-svelte` ^4.0.4 and `svelte-check` ^4. Added an `overrides` entry so `@skeletonlabs/skeleton` 1.x (declares Svelte 3 or 4) accepts Svelte 5, next to the existing one for `eslint-plugin-svelte3`.
+- `package-lock.json`: regenerated again (I removed `node_modules` and the lockfile, as npm kept the old tree). Every package moved to the newest version its range allows, so the diff is large. `@playwright/test` is now 1.64.1.
+- `src/hooks.server.ts`: added `trustHost: true`. `@auth/sveltekit` 1.x no longer trusts the host in production, so sign-in would have failed on Vercel with `UntrustedHost`, even with the 500 fixed.
+
+**How it was verified**
+- `svelte-check`: 10 errors, the same old ones as before (`gtag`, `_id`, `Allergen` types), none new. The Vercel build with `adapter-vercel` passes.
+- I built a scratch copy with `adapter-node` and ran the built server, which is what failed before. `/`, `/cafes`, `/canelons/v1`, `/canelons/v2`, `/encarrecs/pastissos` and its calculator return 200, with zero `$state` errors. `/manage` redirects to sign-in, and `/auth/providers` lists Google. Without `trustHost`, the auth routes returned 500 in the same test.
+- In Chromium, those pages loaded without page errors, and `/cafes` looks the same as before. The only console message was one `ERR_CONNECTION_REFUSED` for a resource I did not identify.
+
+**Not done or not verified**
+- The Vercel build and runtime. I used dummy environment values, not your real ones, so I did not test MongoDB pages (`/carta`, `/postres`, `/entrepans`).
+- Real Google sign-in and sign-out, and the Skeleton popups and interactions beyond page load.
+- Playwright tests and lint.
+- No commit, as the rules require.
+
+**Assumptions and open questions**
+- The preview needs `MONGODB_URI`, `AUTH_SECRET`, the Google client ID and secret, and `AUTHORIZED_USERS` set for the Preview environment in Vercel. Without them, those pages and `/manage` still return 500.
+- Sign-in on a preview still redirects to localhost, because of the `redirect` callback in `hooks.server.ts`. I did not change it.
+- Proposed commit message:
+
+```
+build(deps): move to Svelte 5 and set trustHost in the auth hook
+
+Svelte 4 cannot compile the runes in current SvelteKit 2, which made
+every page return 500 on Vercel. Auth.js 1.x also needs trustHost.
+```
+
+**Out-of-scope issues noticed**
+- `npm audit` still reports vulnerabilities, and `eslint-plugin-svelte3` only works through the override.
+- I downloaded another Chromium build for Playwright, because the new lockfile needs a newer one.
+
+**Work/time split this turn:** 65% build/dependencies, 20% backend/auth, 15% frontend verification.
