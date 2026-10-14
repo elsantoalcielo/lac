@@ -10,7 +10,7 @@ export const load: PageServerLoad = async (event) => {
 
   const session = await event.locals.getSession();
   if (AUTHORIZED_USERS.indexOf(session?.user?.email as string) == -1) {
-    throw redirect(303, '/auth/signin?csrf=true');
+    redirect(303, '/auth/signin?csrf=true');
   }
 
   let dishes;

@@ -91,7 +91,7 @@
 
 <div class="buttons">
   <button on:click={save}>SAVE</button>
-  <button on:click={signOut}>log out</button>
+  <button on:click={() => signOut()}>log out</button>
 </div>
 
 {#each menu.sections as section, index}
