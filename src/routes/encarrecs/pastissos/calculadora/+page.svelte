@@ -102,13 +102,13 @@
   {#if completed == false}
     <Stepper
       stepTerm="Pas"
-      buttonBack="absolute left-3 bottom-3 variant-ghost"
+      buttonBack="absolute left-3 bottom-6 variant-ghost"
       buttonBackLabel="← Anterior"
-      buttonNext="absolute right-3 bottom-3 variant-ghost"
+      buttonNext="absolute right-3 bottom-6 variant-ghost"
       buttonNextLabel="Següent →"
-      buttonComplete="absolute right-3 bottom-3 variant-filled-primary"
+      buttonComplete="absolute right-3 bottom-6 variant-filled-primary"
       buttonCompleteLabel="Llestos!"
-      class="min-w-full md:min-w-[576px] md:max-w-xl"
+      class="min-w-full md:min-w-[576px] md:max-w-xl h-full relative"
       on:complete={() => (completed = true)}
     >
       <Step class="font-[Nunito]" regionHeader="font-[Satisfy]" locked={!(smallChecked || mediumChecked || largeChecked)}>
