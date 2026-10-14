@@ -63,26 +63,8 @@
         <Corner class="-bottom-3.5 -left-3.5 -rotate-90" />
         <Corner class="-bottom-3.5 -right-3.5 rotate-180" />
 
-        <header class="text-center pt-2 pb-6 md:pb-8">
-          <h1 class="font-script text-6xl sm:text-7xl md:text-8xl text-sepia-900 tracking-wide select-none leading-none mb-1">
-            L'Amagat
-          </h1>
-          <div class="flex items-center justify-center gap-3 mt-2 sm:mt-3">
-            <span class="h-[1px] w-12 sm:w-24 bg-sepia-700/70 inline-block relative">
-              <span class="w-1.5 h-1.5 rotate-45 bg-sepia-700 absolute right-0 -top-[2px]" />
-            </span>
-            <span class="tracking-[0.35em] text-sm sm:text-base md:text-lg font-bold text-sepia-800 uppercase px-1">
-              CAFÈ
-            </span>
-            <span class="h-[1px] w-12 sm:w-24 bg-sepia-700/70 inline-block relative">
-              <span class="w-1.5 h-1.5 rotate-45 bg-sepia-700 absolute left-0 -top-[2px]" />
-            </span>
-          </div>
-          <div aria-hidden="true" class="flex justify-center items-center mt-2 text-sepia-700/80">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d={fleurDeLis} />
-            </svg>
-          </div>
+        <header class="flex justify-center pt-2 pb-6 md:pb-8">
+          <div class="logo bg-sepia-900" role="img" aria-label="L'Amagat Cafè" />
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative">
@@ -233,6 +215,20 @@
       radial-gradient(circle at 90% 90%, rgba(195, 166, 128, 0.4) 0%, transparent 40%),
       radial-gradient(circle at 90% 10%, rgba(195, 166, 128, 0.35) 0%, transparent 40%),
       radial-gradient(circle at 10% 90%, rgba(195, 166, 128, 0.4) 0%, transparent 40%);
+  }
+
+  /* The logo is black on transparent: use it as a mask so it takes the sepia fill */
+  .logo {
+    width: 11rem;
+    aspect-ratio: 496 / 426;
+    -webkit-mask: url(/img/logo.png) center / contain no-repeat;
+    mask: url(/img/logo.png) center / contain no-repeat;
+  }
+
+  @media (min-width: 768px) {
+    .logo {
+      width: 14rem;
+    }
   }
 
   .menu-shadow {

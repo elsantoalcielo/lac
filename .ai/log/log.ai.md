@@ -189,3 +189,33 @@ every page return 500 on Vercel. Auth.js 1.x also needs trustHost.
 - I downloaded another Chromium build for Playwright, because the new lockfile needs a newer one.
 
 **Work/time split this turn:** 65% build/dependencies, 20% backend/auth, 15% frontend verification.
+
+## Entry 5 — 2026-10-14 19:19
+
+**Prompt:** Use the existing `static/img/logo.png` instead of the current title on the coffee page, and adapt its black colour to the page's colour scheme.
+
+**Actions taken:** `src/routes/cafes/+page.svelte`: replaced the header (script title "L'Amagat", "CAFÈ" subtitle with bars, fleur-de-lis) with a single `div.logo` (`role="img"`, `aria-label="L'Amagat Cafè"`, class `bg-sepia-900`). The logo is RGBA (transparent background), so a scoped CSS rule masks `/img/logo.png` over the sepia fill instead of editing or duplicating the image: 11rem wide, 14rem from 768 px. The fleur-de-lis inside the "Tes especials" box and the script font for the quotes are unchanged. `logo.png` itself not modified. No commit.
+
+**Verify:** Dev server, Chromium at 1280 px and 390 px: screenshots checked, logo renders in sepia, no page errors. NOT verified: print layout, production build, Vercel deployment.
+
+**Recap given to user:**
+
+I replaced the header on `/cafes` with your logo, and it now takes the page's dark brown. You don't need to do anything.
+
+**What changed**
+- `src/routes/cafes/+page.svelte`: removed the "L'Amagat" script title, the "CAFÈ" subtitle with its flanking bars and the fleur-de-lis under it. The header is now only the logo, 11rem wide on mobile and 14rem from tablet width up.
+- **Colour:** the logo is a black PNG with a transparent background, so I use it as a CSS mask over a `sepia-900` fill. It matches the text and borders, and still comes from the single file `static/img/logo.png`. If you change the colour later, it's one class (`bg-sepia-900`). The image file itself is untouched.
+- It has `role="img"` and the label "L'Amagat Cafè", so screen readers still get the name.
+
+**How it was verified**
+- In Chromium with the dev server, I looked at screenshots at 1280 px and 390 px wide. The logo renders crisp in both, with the right colour and no page errors.
+- Not verified: print layout, a build, or the Vercel deployment. The other pages are untouched.
+
+**Assumptions and open questions**
+- I dropped the fleur-de-lis under the old title, since the logo already has its own ornament. It still appears at the top of the "Tes especials" box. Say so if you want it back under the logo.
+- The `script` font (Pinyon Script) is still used for the two quotes.
+- Nothing is committed. Proposed commit message: `feat(cafes): use the café logo in the menu header`
+
+**Out-of-scope issues noticed:** none.
+
+**Work/time split this turn:** 100% frontend.
