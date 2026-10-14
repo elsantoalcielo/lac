@@ -111,3 +111,17 @@
   font-weight: 400;
   src: url(/fonts/Nunito-VariableFont_wght.ttf) format('truetype');
 }
+
+@font-face {
+  font-family: 'Pinyon Script';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/PinyonScript-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 300 700;
+  src: url(/fonts/CormorantGaramond-VariableFont_wght.ttf) format('truetype');
+}

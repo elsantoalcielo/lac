@@ -11,7 +11,22 @@ module.exports = {
 		)
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				sepia: {
+					900: '#2b1a11',
+					800: '#3d2517',
+					700: '#543322',
+					600: '#6d4530',
+					400: '#9b7155',
+					200: '#cdb29b'
+				}
+			},
+			fontFamily: {
+				script: ['"Pinyon Script"', 'cursive'],
+				cormorant: ['"Cormorant Garamond"', 'serif']
+			}
+		},
 	},
 	plugins: [
 		// 3. Append the Skeleton plugin to the end of this list
