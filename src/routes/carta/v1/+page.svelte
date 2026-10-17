@@ -114,8 +114,8 @@
 </div>
 
 <style>
-  @import url(../../css/reset.css);
-  @import url(../../../static/fonts/fonts.css);
+  @import url(../../../css/reset.css);
+  @import url(../../../../static/fonts/fonts.css);
 
   .language {
     position: absolute;
