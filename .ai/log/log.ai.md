@@ -219,3 +219,38 @@ I replaced the header on `/cafes` with your logo, and it now takes the page's da
 **Out-of-scope issues noticed:** none.
 
 **Work/time split this turn:** 100% frontend.
+
+## Entry 6 — 2026-10-30 13:36
+
+**Prompt:** Read "LLISTA TÈS.odt" (the café's coffees and teas) and put them in the cafès page.
+
+**Actions taken:** Rewrote the data in `src/routes/cafes/+page.svelte`: `cafes` (13 items, prices from the ODT, 4 without price), `tes` (9 teas + Chai/Matxa latte, with descriptions, no prices), and the boxed "TES ESPECIALS" became "INFUSIONS" (6 items; menta poniol, camamilla and til·la at 2,00 €). Added an optional `description` and optional `price` to `Item`, a `row` snippet replacing the four repeated rows, and a `.description` style. Added the soja/civada supplement as a note without price. Fixed obvious typos ("1005" → 100%, "d´Hibisc"). Kept the `xocolates` placeholder section untouched (not in the ODT). Did not commit (workflow §5.6).
+
+**Verify:** `npm run build` succeeds. `npm run check`: only pre-existing warnings for this file (self-closing tags). `eslint` on the file fails with a preprocessing error that also happens without my change. Not checked in a browser (layout of the long tea descriptions is unseen).
+
+**Recap given to user:**
+
+I put the coffees and teas from the ODT into `src/routes/cafes/+page.svelte`, replacing the placeholder items and prices.
+
+- **Cafès:** 13 items with the client's prices. Affogato, Shakerato, Cafè tònic and Mocha have no price in the ODT, so they show without one. I added a note "Suplement de beguda de soja o civada", also without a price.
+- **Tes:** the 9 teas plus Chai latte and Matxa latte, each with its description in small italics. The ODT gives no prices for them.
+- **Infusions:** the old "Tes especials" box is now "Infusions" with the 6 infusions. Menta poniol, camamilla and til·la are 2,00 €. Rooibos, fruites del bosc and digestió lleugera have no price.
+- **Code:** `price` and `description` are now optional, and one `row` snippet replaces the four repeated rows.
+- **Typos fixed:** "1005 menta" is now 100%, and `d´Hibisc` is now `d'hibisc`.
+
+**Verified:** `npm run build` succeeds. `npm run check` shows only the self-closing-tag warnings that were already in this file. `eslint` on the file fails with a preprocessing error, and it fails the same way without my change. I haven't looked at the page in a browser, so I haven't seen how the long tea descriptions wrap.
+
+**Not changed:** the Xocolates section isn't in the ODT, so I left its invented prices as they were. The log entry is written but not committed, per the project rules.
+
+**Questions for you or the client:**
+- What are the prices for the teas, the other infusions, the four unpriced coffees and the plant-milk supplement?
+- Should Xocolates stay? Its prices are placeholders.
+- I kept "jingebre" as written in the ODT (the usual Catalan spelling is "gingebre"). Should I change it?
+
+**Also noticed:** a `.vercel/` folder showed up as untracked after the build, and it's probably worth adding to `.gitignore`.
+
+Suggested commit: `feat(cafes): add real coffee and tea list from client sample`
+
+Work/time split: 100% frontend
+
+**Work/time split this turn:** 100% frontend

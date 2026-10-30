@@ -1,20 +1,22 @@
 <script lang="ts">
   import Corner from "$lib/components/corner.svelte";
 
-  type Item = { name: string; price: string };
+  type Item = { name: string; price?: string; description?: string };
 
   const cafes: Item[] = [
-    { name: "Espresso", price: "1,60 €" },
-    { name: "Cafè sol", price: "1,80 €" },
-    { name: "Americà", price: "2,00 €" },
-    { name: "Tallat", price: "1,90 €" },
-    { name: "Cafè amb llet", price: "2,20 €" },
-    { name: "Capuccino", price: "2,80 €" },
-    { name: "Latte", price: "3,00 €" },
-    { name: "Flat white", price: "3,20 €" },
-    { name: "Mocha", price: "3,40 €" },
-    { name: "Caramel macchiato", price: "3,60 €" },
-    { name: "Cafè gelat", price: "3,20 €" },
+    { name: "Cafè sol", price: "1,50 €" },
+    { name: "Tallat", price: "1,60 €" },
+    { name: "Cafè amb llet", price: "1,85 €" },
+    { name: "Americà", price: "1,60 €" },
+    { name: "Cafè amb gel", price: "1,60 €" },
+    { name: "Capuccino", price: "2,00 €" },
+    { name: "Latte macchiato", price: "2,00 €" },
+    { name: "Flat white", price: "2,65 €" },
+    { name: "Cafè vienès", price: "2,65 €" },
+    { name: "Affogato" },
+    { name: "Shakerato" },
+    { name: "Cafè tònic" },
+    { name: "Mocha" },
   ];
 
   const xocolates: Item[] = [
@@ -27,27 +29,39 @@
   ];
 
   const tes: Item[] = [
-    { name: "Te negre", price: "2,20 €" },
-    { name: "Te verd", price: "2,20 €" },
-    { name: "Te vermell", price: "2,40 €" },
-    { name: "Te blanc", price: "2,80 €" },
-    { name: "Infusió de camamilla", price: "2,00 €" },
-    { name: "Infusió d'herbes", price: "2,20 €" },
-    { name: "Rooibos", price: "2,20 €" },
-    { name: "Chai latte", price: "3,20 €" },
+    { name: "English Breakfast", description: "100% tè negre" },
+    { name: "Earl Grey", description: "95% tè negre aromatitzat amb oli de bergamota, plantes i fruites" },
+    { name: "Darjeeling", description: "100% tè negre" },
+    { name: "Tè verd", description: "Tè verd de la Xina Gun Powder" },
+    { name: "Tè vermell", description: "Tè vermell de Pu-Erh Yunnan" },
+    { name: "Tè blanc", description: "Tè blanc Pai Mu Tan" },
+    { name: "Tè chai", description: "Tè negre amb canyella, jingebre, clau, pebre negre i cardamom" },
+    { name: "Tè de canyella", description: "Tè negre amb canyella" },
+    { name: "Tè matxa del Japó", description: "100% tè matxa" },
+    { name: "Chai latte", description: "Tè chai amb la llet que més t'agradi" },
+    { name: "Matxa latte", description: "Tè matxa amb la llet que més t'agradi" },
   ];
 
-  const tesEspecials: Item[] = [
-    { name: "Earl Grey", price: "2,60 €" },
-    { name: "Gessamí", price: "2,60 €" },
-    { name: "Fruits vermells", price: "2,80 €" },
-    { name: "Rooibos vainilla", price: "2,80 €" },
-    { name: "Te blau (Oolong)", price: "3,00 €" },
+  const infusions: Item[] = [
+    { name: "Rooibos", description: "100% arrel de rooibos" },
+    { name: "Fruites del bosc", description: "Flors d'hibisc, grosella, baies de saüc, pètals de rosa, grosella negra, mores i nabius" },
+    { name: "Digestió lleugera", description: "Poma, anís, fonoll, menta i flors de gira-sol" },
+    { name: "Menta poniol", price: "2,00 €", description: "100% menta poniol" },
+    { name: "Camamilla", price: "2,00 €", description: "100% camamilla" },
+    { name: "Til·la", price: "2,00 €", description: "100% til·la" },
   ];
 
   const fleurDeLis =
     "M12,2 C11.5,5 9.5,7 8,8 C6.5,7 4.5,7.5 4,9.5 C3.5,12 6,13.5 7.5,13.5 C9,13.5 10,12.5 10.5,11.5 C10.8,13 10.5,15.5 8,16.5 L8,18 L10.5,18 C11,18 11.5,19 12,21 C12.5,19 13,18 13.5,18 L16,18 L16,16.5 C13.5,15.5 13.2,13 13.5,11.5 C14,12.5 15,13.5 16.5,13.5 C18,13.5 20.5,12 20,9.5 C19.5,7.5 17.5,7 16,8 C14.5,7 12.5,5 12,2 Z";
 </script>
+
+{#snippet row(item: Item)}
+  <div class="menu-item">
+    <span class="name">{item.name}</span>
+    {#if item.price}<span class="leader" /><span class="price">{item.price}</span>{/if}
+  </div>
+  {#if item.description}<p class="description">{item.description}</p>{/if}
+{/snippet}
 
 <svelte:head>
   <title>Cafès · L'Amagat Cafè</title>
@@ -86,8 +100,9 @@
               </div>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
                 {#each cafes as item}
-                  <div class="menu-item"><span class="name">{item.name}</span><span class="leader" /><span class="price">{item.price}</span></div>
+                  {@render row(item)}
                 {/each}
+                <p class="description mt-2">Suplement de beguda de soja o civada</p>
               </div>
             </section>
 
@@ -114,7 +129,7 @@
               </div>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
                 {#each xocolates as item}
-                  <div class="menu-item"><span class="name">{item.name}</span><span class="leader" /><span class="price">{item.price}</span></div>
+                  {@render row(item)}
                 {/each}
               </div>
             </section>
@@ -134,7 +149,7 @@
             </div>
           </div>
 
-          <!-- Right column: Tes, Tes especials & teacup -->
+          <!-- Right column: Tes, Infusions & teacup -->
           <div class="flex flex-col space-y-6 sm:space-y-8">
             <section>
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
@@ -149,7 +164,7 @@
               </div>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
                 {#each tes as item}
-                  <div class="menu-item"><span class="name">{item.name}</span><span class="leader" /><span class="price">{item.price}</span></div>
+                  {@render row(item)}
                 {/each}
               </div>
             </section>
@@ -164,10 +179,10 @@
               <span class="absolute top-1 right-1 w-2 h-2 border-t border-r border-sepia-700" />
               <span class="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-sepia-700" />
               <span class="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-sepia-700" />
-              <h3 class="text-center font-bold tracking-[0.25em] text-sepia-900 text-sm sm:text-base uppercase mb-3">TES ESPECIALS</h3>
+              <h3 class="text-center font-bold tracking-[0.25em] text-sepia-900 text-sm sm:text-base uppercase mb-3">INFUSIONS</h3>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
-                {#each tesEspecials as item}
-                  <div class="menu-item"><span class="name">{item.name}</span><span class="leader" /><span class="price">{item.price}</span></div>
+                {#each infusions as item}
+                  {@render row(item)}
                 {/each}
               </div>
             </section>
@@ -257,6 +272,14 @@
     bottom: 0.28em;
     margin: 0 0.2rem;
     opacity: 0.8;
+  }
+
+  .description {
+    font-style: italic;
+    font-size: 0.9em;
+    line-height: 1.3;
+    opacity: 0.8;
+    margin-bottom: 0.45rem;
   }
 
   .menu-item .price {
