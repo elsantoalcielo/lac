@@ -81,6 +81,8 @@
               </div>
             </div>
 
+            <img class="w-44 md:w-52 mx-auto -mt-2" src="/img/bird_coffee_sepia.png" width="450" height="600" alt="" loading="lazy" />
+
             {#if sections.xocolates}
             <section>
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
@@ -100,19 +102,6 @@
             </section>
             {/if}
 
-            <div aria-hidden="true" class="pt-2 flex justify-center opacity-85 hover:opacity-100 transition-opacity">
-              <svg class="w-48 h-20 text-sepia-800" fill="currentColor" viewBox="0 0 240 100">
-                <path d="M50 70 C30 50 40 30 65 25 C75 40 70 60 50 70 Z" fill-opacity="0.2" stroke="currentColor" stroke-width="1.2" />
-                <path d="M50 70 C60 50 50 30 65 25" fill="none" stroke="currentColor" stroke-width="1" />
-                <path d="M75 30 C95 18 115 25 125 45 C108 52 90 45 75 30 Z" fill-opacity="0.25" stroke="currentColor" stroke-width="1.2" />
-                <polygon fill="#ecdcc0" points="105,65 145,50 175,65 135,80" stroke="currentColor" stroke-width="1.6" />
-                <polygon points="105,65 135,80 135,90 105,75" stroke="currentColor" stroke-width="1.6" />
-                <polygon points="175,65 135,80 135,90 175,75" stroke="currentColor" stroke-width="1.6" />
-                <polygon fill="#f4e8d3" points="145,55 175,42 200,53 170,66" stroke="currentColor" stroke-width="1.5" />
-                <ellipse cx="190" cy="85" rx="8" ry="5" stroke="currentColor" stroke-width="1.5" transform="rotate(-20 190 85)" />
-                <ellipse cx="205" cy="82" rx="7" ry="4.5" stroke="currentColor" stroke-width="1.5" transform="rotate(15 205 82)" />
-              </svg>
-            </div>
           </div>
 
           <!-- Right column: Tes, Infusions & teacup -->
@@ -166,23 +155,6 @@
               </div>
             </div>
 
-            <div aria-hidden="true" class="flex justify-center md:justify-end pr-2 pt-1">
-              <svg class="w-44 h-28 text-sepia-900 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 160 100">
-                <ellipse cx="80" cy="80" fill="#faf3e6" rx="58" ry="12" stroke-width="2.2" />
-                <ellipse cx="80" cy="80" rx="50" ry="9" stroke-dasharray="3 2" stroke-width="1.2" />
-                <ellipse cx="80" cy="80" rx="36" ry="6" stroke-width="1.2" />
-                <path d="M42 42 C42 72 58 76 80 76 C102 76 118 72 118 42 L42 42 Z" fill="#faf3e6" stroke-width="2.2" />
-                <ellipse cx="80" cy="42" fill="#d9be9f" rx="38" ry="8" stroke-width="2.2" />
-                <ellipse cx="80" cy="42" fill="#4d2f1d" rx="34" ry="6.5" />
-                <path d="M116 46 C129 46 136 54 133 64 C130 72 121 73 113 69" stroke-linecap="round" stroke-width="2.5" />
-                <path d="M65 58 C72 53 78 57 80 64 C82 57 88 53 95 58" fill="none" stroke-width="1.3" />
-                <path d="M120 72 C132 68 142 55 145 42" stroke-width="1.4" />
-                <path d="M136 60 C143 57 146 50 144 45 C139 48 138 54 136 60 Z" fill="#6d4530" stroke-width="0.8" />
-                <path d="M126 66 C131 63 134 58 133 54 C129 56 128 61 126 66 Z" fill="#6d4530" stroke-width="0.8" />
-                <ellipse cx="44" cy="87" fill="#543322" rx="5" ry="3.5" stroke-width="1" transform="rotate(-15 44 87)" />
-                <ellipse cx="56" cy="89" fill="#543322" rx="4.5" ry="3" stroke-width="1" transform="rotate(25 56 89)" />
-              </svg>
-            </div>
           </div>
         </div>
       </div>

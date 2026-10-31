@@ -444,3 +444,58 @@ Suggested commit: `fix(cafes): style the language selector like the menu`
 Work/time split: 100% frontend
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 13 — 2026-10-31 20:52
+
+**Prompt:** Make `static/img/bird_coffee.png` (line art on white) transparent and resize it as needed.
+
+**Actions taken:** Generated `static/img/bird_coffee_sepia.png` (450×600, RGBA, 324 KB) from the original with a one-off Playwright/Chromium canvas script kept in the scratchpad (not in the repo): downscale, luminance to alpha, recolour to sepia-800 `#3d2517`, 10% fade at the bottom edge. The original is untouched. Chose 450 px over 600 (530 KB) and 360 (196 KB, lost bean detail). Not placed on the page: placement not yet decided.
+
+**Verify:** Previewed on the page's paper background at 300 px and 150 px: no halo or stray marks. Not checked inside the real page layout. Also, earlier in this thread I changed the language selector background to transparent (not logged; the owner has not answered whether to log it).
+
+**Recap given to user:**
+
+I made a transparent, resized version of the bird illustration. It is not on the page yet.
+
+- **New file:** `static/img/bird_coffee_sepia.png`. It is 450 × 600 px, 324 KB, with a transparent background. Your original `bird_coffee.png` (896 × 1195, 1 MB) is untouched.
+- **How:** the white became transparent in proportion to how light each pixel is, so the thin lines keep smooth edges. I recoloured the lines to the page's dark sepia (`#3d2517`). I also faded the bottom 10% of the drawing, because the original is cut off at the pedestal and would otherwise end in a hard edge.
+- **Checked:** I previewed it on the page's paper colour and gradient at 300 px and 150 px wide. There is no white halo and no stray marks, and the beans and feathers stay readable.
+
+**Size:** 450 px wide is enough for about 225 px on a 2× screen. A 360 px version was 196 KB but lost some of the bean detail. If you want it smaller, I can use that one, or you can run the file through a PNG compressor.
+
+**Not done:** I haven't placed it on the page. Where should it go? For example, replacing the cup illustration at the bottom of the Tes column, or somewhere new. I also haven't looked at it inside the real page layout yet. Nothing is committed.
+
+Suggested commit: `feat(cafes): add the bird and coffee illustration`
+
+Work/time split: 100% frontend
+
+**Work/time split this turn:** 100% frontend
+
+## Entry 14 — 2026-10-31 20:55
+
+**Prompt:** Remove the two current drawings of the page and put the bird under the "El bon cafè" text.
+
+**Actions taken:** In `src/routes/cafes/+page.svelte`: removed the two `aria-hidden` SVG drawings (pastry, left column; teacup, right column) and added an `<img>` of `/img/bird_coffee_sepia.png` right after the first tagline (w-44, md:w-52, centred, empty alt, lazy).
+
+**Verify:** `npm run build` succeeds; `npm run check` shows 10 errors, same as before, none in this file. Not rendered (needs the database): column balance and phone layout unchecked.
+
+**Recap given to user:**
+
+I removed the two drawings and put the bird under the "El bon cafè…" text. I haven't seen the result in a browser.
+
+- **Removed:** the pastry drawing at the bottom of the left column and the teacup at the bottom of the right column. Both were inline SVGs in `src/routes/cafes/+page.svelte`, and the page is about 2.8 KB smaller.
+- **Added:** the bird (`/img/bird_coffee_sepia.png`) centred right below the "El bon cafè / sempre sap millor / en bona companyia" block. It is 11 rem wide on phones and 13 rem from the desktop breakpoint up. It has an empty `alt`, since it is decorative, and it loads lazily.
+
+**Verified:** `npm run build` succeeds, and `npm run check` shows the same 10 errors as before, none in this file. I did not render the page, because that needs the database in your `.env`. So I haven't checked how the bird balances against the long Tes column on desktop, or how it looks on a phone. After you deploy, I can screenshot production at both widths.
+
+**Notes:**
+- The Xocolates section, if you ever add it, would now sit under the bird in the left column.
+- The "La vida / també es gaudeix / en tassa" text still ends the right column, now with nothing below it.
+
+Nothing is committed.
+
+Suggested commit: `feat(cafes): replace the drawings with the bird illustration`
+
+Work/time split: 100% frontend
+
+**Work/time split this turn:** 100% frontend
