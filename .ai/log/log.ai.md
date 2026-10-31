@@ -419,3 +419,28 @@ Suggested commit: `chore(scripts): add a reusable MongoDB seed script`
 Work/time split: 100% backend
 
 **Work/time split this turn:** 100% backend
+
+## Entry 12 — 2026-10-31 20:17
+
+**Prompt:** The language selector overlay doesn't have the style of the page.
+
+**Actions taken:** In `src/routes/cafes/+page.svelte`: moved the `Language` component from an absolute overlay on the frame to a top-right row inside the frame above the logo, and styled the `<select>` through `.language :global(select)` (paper background, sepia text and border, inherited font, focus outline). The shared `language.svelte` and the other pages were not touched.
+
+**Verify:** `npm run build` succeeds; `npm run check` shows 10 errors, same as before, none in this file. Not checked in a browser (the native option list is drawn by the OS).
+
+**Recap given to user:**
+
+I styled the language selector to match the menu, and moved it. I haven't seen the result in a browser, so please check it.
+
+- **Style:** the selector is a shared component (`language.svelte`) with no styles, so it showed as a plain browser dropdown. In `src/routes/cafes/+page.svelte` I styled it from the page only: the paper background, the sepia text and thin sepia border, the Cormorant font, small square corners, and a sepia focus outline. The shared component and the other pages that use it are untouched.
+- **Position:** it no longer floats over the ornate border. It now sits in its own row at the top right inside the frame, above the logo, so it can't overlap the logo on a narrow screen.
+
+**Verified:** `npm run build` succeeds, and `npm run check` reports the same 10 errors as before, none in this file. I did not look at it in a browser. The open dropdown list is drawn by the operating system, so its option colours may not match.
+
+If you'd rather have it somewhere else (inside the header next to the logo, or at the bottom of the page), tell me and I'll move it. Nothing is committed.
+
+Suggested commit: `fix(cafes): style the language selector like the menu`
+
+Work/time split: 100% frontend
+
+**Work/time split this turn:** 100% frontend

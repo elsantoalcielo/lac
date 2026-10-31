@@ -27,10 +27,6 @@
 
 <div class="bg-stone-300 min-h-screen py-6 px-2 sm:px-4 flex items-center justify-center font-cormorant text-sepia-900 antialiased selection:bg-amber-900 selection:text-amber-100">
   <main class="w-full max-w-[850px] bg-aged-paper menu-shadow rounded-sm relative p-4 sm:p-6 md:p-10 border border-sepia-400/40">
-    <div class="absolute right-1 top-1">
-      <Language language={data.language} />
-    </div>
-
     <!-- Ornate double outer border -->
     <div class="border-[1.5px] border-sepia-700/80 p-1 sm:p-2 relative h-full">
       <div class="border border-sepia-600/60 p-4 sm:p-6 md:p-8 relative">
@@ -38,6 +34,10 @@
         <Corner class="-top-3.5 -right-3.5 rotate-90" />
         <Corner class="-bottom-3.5 -left-3.5 -rotate-90" />
         <Corner class="-bottom-3.5 -right-3.5 rotate-180" />
+
+        <div class="language flex justify-end">
+          <Language language={data.language} />
+        </div>
 
         <header class="flex justify-center pt-2 pb-6 md:pb-8">
           <div class="logo bg-sepia-900" role="img" aria-label="L'Amagat Cafè" />
@@ -214,6 +214,23 @@
     .logo {
       width: 14rem;
     }
+  }
+
+  /* The selector is a shared component with no styles of its own: dress it as part of the menu */
+  .language :global(select) {
+    font-family: inherit;
+    font-size: 1rem;
+    color: #2b1a11;
+    background-color: #f7eedb;
+    border: 1px solid rgba(120, 88, 66, 0.6);
+    border-radius: 2px;
+    padding: 0.15rem 0.4rem;
+    cursor: pointer;
+  }
+
+  .language :global(select:focus-visible) {
+    outline: 1.5px solid #785842;
+    outline-offset: 2px;
   }
 
   .menu-shadow {
