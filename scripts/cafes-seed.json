@@ -1,0 +1,160 @@
+{
+  "sections": [
+    {
+      "key": "cafes",
+      "title": "Cafès",
+      "note": "Suplement de beguda de soja o civada",
+      "items": [
+        {
+          "name": "Cafè sol",
+          "price": "1,50 €"
+        },
+        {
+          "name": "Tallat",
+          "price": "1,60 €"
+        },
+        {
+          "name": "Cafè amb llet",
+          "price": "1,85 €"
+        },
+        {
+          "name": "Americà",
+          "price": "1,60 €"
+        },
+        {
+          "name": "Cafè amb gel",
+          "price": "1,60 €"
+        },
+        {
+          "name": "Capuccino",
+          "price": "2,00 €"
+        },
+        {
+          "name": "Latte macchiato",
+          "price": "2,00 €"
+        },
+        {
+          "name": "Flat white",
+          "price": "2,65 €"
+        },
+        {
+          "name": "Cafè vienès",
+          "price": "2,65 €"
+        },
+        {
+          "name": "Affogato",
+          "price": "9,99 €"
+        },
+        {
+          "name": "Shakerato",
+          "price": "9,99 €"
+        },
+        {
+          "name": "Cafè tònic",
+          "price": "9,99 €"
+        },
+        {
+          "name": "Mocha",
+          "price": "9,99 €"
+        }
+      ]
+    },
+    {
+      "key": "tes",
+      "title": "Tes",
+      "items": [
+        {
+          "name": "English Breakfast",
+          "price": "9,99 €",
+          "description": "100% tè negre"
+        },
+        {
+          "name": "Earl Grey",
+          "price": "9,99 €",
+          "description": "95% tè negre aromatitzat amb oli de bergamota, plantes i fruites"
+        },
+        {
+          "name": "Darjeeling",
+          "price": "9,99 €",
+          "description": "100% tè negre"
+        },
+        {
+          "name": "Tè verd",
+          "price": "9,99 €",
+          "description": "Tè verd de la Xina Gun Powder"
+        },
+        {
+          "name": "Tè vermell",
+          "price": "9,99 €",
+          "description": "Tè vermell de Pu-Erh Yunnan"
+        },
+        {
+          "name": "Tè blanc",
+          "price": "9,99 €",
+          "description": "Tè blanc Pai Mu Tan"
+        },
+        {
+          "name": "Tè chai",
+          "price": "9,99 €",
+          "description": "Tè negre amb canyella, jingebre, clau, pebre negre i cardamom"
+        },
+        {
+          "name": "Tè de canyella",
+          "price": "9,99 €",
+          "description": "Tè negre amb canyella"
+        },
+        {
+          "name": "Tè matxa del Japó",
+          "price": "9,99 €",
+          "description": "100% tè matxa"
+        },
+        {
+          "name": "Chai latte",
+          "price": "9,99 €",
+          "description": "Tè chai amb la llet que més t'agradi"
+        },
+        {
+          "name": "Matxa latte",
+          "price": "9,99 €",
+          "description": "Tè matxa amb la llet que més t'agradi"
+        }
+      ]
+    },
+    {
+      "key": "infusions",
+      "title": "Infusions",
+      "items": [
+        {
+          "name": "Rooibos",
+          "price": "9,99 €",
+          "description": "100% arrel de rooibos"
+        },
+        {
+          "name": "Fruites del bosc",
+          "price": "9,99 €",
+          "description": "Flors d'hibisc, grosella, baies de saüc, pètals de rosa, grosella negra, mores i nabius"
+        },
+        {
+          "name": "Digestió lleugera",
+          "price": "9,99 €",
+          "description": "Poma, anís, fonoll, menta i flors de gira-sol"
+        },
+        {
+          "name": "Menta poniol",
+          "price": "2,00 €",
+          "description": "100% menta poniol"
+        },
+        {
+          "name": "Camamilla",
+          "price": "2,00 €",
+          "description": "100% camamilla"
+        },
+        {
+          "name": "Til·la",
+          "price": "2,00 €",
+          "description": "100% til·la"
+        }
+      ]
+    }
+  ]
+}

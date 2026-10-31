@@ -1,4 +1,4 @@
-import type { Menu, SandwichMenu } from "./types";
+import type { CafesMenu, Menu, SandwichMenu } from "./types";
 
 type SkipList = {
   [language: string]: string[]
@@ -73,6 +73,29 @@ export function translateSandwichMenu(sandwichMenu: SandwichMenu, language: stri
       })
     })
   }
+}
+
+// Catalan is the stored base text: a missing translation keeps it
+export function translateCafesMenu(cafesMenu: CafesMenu, language: string | null): void {
+  if (!language || language == "ca") {
+    return;
+  }
+
+  cafesMenu?.sections.forEach((section) => {
+    const sectionTranslation = section.translations?.[language];
+    if (sectionTranslation) {
+      section.title = sectionTranslation.title || section.title;
+      section.note = sectionTranslation.note || section.note;
+    }
+
+    section.items.forEach((item) => {
+      const itemTranslation = item.translations?.[language];
+      if (itemTranslation) {
+        item.name = itemTranslation.name || item.name;
+        item.description = itemTranslation.description || item.description;
+      }
+    })
+  })
 }
 
 export enum AllergenName { gluten, crustaceans, eggs, fish, peanuts, soybeans, milk, nuts, celery, mustard, sesame, sulphites, molluscs };

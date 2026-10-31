@@ -286,3 +286,103 @@ Suggested commit: `refactor(db): share one MongoDB client across requests`
 Work/time split: 100% backend
 
 **Work/time split this turn:** 100% backend
+
+## Entry 8 — 2026-10-31 12:48
+
+**Prompt:** Use the defaults and draft the ADR for storing the cafès page in MongoDB, but with translations.
+
+**Actions taken:** Added `.docs/02-architecture/adr/0001-store-cafes-page-content-in-mongodb.md` (status proposed): single document per environment (`current-cafes` / `draft-cafes`), item and section shapes with `translations`, fixed sections, error page on failure, seed JSON inserted by the owner. Open questions listed at the end. No code changed.
+
+**Verify:** Docs only; nothing to build or test. Not checked the ADR against running code.
+
+**Recap given to user:**
+
+I drafted `.docs/02-architecture/adr/0001-store-cafes-page-content-in-mongodb.md` with status `proposed`. No code was changed.
+
+**What the ADR decides**
+- One document per environment: `current-cafes`, plus `draft-cafes` when `NODE_ENV == 'development'`.
+- Each section has `key`, `title`, an optional `note` and `items`. Each item has `name`, an optional `price`, an optional `description` and optional `translations`. The translations follow the existing dishes convention, with Catalan as the base text.
+- The four sections are fixed. Layout, icons and taglines stay in code, and the page reads the document through `getDb()`.
+- Translations are in, as you asked. The other defaults I used: no Xocolates in the seed, no hard-coded fallback (the page shows an error), and a seed JSON that you insert yourself.
+
+**Open questions, at the end of the ADR**
+1. How does a draft become current? The code I read has no publish action for the menu.
+2. If a language has no translation for an item, should the page show the Catalan text or hide the item?
+3. Prices are still missing from the client for the teas, most infusions, four coffees and the supplement.
+
+**Not done:** I did not verify the ADR against running code, because nothing was implemented. I left the ADR as `proposed`, since only you can accept it. I haven't committed anything.
+
+Suggested commit: `docs(adr): propose storing the cafes page in MongoDB`
+
+Once you accept it, the next step is the implementation: types, seed JSON, the `/cafes` loader and the `PUT` endpoint. Tell me if you want to answer the open questions first.
+
+Work/time split: 100% process/docs
+
+**Work/time split this turn:** 100% process/docs
+
+## Entry 9 — 2026-10-31 13:01
+
+**Prompt:** Change of mind on the ADR: no draft, one coffee menu; Catalan as default language; 9.99 € as price where it is not set.
+
+**Actions taken:** Edited ADR 0001 (still proposed): single `cafes` collection instead of `current-cafes`/`draft-cafes`; missing translations fall back to Catalan; `price` now required, placeholder `9,99 €` (comma, matching existing prices) in the seed; added the rejected draft option to alternatives and the public-placeholder consequence; open questions emptied. No code changed.
+
+**Verify:** Docs only; nothing to build or test. Checked with grep that no `current-cafes` / draft references remain in the Decision.
+
+**Recap given to user:**
+
+I updated the ADR (`.docs/02-architecture/adr/0001-store-cafes-page-content-in-mongodb.md`, still `proposed`) with your three answers. No code was changed.
+
+1. **No draft:** one collection, `cafes`, with a single document. The public page and the future management page use the same document, so an edit goes live immediately. I recorded the rejected draft/current option under alternatives.
+2. **Catalan default:** when a language has no translation for a field, the page shows the Catalan text.
+3. **Placeholder price:** where the client hasn't given one, the seed uses `9,99 €`. I wrote it with a comma to match the other prices, so say if you meant a dot. Because of this, `price` is now required on every item.
+
+The placeholder will be public on most of the page: all the teas, most infusions and four coffees show `9,99 €` until the client sends real prices. The ADR says so under Consequences. The open-questions section is now empty.
+
+**Not done:** nothing is implemented, and I haven't committed anything.
+
+Suggested commit: `docs(adr): use a single cafes collection and placeholder prices`
+
+Do you want me to start the implementation: types, seed JSON, the `/cafes` loader and the management `PUT` endpoint? I'd show the seed JSON first, since you insert it.
+
+Work/time split: 100% process/docs
+
+**Work/time split this turn:** 100% process/docs
+
+## Entry 10 — 2026-10-31 13:05
+
+**Prompt:** Yes, start the implementation (of ADR 0001, the cafès page from MongoDB).
+
+**Actions taken:** Added types (`CafesMenu`, `CafesSection`, `CafesItem`, section translations) in `src/lib/types.d.ts`; `translateCafesMenu()` in `src/lib/utils.ts`; `src/routes/cafes/+page.server.ts` (reads the `cafes` collection, language via `?l=`/cookie like `/entrepans`, 500 if the document is missing); rewrote `src/routes/cafes/+page.svelte` to render from `data` by section key, with a language selector; `src/routes/api/cafes/+server.ts` (PUT replacing the document, with an `AUTHORIZED_USERS` session check and a `sections` shape check); `scripts/cafes-seed.json` generated from the former hard-coded lists (18 of 30 items at `9,99 €`, no xocolates). Did not insert anything into the database. Did not touch the unauthenticated `api/dishes` and `api/current-menu`.
+
+**Verify:** `npm run build` succeeds. `npm run check`: 10 errors before and after, none in the files touched. Not run against a database or in a browser; the PUT endpoint and `translateCafesMenu` are untested and have no tests.
+
+**Recap given to user:**
+
+I implemented the ADR, apart from the management page. `/cafes` now reads its content from MongoDB. I haven't run it against a database, and nothing is inserted yet.
+
+**What changed**
+- `src/lib/types.d.ts`: new `CafesMenu`, `CafesSection` and `CafesItem` types, with translations.
+- `src/lib/utils.ts`: `translateCafesMenu()` applies a language and keeps the Catalan text where a translation is missing.
+- `src/routes/cafes/+page.server.ts` (new): reads the single document from the `cafes` collection. The language comes from `?l=` or the `l` cookie, as on `/entrepans`. A missing document gives a 500 error.
+- `src/routes/cafes/+page.svelte`: the hard-coded items are gone. Each section is found by `key` and rendered only if it exists. The icons, layout and taglines stay in code. I added the language selector in the corner, like `/entrepans`.
+- `src/routes/api/cafes/+server.ts` (new): a `PUT` that replaces the document. Unlike the existing `api/dishes` and `api/current-menu`, it requires a logged-in user from `AUTHORIZED_USERS` and checks that the body has a `sections` array.
+- `scripts/cafes-seed.json` (new): the document for you to insert. It has 3 sections (cafes 13 items, tes 11, infusions 6). 18 of the 30 items carry the placeholder `9,99 €`. Xocolates are not included, as agreed, so they disappear from the page.
+
+**To insert it**, run in `mongosh`:
+`db.getSiblingDB("amagat").cafes.insertOne(<contents of scripts/cafes-seed.json>)`
+The `/cafes` page shows the error until you do.
+
+**Verified:** `npm run build` succeeds. `npm run check` still reports the same 10 errors as before, none in these files. I did not run the page, the `PUT` endpoint or the translation function, and there are no tests for them.
+
+**Things to know**
+- The ADR is still `proposed`. Mark it accepted when you agree.
+- The existing `PUT /api/dishes` and `/api/current-menu` have no login check, so anyone who knows the URL can write to them. I didn't change them. It's worth fixing separately.
+- No translations are in the seed, so every language shows Catalan for now.
+- The section titles in the seed are "Cafès", "Tes", "Infusions", and the page shows them in capitals.
+- Nothing is committed.
+
+Suggested commit: `feat(cafes): load the cafes page from MongoDB`
+
+Work/time split: 70% frontend, 30% backend
+
+**Work/time split this turn:** 70% frontend, 30% backend

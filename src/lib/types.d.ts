@@ -45,6 +45,27 @@ type Sandwich = {
   translations?: SandwichTranslations;
 }
 
+type CafesMenu = {
+  _id?: string;
+  sections: CafesSection[];
+} | null;
+
+type CafesSection = {
+  // Maps to the icon and layout hard-coded in the page: cafes, xocolates, tes, infusions
+  key: string;
+  title: string;
+  note?: string;
+  items: CafesItem[];
+  translations?: CafesSectionTranslations;
+}
+
+type CafesItem = {
+  name: string;
+  price: string;
+  description?: string;
+  translations?: DishTranslations;
+}
+
 interface MongoDBIded {
   _id: string;
 }
@@ -63,6 +84,15 @@ declare global {
 
 declare global {
   type SandwichTranslations = DishTranslations
+}
+
+declare global {
+  type CafesSectionTranslations = {
+    [language: string]: {
+      title: string;
+      note?: string;
+    }
+  }
 }
 
 enum Allergen {

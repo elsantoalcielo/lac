@@ -1,64 +1,22 @@
 <script lang="ts">
   import Corner from "$lib/components/corner.svelte";
 
-  type Item = { name: string; price?: string; description?: string };
+  import Language from "$lib/components/language.svelte";
+  import type { CafesItem } from "$lib/types";
 
-  const cafes: Item[] = [
-    { name: "Cafè sol", price: "1,50 €" },
-    { name: "Tallat", price: "1,60 €" },
-    { name: "Cafè amb llet", price: "1,85 €" },
-    { name: "Americà", price: "1,60 €" },
-    { name: "Cafè amb gel", price: "1,60 €" },
-    { name: "Capuccino", price: "2,00 €" },
-    { name: "Latte macchiato", price: "2,00 €" },
-    { name: "Flat white", price: "2,65 €" },
-    { name: "Cafè vienès", price: "2,65 €" },
-    { name: "Affogato" },
-    { name: "Shakerato" },
-    { name: "Cafè tònic" },
-    { name: "Mocha" },
-  ];
+  export let data;
 
-  const xocolates: Item[] = [
-    { name: "Xocolata clàssica", price: "2,80 €" },
-    { name: "Xocolata amb nata", price: "3,20 €" },
-    { name: "Xocolata blanca", price: "3,20 €" },
-    { name: "Xocolata especiada", price: "3,40 €" },
-    { name: "Xocolata freda", price: "3,20 €" },
-    { name: "Xocolata vienesa", price: "3,60 €" },
-  ];
-
-  const tes: Item[] = [
-    { name: "English Breakfast", description: "100% tè negre" },
-    { name: "Earl Grey", description: "95% tè negre aromatitzat amb oli de bergamota, plantes i fruites" },
-    { name: "Darjeeling", description: "100% tè negre" },
-    { name: "Tè verd", description: "Tè verd de la Xina Gun Powder" },
-    { name: "Tè vermell", description: "Tè vermell de Pu-Erh Yunnan" },
-    { name: "Tè blanc", description: "Tè blanc Pai Mu Tan" },
-    { name: "Tè chai", description: "Tè negre amb canyella, jingebre, clau, pebre negre i cardamom" },
-    { name: "Tè de canyella", description: "Tè negre amb canyella" },
-    { name: "Tè matxa del Japó", description: "100% tè matxa" },
-    { name: "Chai latte", description: "Tè chai amb la llet que més t'agradi" },
-    { name: "Matxa latte", description: "Tè matxa amb la llet que més t'agradi" },
-  ];
-
-  const infusions: Item[] = [
-    { name: "Rooibos", description: "100% arrel de rooibos" },
-    { name: "Fruites del bosc", description: "Flors d'hibisc, grosella, baies de saüc, pètals de rosa, grosella negra, mores i nabius" },
-    { name: "Digestió lleugera", description: "Poma, anís, fonoll, menta i flors de gira-sol" },
-    { name: "Menta poniol", price: "2,00 €", description: "100% menta poniol" },
-    { name: "Camamilla", price: "2,00 €", description: "100% camamilla" },
-    { name: "Til·la", price: "2,00 €", description: "100% til·la" },
-  ];
+  // The sections are keyed: the icons and layout below are fixed per key
+  $: sections = Object.fromEntries(data.cafesMenu?.sections.map((section) => [section.key, section]) ?? []);
 
   const fleurDeLis =
     "M12,2 C11.5,5 9.5,7 8,8 C6.5,7 4.5,7.5 4,9.5 C3.5,12 6,13.5 7.5,13.5 C9,13.5 10,12.5 10.5,11.5 C10.8,13 10.5,15.5 8,16.5 L8,18 L10.5,18 C11,18 11.5,19 12,21 C12.5,19 13,18 13.5,18 L16,18 L16,16.5 C13.5,15.5 13.2,13 13.5,11.5 C14,12.5 15,13.5 16.5,13.5 C18,13.5 20.5,12 20,9.5 C19.5,7.5 17.5,7 16,8 C14.5,7 12.5,5 12,2 Z";
 </script>
 
-{#snippet row(item: Item)}
+{#snippet row(item: CafesItem)}
   <div class="menu-item">
     <span class="name">{item.name}</span>
-    {#if item.price}<span class="leader" /><span class="price">{item.price}</span>{/if}
+    <span class="leader" /><span class="price">{item.price}</span>
   </div>
   {#if item.description}<p class="description">{item.description}</p>{/if}
 {/snippet}
@@ -69,6 +27,10 @@
 
 <div class="bg-stone-300 min-h-screen py-6 px-2 sm:px-4 flex items-center justify-center font-cormorant text-sepia-900 antialiased selection:bg-amber-900 selection:text-amber-100">
   <main class="w-full max-w-[850px] bg-aged-paper menu-shadow rounded-sm relative p-4 sm:p-6 md:p-10 border border-sepia-400/40">
+    <div class="absolute right-1 top-1">
+      <Language language={data.language} />
+    </div>
+
     <!-- Ornate double outer border -->
     <div class="border-[1.5px] border-sepia-700/80 p-1 sm:p-2 relative h-full">
       <div class="border border-sepia-600/60 p-4 sm:p-6 md:p-8 relative">
@@ -86,6 +48,7 @@
 
           <!-- Left column: Cafès & Xocolates -->
           <div class="flex flex-col space-y-6 sm:space-y-8">
+            {#if sections.cafes}
             <section>
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
@@ -96,15 +59,16 @@
                   <path d="M34 20 C33 16 36 14 35 10" stroke-width="1.8" />
                   <path d="M42 19 C41 15 44 13 43 9" stroke-width="1.8" />
                 </svg>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">CAFÈS</h2>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.cafes.title}</h2>
               </div>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
-                {#each cafes as item}
+                {#each sections.cafes.items as item}
                   {@render row(item)}
                 {/each}
-                <p class="description mt-2">Suplement de beguda de soja o civada</p>
+                {#if sections.cafes.note}<p class="description mt-2">{sections.cafes.note}</p>{/if}
               </div>
             </section>
+            {/if}
 
             <div class="text-center py-2 px-4">
               <p class="font-script text-2xl sm:text-3xl text-sepia-800 leading-snug">
@@ -117,6 +81,7 @@
               </div>
             </div>
 
+            {#if sections.xocolates}
             <section>
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
@@ -125,14 +90,15 @@
                   <ellipse cx="34" cy="53" rx="22" ry="4.5" />
                   <circle cx="34" cy="38" fill="currentColor" r="2" />
                 </svg>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">XOCOLATES</h2>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.xocolates.title}</h2>
               </div>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
-                {#each xocolates as item}
+                {#each sections.xocolates.items as item}
                   {@render row(item)}
                 {/each}
               </div>
             </section>
+            {/if}
 
             <div aria-hidden="true" class="pt-2 flex justify-center opacity-85 hover:opacity-100 transition-opacity">
               <svg class="w-48 h-20 text-sepia-800" fill="currentColor" viewBox="0 0 240 100">
@@ -151,6 +117,7 @@
 
           <!-- Right column: Tes, Infusions & teacup -->
           <div class="flex flex-col space-y-6 sm:space-y-8">
+            {#if sections.tes}
             <section>
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewBox="0 0 64 64">
@@ -160,15 +127,17 @@
                   <path d="M44 28 C56 26 58 40 43 43" />
                   <ellipse cx="32" cy="49" rx="14" ry="2.5" />
                 </svg>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">TES</h2>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.tes.title}</h2>
               </div>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
-                {#each tes as item}
+                {#each sections.tes.items as item}
                   {@render row(item)}
                 {/each}
               </div>
             </section>
+            {/if}
 
+            {#if sections.infusions}
             <section class="border border-sepia-600/70 p-4 sm:p-5 rounded-sm relative mt-2 bg-sepia-200/10">
               <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-aged-paper px-2 text-sepia-800">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -179,13 +148,14 @@
               <span class="absolute top-1 right-1 w-2 h-2 border-t border-r border-sepia-700" />
               <span class="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-sepia-700" />
               <span class="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-sepia-700" />
-              <h3 class="text-center font-bold tracking-[0.25em] text-sepia-900 text-sm sm:text-base uppercase mb-3">INFUSIONS</h3>
+              <h3 class="text-center font-bold tracking-[0.25em] text-sepia-900 text-sm sm:text-base uppercase mb-3">{sections.infusions.title}</h3>
               <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
-                {#each infusions as item}
+                {#each sections.infusions.items as item}
                   {@render row(item)}
                 {/each}
               </div>
             </section>
+            {/if}
 
             <div class="text-center pt-2 px-2">
               <p class="font-script text-2xl sm:text-3xl text-sepia-800 leading-snug">
