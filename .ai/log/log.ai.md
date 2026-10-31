@@ -386,3 +386,36 @@ Suggested commit: `feat(cafes): load the cafes page from MongoDB`
 Work/time split: 70% frontend, 30% backend
 
 **Work/time split this turn:** 70% frontend, 30% backend
+
+## Entry 11 — 2026-10-31 19:56
+
+**Prompt:** Make the seed script reusable (instead of the one-off mongosh command).
+
+**Actions taken:** Added `scripts/seed.mjs`: generic `<collection> <file.json> [--replace]` for the `amagat` database, reads `MONGODB_URI` via `node --env-file=.env`, prints the target host without credentials, refuses to write when the collection is not empty unless `--replace`. Fixed in-turn a first version of the host display that leaked part of a password containing `@`. Did not run any insert.
+
+**Verify:** `node --check` and `eslint` pass. Ran the usage, missing-`MONGODB_URI` and missing-file paths (exit 1 each); checked the host extraction with a sample URI containing `@` in the password. The insert, the non-empty guard and `--replace` are untested (no database access by design).
+
+**Recap given to user:**
+
+I wrote a reusable seed script, `scripts/seed.mjs`. I have not run it against your database.
+
+**Run it** from the repo root:
+
+```bash
+node --env-file=.env scripts/seed.mjs cafes scripts/cafes-seed.json
+```
+
+- It works for any collection and any JSON file in the `amagat` database, not only the cafès page: `node --env-file=.env scripts/seed.mjs <collection> <file.json>`.
+- It reads `MONGODB_URI` from `.env` (Node 20.20 here supports `--env-file`), so nothing needs installing.
+- It prints the target (`amagat.cafes on <host>`, without the credentials) before writing, so you can check it's the right database.
+- **Safe to re-run:** if the collection already has documents it writes nothing and exits with an error. Add `--replace` to delete the existing documents and insert the file instead.
+
+**Verified:** `node --check` and `eslint` pass. I ran it three ways that stop before connecting (no arguments, no `MONGODB_URI`, a missing file), and each printed a clear message and exited with 1. I also checked the host display with a password containing `@`, and it shows only the host. The insert path itself, the non-empty guard and `--replace` are untested, because I can't write to your database.
+
+**Notes:** the `mongosh` command in my previous answer is now unnecessary. `.env` may point at production, so check the `Target:` line the first time. Nothing is committed.
+
+Suggested commit: `chore(scripts): add a reusable MongoDB seed script`
+
+Work/time split: 100% backend
+
+**Work/time split this turn:** 100% backend
