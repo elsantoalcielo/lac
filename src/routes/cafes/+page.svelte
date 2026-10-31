@@ -221,11 +221,17 @@
     font-family: inherit;
     font-size: 1rem;
     color: #2b1a11;
-    background-color: #f7eedb;
+    background-color: transparent;
     border: 1px solid rgba(120, 88, 66, 0.6);
     border-radius: 2px;
     padding: 0.15rem 0.4rem;
     cursor: pointer;
+  }
+
+  /* The open list is not transparent-friendly: give it the flat paper colour */
+  .language :global(option) {
+    background-color: #f7eedb;
+    color: #2b1a11;
   }
 
   .language :global(select:focus-visible) {
