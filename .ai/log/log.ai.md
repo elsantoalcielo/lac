@@ -254,3 +254,35 @@ Suggested commit: `feat(cafes): add real coffee and tea list from client sample`
 Work/time split: 100% frontend
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 7 — 2026-10-31 11:24
+
+**Prompt:** Do the connection fix (share one MongoDB client instead of creating one per request).
+
+**Actions taken:** Added `src/lib/server/mongo.ts` with a lazily created module-level client (`maxPoolSize: 5`) and `getDb()`. Replaced `new MongoClient` / `client.db('amagat')` / `client.close()` in the 11 route files that used them; removed `try` blocks that existed only for the `finally`; removed unused `env` and `MongoClient` imports. Did not add `getMenuCollection()` (out of scope). Also covers the earlier unlogged turn that added `/.vercel` to `.gitignore`.
+
+**Verify:** `npm run build` succeeds. `npm run check`: 10 errors both before and after, none in edited files. Not run against a real database or in the browser. `eslint` not run on the `.ts` files.
+
+**Recap given to user:**
+
+I added a shared MongoDB client and switched all 11 files over to it. I haven't run it against the real database, so that part is untested.
+
+- **New file:** `src/lib/server/mongo.ts` exports `getDb()`. It creates the client on first use, keeps it for later requests, and sets `maxPoolSize: 5`.
+- **11 files changed:** the 5 `carta/v1`–`v5` pages, `entrepans`, `postres`, `manage`, `manage/dishes`, `api/dishes` and `api/current-menu`. Each one lost its `new MongoClient(...)`, its `client.close()` and the now-unused imports. Queries, collection names and the `draft-menu` / `current-menu` choice are unchanged.
+- **try/finally blocks:** where a `try` existed only for the `finally { close }`, I removed the `try` as well. The `catch` blocks in the two `api` handlers are kept.
+
+**Verified:**
+- `npm run build` succeeds.
+- `npm run check` reports 10 errors, the same count as before my change, and none are in the files I edited. They are in `analytics.svelte` and the `manage` pages.
+- I did not run the app, so no query has actually gone through `getDb()`.
+- `eslint` still fails on Svelte files with the preprocessing error from earlier. I did not run it on these `.ts` files.
+
+**Not done:** I did not add `getMenuCollection()`, since you asked for the connection fix only. `carta/v2` now has a double blank line left over from the edit.
+
+I also added the `/.vercel` line to `.gitignore` earlier, and it has no entry of its own. It's covered in this entry. Nothing is committed.
+
+Suggested commit: `refactor(db): share one MongoDB client across requests`
+
+Work/time split: 100% backend
+
+**Work/time split this turn:** 100% backend

@@ -1,7 +1,7 @@
 import { json } from "@sveltejs/kit";
-import { MongoClient, ObjectId } from "mongodb";
+import { getDb } from '$lib/server/mongo';
+import { ObjectId } from "mongodb";
 import type { RequestHandler } from "./$types";
-import { env } from '$env/dynamic/private'
 
 export const PUT = (async ({ request }) => {
   const data = (await request.json()).data;
@@ -9,9 +9,8 @@ export const PUT = (async ({ request }) => {
 
   data._id = new ObjectId(data._id);
 
-  const client = new MongoClient(env.MONGODB_URI);
   try {
-    const database = client.db('amagat');
+    const database = getDb();
     const currentMenu = database.collection('dishes');
     const dbResponse = await currentMenu.replaceOne(
       { "_id": data._id },
@@ -24,9 +23,6 @@ export const PUT = (async ({ request }) => {
     console.error(e)
     result = { error: e }
   }
-  finally {
-    await client.close();
-  }
   return json(result);
 }) satisfies RequestHandler;
 
@@ -36,9 +32,8 @@ export const DELETE = (async ({ request }) => {
 
   data._id = new ObjectId(data._id);
 
-  const client = new MongoClient(env.MONGODB_URI);
   try {
-    const database = client.db('amagat');
+    const database = getDb();
     const currentMenu = database.collection('dishes');
     const dbResponse = await currentMenu.deleteOne(
       { "_id": data._id },
@@ -49,9 +44,6 @@ export const DELETE = (async ({ request }) => {
   } catch (e) {
     console.error(e)
     result = { error: e }
-  }
-  finally {
-    await client.close();
   }
   return json(result);
 }) satisfies RequestHandler;

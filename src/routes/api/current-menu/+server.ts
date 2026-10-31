@@ -1,5 +1,6 @@
 import { json } from "@sveltejs/kit";
-import { MongoClient, ObjectId } from "mongodb";
+import { getDb } from '$lib/server/mongo';
+import { ObjectId } from "mongodb";
 import type { RequestHandler } from "./$types";
 import { env } from '$env/dynamic/private'
 
@@ -9,9 +10,8 @@ export const PUT = (async ({ request }) => {
 
   data._id = new ObjectId(data._id);
 
-  const client = new MongoClient(env.MONGODB_URI);
   try {
-    const database = client.db('amagat');
+    const database = getDb();
     const currentMenu = database.collection(process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu');
     const dbResponse = await currentMenu.replaceOne(
       { "_id": data._id },
@@ -22,9 +22,6 @@ export const PUT = (async ({ request }) => {
   } catch (e) {
     console.error(e)
     result = { error: e }
-  }
-  finally {
-    await client.close();
   }
   return json(result);
 }) satisfies RequestHandler;

@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
+import { getDb } from '$lib/server/mongo';
 import { env } from '$env/dynamic/private'
 
-import { MongoClient } from 'mongodb';
 import { translateAndCapitalizeMenu } from '$lib/utils';
 import type { Menu } from '$lib/types';
 
@@ -13,19 +13,13 @@ export const load = (async ({ url, cookies }) => {
 
   cookies.set('l', language, { path: '/' });
 
-  const client = new MongoClient(env.MONGODB_URI);
-
   let menu = null;
 
-  try {
-    const database = client.db('amagat');
-    const collection = database.collection(process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu');
-    menu = await collection.findOne() as Menu;
+  const database = getDb();
+  const collection = database.collection(process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu');
+  menu = await collection.findOne() as Menu;
 
-    translateAndCapitalizeMenu(menu, language);
-  } finally {
-    await client.close();
-  }
+  translateAndCapitalizeMenu(menu, language);
 
   let title;
   let footer;

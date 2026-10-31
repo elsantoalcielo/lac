@@ -1,7 +1,6 @@
 import type { PageServerLoad } from './$types';
-import { env } from '$env/dynamic/private'
+import { getDb } from '$lib/server/mongo';
 
-import { MongoClient } from 'mongodb';
 import type { SandwichMenu } from '$lib/types';
 import { translateSandwichMenu } from '$lib/utils';
 
@@ -13,19 +12,13 @@ export const load = (async ({ url, cookies }) => {
 
   cookies.set('l', language, { path: '/' });
 
-  const client = new MongoClient(env.MONGODB_URI);
-
   let sandwichMenu = null;
 
-  try {
-    const database = client.db('amagat');
-    const collection = database.collection('current-sandwich-menu');
-    sandwichMenu = await collection.findOne() as SandwichMenu;
+  const database = getDb();
+  const collection = database.collection('current-sandwich-menu');
+  sandwichMenu = await collection.findOne() as SandwichMenu;
 
-    translateSandwichMenu(sandwichMenu, language);
-  } finally {
-    await client.close();
-  }
+  translateSandwichMenu(sandwichMenu, language);
 
   let title;
   let footer;

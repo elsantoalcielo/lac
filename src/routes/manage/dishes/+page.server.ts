@@ -1,8 +1,8 @@
 import { redirect } from '@sveltejs/kit';
+import { getDb } from '$lib/server/mongo';
 import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private'
 
-import { MongoClient } from 'mongodb';
 
 const AUTHORIZED_USERS = env.AUTHORIZED_USERS.split(',');
 
@@ -15,14 +15,9 @@ export const load: PageServerLoad = async (event) => {
 
   let dishes;
 
-  const client = new MongoClient(env.MONGODB_URI);
-  try {
-    const database = client.db('amagat');
-    const collection = database.collection('dishes');
-    dishes = await collection.find().sort({ name: 'asc' }).toArray();
-  } finally {
-    await client.close();
-  }
+  const database = getDb();
+  const collection = database.collection('dishes');
+  dishes = await collection.find().sort({ name: 'asc' }).toArray();
 
   return { dishes: JSON.parse(JSON.stringify(dishes)) }
 }
