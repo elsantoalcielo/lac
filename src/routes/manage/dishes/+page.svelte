@@ -1,151 +1,136 @@
 <script lang="ts">
-  import type { PageData } from "./$types";
-  export let data: PageData;
-  import type { PersistentDish } from "$lib/types";
+  import { cleanDish } from "$lib/manage/clean";
+  import ManageHeader from "$lib/components/manage/ManageHeader.svelte";
+  import UnsavedGuard from "$lib/components/manage/UnsavedGuard.svelte";
+  import DishFields from "$lib/components/manage/DishFields.svelte";
 
-  import { Accordion, AccordionItem, AppBar, AppShell, SlideToggle } from "@skeletonlabs/skeleton";
-  import Allergens from "$lib/components/allergens.svelte";
+  let { data } = $props();
 
-  let dishes: PersistentDish[] = data.dishes as PersistentDish[];
-  let dirty = new Array(dishes.length);
+  // `id` only exists in this page; `_id` is the database id, missing until a new dish is saved
+  type Row = { id: string; startOpen?: boolean; _id?: string; name: string; price: string; description?: string; vegetarian?: boolean; featured?: boolean; allergens?: string[]; translations?: any; [field: string]: any };
 
-  const setDirty = (index: number) => {
-    dirty[index] = true;
-  };
+  let nextId = 0;
+  const toRow = (dish: any): Row => ({ ...JSON.parse(JSON.stringify(dish)), id: `row-${nextId++}`, name: String(dish.name ?? ""), price: String(dish.price ?? "") });
+  const snapshotOf = (row: Row) => JSON.stringify(cleanDish(row));
 
-  const saveDish = async (index: number) => {
-    const response = await fetch("/api/dishes", {
-      method: "PUT",
-      body: JSON.stringify({ data: dishes[index] }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
 
-    dirty[index] = false;
-  };
+  // svelte-ignore state_referenced_locally
+  let rows = $state<Row[]>(data.dishes.map(toRow));
+  // svelte-ignore state_referenced_locally
+  let snapshots = $state<{ [id: string]: string }>(Object.fromEntries(rows.map((row) => [row.id, snapshotOf(row)])));
+  let busy = $state<{ [id: string]: boolean }>({});
+  let messages = $state<{ [id: string]: string }>({});
+  let filter = $state("");
 
-  const deleteDish = async (index: number) => {
-    const response = await fetch("/api/dishes", {
-      method: "DELETE",
-      body: JSON.stringify({ data: dishes[index] }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+  const isDirty = (row: Row) => snapshots[row.id] != snapshotOf(row);
+  const isInvalid = (row: Row) => !row.name.trim() || !row.price.trim();
+  const anyDirty = $derived(rows.some(isDirty));
 
-    dishes.splice(index, 1);
-    dirty.splice(index, 1);
-    dishes = dishes;
-  };
+  const visible = $derived(rows.filter((row) => !filter.trim() || row.name.toLowerCase().includes(filter.trim().toLowerCase()) || !row._id));
 
   const addDish = () => {
-    dishes.push({});
-    dirty[dishes.length - 1] = true;
-    dishes = dishes;
+    filter = "";
+    const row = { id: `row-${nextId++}`, startOpen: true, name: "", price: "" };
+    rows.unshift(row);
+    snapshots[row.id] = "";
   };
 
-  let filterValue: string;
+  const save = async (row: Row) => {
+    busy[row.id] = true;
+    messages[row.id] = "";
+    try {
+      const response = await fetch("/api/dishes", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ data: cleanDish(row) }),
+      });
+      if (!response.ok) throw new Error();
+      const result = await response.json();
+      if (!row._id && result.id) row._id = result.id;
+      snapshots[row.id] = snapshotOf(row);
+      messages[row.id] = "Desat";
+    } catch {
+      messages[row.id] = "No s'ha pogut desar. Torna-ho a provar.";
+    } finally {
+      busy[row.id] = false;
+    }
+  };
 
-  const onClickName = (event: any) => {
-    event.stopPropagation();
+  const remove = async (row: Row) => {
+    if (!confirm(`Vols esborrar «${row.name || "plat sense nom"}» del catàleg? Les cartes que ja el tenen no es canvien.`)) return;
+    if (row._id) {
+      busy[row.id] = true;
+      try {
+        const response = await fetch("/api/dishes", {
+          method: "DELETE",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ data: { _id: row._id } }),
+        });
+        if (!response.ok) throw new Error();
+      } catch {
+        messages[row.id] = "No s'ha pogut esborrar. Torna-ho a provar.";
+        busy[row.id] = false;
+        return;
+      }
+    }
+    rows = rows.filter((other) => other.id != row.id);
   };
 </script>
 
-<AppShell>
-  <svelte:fragment slot="header">
-    <AppBar background="bg-yellow-500">
-      <h2 class="h2">Dishes</h2>
-      <svelte:fragment slot="trail">
-        <input class="input p-1 w-40 font-sans" type="search" bind:value={filterValue} />
-      </svelte:fragment>
-      <button class="btn variant-filled fixed top-4 right-4" on:click={addDish}>Add</button>
-    </AppBar>
-  </svelte:fragment>
-  <div>
-    {#each dishes as dish, index}
-      {#if !filterValue || dish.name.toUpperCase().indexOf(filterValue.toUpperCase()) > -1}
-        <div class="card m-4 relative">
-          <Accordion>
-            <AccordionItem>
-              <svelte:fragment slot="summary">
-                <header class="card-header h3">
-                  <div contenteditable="true" bind:textContent={dish.name} on:keypress={() => setDirty(index)} on:click={onClickName} />
-                </header>
-              </svelte:fragment>
-              <svelte:fragment slot="content">
-                <section class="px-4 py-1 h4">
-                  <div contenteditable="true" bind:textContent={dish.description} on:keypress={() => setDirty(index)} />
-                </section>
-                <section class="px-4 py-1 h4 flex flex-row space-x-1">
-                  <div contenteditable="true" bind:textContent={dish.price} on:keypress={() => setDirty(index)} />
-                  <div>€</div>
-                </section>
-                <section class="px-4 py-1 h4 flex items-center space-x-2">
-                  <SlideToggle name="st_{index}" bind:checked={dish.vegetarian} on:change={() => setDirty(index)} size="sm" active="bg-green-700" />
-                  <div>
-                    {#if dish.vegetarian}
-                      <span style="color: green; font-weight: bold;">Vegetarian </span>
-                    {:else}
-                      Non vegetarian
-                    {/if}
-                  </div>
-                </section>
-                <section class="px-4 py-1">
-                  <div class="flex allergens">
-                    {#if dish.allergens}
-                      {#each dish.allergens as allergen}
-                        <img src="/img/allergens/{allergen}.jpg" alt={allergen} />
-                      {/each}
-                    {/if}
-                  </div>
-                </section>
-                <section class="px-4 py-1">
-                  <Allergens bind:values={dish.allergens} on:toggle={() => setDirty(index)} />
-                </section>
-                <section class="px-4 py-1 font-sans">
-                  {#if dish.translations}
-                    {#each Object.entries(dish.translations) as [language, translation]}
-                      <div class="flex">
-                        <div class="w-8">
-                          {language}
-                        </div>
-                        <div>
-                          {translation.name}
-                        </div>
-                      </div>
-                    {/each}
-                  {/if}
-                </section>
-                {#if dirty[index]}
-                  <footer class="card-footer">
-                    <button class="btn variant-filled" on:click={() => saveDish(index)}>save</button>
-                  </footer>
-                {/if}
-                <button class="btn btn-sm variant-filled-error absolute bottom-2 right-2" on:click={() => deleteDish(index)}>delete</button>
-              </svelte:fragment>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      {/if}
-    {/each}
-  </div>
+<UnsavedGuard dirty={anyDirty} />
 
-</AppShell>
+<svelte:head>
+  <title>Catàleg de plats · L'Amagat Cafè</title>
+  <meta name="robots" content="noindex" />
+</svelte:head>
+
+<div class="min-h-screen bg-[#f3e8d0] pb-16 font-cormorant text-sepia-900">
+  <ManageHeader title="Catàleg de plats" />
+
+  <main class="mx-auto max-w-3xl px-4 py-6">
+    <div class="sticky top-0 z-10 -mx-4 mb-4 flex gap-2 bg-[#f3e8d0]/95 px-4 py-3 backdrop-blur">
+      <input
+        class="min-w-0 flex-1 rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-sepia-400"
+        type="search"
+        placeholder="Cerca un plat…"
+        aria-label="Cerca un plat"
+        bind:value={filter}
+      />
+      <button type="button" class="shrink-0 rounded-md bg-sepia-800 px-4 py-2 font-semibold text-amber-50 hover:bg-sepia-700" onclick={addDish}>+ Plat nou</button>
+    </div>
+
+    <p class="mb-3 text-sm text-sepia-700">{rows.length} plats al catàleg. Cada plat es desa pel seu compte.</p>
+
+    <div class="space-y-3">
+      {#each visible as row (row.id)}
+        <details class="group rounded-lg border border-sepia-400/40 bg-[#f7eedb] shadow-sm" open={row.startOpen}>
+          <summary class="flex cursor-pointer list-none items-center gap-3 px-4 py-3">
+            <svg class="h-4 w-4 shrink-0 transition-transform group-open:rotate-90" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6V4z" /></svg>
+            <span class="min-w-0 flex-1 truncate text-lg font-semibold">{row.name || "Plat nou"}</span>
+            {#if isDirty(row)}<span class="shrink-0 rounded-full bg-amber-200 px-2 py-0.5 text-xs text-amber-900">Sense desar</span>{/if}
+            <span class="shrink-0 lining-nums tabular-nums text-sepia-700">{row.price ? `${row.price} €` : ""}</span>
+          </summary>
+          <div class="border-t border-sepia-400/30 px-4 pb-4 pt-3">
+            <DishFields bind:dish={rows[rows.indexOf(row)]} idPrefix={row.id} />
+            <div class="mt-4 flex items-center gap-3 border-t border-sepia-400/30 pt-3">
+              <button
+                type="button"
+                class="rounded-md bg-sepia-800 px-5 py-2 font-semibold text-amber-50 hover:bg-sepia-700 disabled:cursor-not-allowed disabled:opacity-40"
+                disabled={!isDirty(row) || isInvalid(row) || busy[row.id]}
+                onclick={() => save(row)}
+              >
+                {busy[row.id] ? "Desant…" : "Desa"}
+              </button>
+              <span class="min-w-0 flex-1 truncate text-sm {messages[row.id]?.startsWith('No') ? 'font-semibold text-red-700' : 'text-green-800'}" role="status">{messages[row.id] ?? ""}</span>
+              <button type="button" class="rounded-md px-3 py-1.5 text-sm text-red-700 hover:bg-red-50" disabled={busy[row.id]} onclick={() => remove(row)}>Esborra</button>
+            </div>
+          </div>
+        </details>
+      {/each}
+    </div>
+  </main>
+</div>
 
 <style>
-  :global(body) {
-    margin: 10px;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  }
-
-  div {
-  }
-
-  .allergens img,
-  .allergen-list img {
-    width: 30px;
-    margin-left: 5px;
-    vertical-align: text-top;
-  }
+  @import url(../../../../static/fonts/fonts.css);
 </style>

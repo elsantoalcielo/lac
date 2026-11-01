@@ -3,8 +3,11 @@ import { getDb } from './mongo';
 
 export const HISTORY_COLLECTION = 'history';
 
+// The menu editor works on the draft while developing, as the public pages do
+export const MENU_COLLECTION = process.env.NODE_ENV == 'development' ? 'draft-menu' : 'current-menu';
+
 // Collections whose history the management pages may read
-export const VERSIONED_COLLECTIONS = ['cafes'];
+export const VERSIONED_COLLECTIONS = ['cafes', MENU_COLLECTION];
 
 export class VersionConflictError extends Error {}
 

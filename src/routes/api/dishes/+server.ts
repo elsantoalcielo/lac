@@ -1,13 +1,17 @@
-import { json } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 import { getDb } from '$lib/server/mongo';
 import { ObjectId } from "mongodb";
 import type { RequestHandler } from "./$types";
 import { requireUserApi } from '$lib/server/auth';
+import { isValidDish } from '$lib/server/validation';
 
 export const PUT = (async ({ request, locals }) => {
   await requireUserApi(locals);
 
   const data = (await request.json()).data;
+  if (!isValidDish(data)) {
+    error(400, 'Invalid dish');
+  }
   let result;
 
   data._id = new ObjectId(data._id);

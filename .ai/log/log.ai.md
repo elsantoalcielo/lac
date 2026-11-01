@@ -598,3 +598,48 @@ Next: the hub plus the menu and dishes editors, if you want me to continue.
 Work/time split: 55% frontend, 45% backend
 
 **Work/time split this turn:** 55% frontend, 45% backend
+
+## Entry 18 — 2026-11-01 19:25
+
+**Prompt:** Go (step 4 of the plan: hub plus menu and dishes editors on the shared parts).
+
+**Actions taken:** `/manage` is now a hub (`+page.svelte`, `+page.server.ts`) with a `manage/+layout.server.ts` login check. Menu editor moved to `/manage/menu` and rebuilt; `/manage/dishes` rebuilt (per-dish save/delete, filter). New components: `ManageHeader`, `UnsavedGuard`, `HistoryPanel`, `AllergenPicker`, `DishFields`; `PriceInput` gained `currency`/`pendingValue` (dish prices stay without the euro sign, cafès keep it) and lining numerals. New `src/lib/manage/clean.ts` (`cleanTranslations`, `cleanDish` keeping unknown fields, `sameDish`) and `save.ts` (`putDocument`); cafès page refactored onto them and `HistoryPanel`. Server: `src/lib/server/validation.ts`; `PUT /api/current-menu` now validates, version-checks and writes history (`MENU_COLLECTION`, draft in development); `PUT /api/dishes` validates. Menu keeps embedded dish copies; the editor shows catalogue status (same/differs/new/missing) with explicit sync buttons, as agreed. The old `/manage` and `/manage/dishes` UIs were replaced by rewriting them; `allergens.svelte`, `allergens-old.svelte`, `translations.svelte` are now unused and not deleted. Found in-turn: a `details` element opened from `!row._id` closed a new dish card after saving (fixed with a `startOpen` flag).
+
+**Verify:** build OK; `svelte-check` 2 errors (was 10; the 8 removed were in the old editors; the 2 remaining are the pre-existing `gtag` ones). Playwright/Chromium against a temporary harness with stubbed APIs (deleted afterwards): catalogue badges and sync buttons, legacy dish with numeric price and extra field, add from catalogue, blank dish blocks save, mouse drag reorder, save payload (version, order, no temp ids), phone dishes page (filter, new, price normalisation, save, delete), hub links. Not verified: real login, real MongoDB saves, version conflict, history writes, behaviour with real legacy dishes, drag between sections (not supported).
+
+**Recap given to user:**
+
+Step 4 is done: `/manage` is now a hub, and the menu and dishes editors are rebuilt on the same shared parts as the cafès editor. None of it has run against your real database or a real login.
+
+**What changed**
+- **`/manage` (hub):** three cards linking to the menu editor, the cafès editor and the dish catalogue. A new `manage` layout runs the login check for all of them, and each page checks again.
+- **`/manage/menu` (was `/manage`):**
+  - **Layout:** sections with an editable title and translations, and dishes you drag by a handle. Each dish has name, price, description, and a collapsible "Al·lèrgens i opcions" with vegetarian, destacat and allergen buttons. A "Traduccions" panel sits below it.
+  - **Adding dishes:** a "+ Plat nou" button, or a search box that adds a dish from the catalogue.
+  - **Catalogue badge:** every dish shows "Igual que al catàleg", "Diferent del catàleg", "No és al catàleg" or "Ja no és al catàleg". When different, you can update the catalogue or restore the dish from it. Nothing syncs by itself.
+  - **Saving:** saving uses the same versioned, history-keeping path as cafès, and the history panel is shared. In development it edits the draft menu, with a notice saying so.
+- **`/manage/dishes`:** a searchable list of collapsed cards. Each dish saves and deletes on its own, and there is a "Sense desar" badge on edited ones.
+- **Server:** `PUT /api/current-menu` now validates, checks the version and keeps history. `PUT /api/dishes` now validates its body. `src/lib/server/validation.ts` holds the shape checks. Unknown fields on old dishes (for example `large_variant`) are preserved on save.
+- **Details:** dish prices are kept without the `€` sign, as the public pages add it, while cafès prices keep it. Prices that were numbers in old data become strings on the next save. I used lining numerals in price fields, because the page font showed "11,50" as "ɪɪ,50".
+- **Check results:** `svelte-check` now reports 2 errors instead of 10, because the old editors that caused 8 of them are gone. The 2 left are the old `gtag` ones in `analytics.svelte`.
+
+**Verified**
+- `npm run build` succeeds.
+- **Pages in a browser, with the server stubbed:** I ran the real pages in Chromium with fake data and stubbed APIs. In the menu editor, the catalogue badges were right, and "update catalogue" sent the right body and flipped the badge. A legacy dish with a numeric price and an extra field was saved with the field kept. Adding from the catalogue worked, and a blank dish blocked saving. Dragging reordered the dishes, and the save sent the right version and order with no temporary ids. On a phone, the dishes page filtered, added, saved (with the price normalised to "4,50") and deleted. The hub links point to the right places.
+- **Test files:** I deleted the temporary test routes afterwards.
+
+**Not verified**
+- **Real server path:** a real Google login, saving to MongoDB, the version conflict, history writes, and the catalogue calls with real ids. Treat the first real save as the test, and check the `history` collection afterwards.
+- **Real data:** the menu editor has only seen sample data. Existing dishes with odd shapes might be rejected with an error on save. If so, tell me what the error says and I'll adjust the checks.
+- **Dragging between sections:** not supported, only within a section.
+
+**Notes**
+- Three components are now unused: `allergens.svelte`, `allergens-old.svelte` and `translations.svelte` in `src/lib/components`. I left them, since removing them wasn't asked. Say if you want them deleted.
+- The public `carta` pages are untouched.
+- Nothing is committed.
+
+Suggested commit: `feat(manage): add the hub and rebuild the menu and dishes editors`
+
+Work/time split: 65% frontend, 35% backend
+
+**Work/time split this turn:** 65% frontend, 35% backend
