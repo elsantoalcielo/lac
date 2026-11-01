@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cleanDish } from "$lib/manage/clean";
-  import ManageHeader from "$lib/components/manage/ManageHeader.svelte";
+  import PageHeader from "$lib/components/manage/PageHeader.svelte";
   import UnsavedGuard from "$lib/components/manage/UnsavedGuard.svelte";
   import DishFields from "$lib/components/manage/DishFields.svelte";
 
@@ -84,38 +84,38 @@
   <meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="min-h-screen bg-[#f3e8d0] pb-16 font-cormorant text-sepia-900">
-  <ManageHeader title="Catàleg de plats" />
+<div class="pb-16">
 
   <main class="mx-auto max-w-3xl px-4 py-6">
-    <div class="sticky top-0 z-10 -mx-4 mb-4 flex gap-2 bg-[#f3e8d0]/95 px-4 py-3 backdrop-blur">
+    <PageHeader title="Catàleg de plats" description="Tots els plats desats, per reutilitzar-los a la carta del dia." />
+    <div class="sticky top-0 z-10 -mx-4 mb-4 flex gap-2 bg-slate-100/95 px-4 py-3 backdrop-blur">
       <input
-        class="min-w-0 flex-1 rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-sepia-400"
+        class="min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
         type="search"
         placeholder="Cerca un plat…"
         aria-label="Cerca un plat"
         bind:value={filter}
       />
-      <button type="button" class="shrink-0 rounded-md bg-sepia-800 px-4 py-2 font-semibold text-amber-50 hover:bg-sepia-700" onclick={addDish}>+ Plat nou</button>
+      <button type="button" class="shrink-0 rounded-md bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800" onclick={addDish}>+ Plat nou</button>
     </div>
 
-    <p class="mb-3 text-sm text-sepia-700">{rows.length} plats al catàleg. Cada plat es desa pel seu compte.</p>
+    <p class="mb-3 text-sm text-slate-600">{rows.length} plats al catàleg. Cada plat es desa pel seu compte.</p>
 
     <div class="space-y-3">
       {#each visible as row (row.id)}
-        <details class="group rounded-lg border border-sepia-400/40 bg-[#f7eedb] shadow-sm" open={row.startOpen}>
+        <details class="group rounded-lg border border-slate-200 bg-white shadow-sm" open={row.startOpen}>
           <summary class="flex cursor-pointer list-none items-center gap-3 px-4 py-3">
             <svg class="h-4 w-4 shrink-0 transition-transform group-open:rotate-90" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6V4z" /></svg>
             <span class="min-w-0 flex-1 truncate text-lg font-semibold">{row.name || "Plat nou"}</span>
             {#if isDirty(row)}<span class="shrink-0 rounded-full bg-amber-200 px-2 py-0.5 text-xs text-amber-900">Sense desar</span>{/if}
-            <span class="shrink-0 lining-nums tabular-nums text-sepia-700">{row.price ? `${row.price} €` : ""}</span>
+            <span class="shrink-0 lining-nums tabular-nums text-slate-600">{row.price ? `${row.price} €` : ""}</span>
           </summary>
-          <div class="border-t border-sepia-400/30 px-4 pb-4 pt-3">
+          <div class="border-t border-slate-200 px-4 pb-4 pt-3">
             <DishFields bind:dish={rows[rows.indexOf(row)]} idPrefix={row.id} />
-            <div class="mt-4 flex items-center gap-3 border-t border-sepia-400/30 pt-3">
+            <div class="mt-4 flex items-center gap-3 border-t border-slate-200 pt-3">
               <button
                 type="button"
-                class="rounded-md bg-sepia-800 px-5 py-2 font-semibold text-amber-50 hover:bg-sepia-700 disabled:cursor-not-allowed disabled:opacity-40"
+                class="rounded-md bg-blue-700 px-5 py-2 font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-40"
                 disabled={!isDirty(row) || isInvalid(row) || busy[row.id]}
                 onclick={() => save(row)}
               >
@@ -130,7 +130,3 @@
     </div>
   </main>
 </div>
-
-<style>
-  @import url(../../../../static/fonts/fonts.css);
-</style>

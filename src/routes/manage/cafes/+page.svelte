@@ -3,7 +3,7 @@
   import { PLACEHOLDER_PRICE } from "$lib/utils";
   import { cleanTranslations } from "$lib/manage/clean";
   import { putDocument } from "$lib/manage/save";
-  import ManageHeader from "$lib/components/manage/ManageHeader.svelte";
+  import PageHeader from "$lib/components/manage/PageHeader.svelte";
   import UnsavedGuard from "$lib/components/manage/UnsavedGuard.svelte";
   import HistoryPanel from "$lib/components/manage/HistoryPanel.svelte";
   import SortableList from "$lib/components/manage/SortableList.svelte";
@@ -98,10 +98,10 @@
   <meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="min-h-screen bg-[#f3e8d0] pb-28 font-cormorant text-sepia-900">
-  <ManageHeader title="Cafès i tes" publicHref="/cafes" />
+<div class="pb-28">
 
   <main class="mx-auto max-w-3xl space-y-8 px-4 py-6">
+    <PageHeader title="Cafès i tes" description="Cafès, tes i infusions de la pàgina pública de cafès." publicHref="/cafes" />
     {#if pendingPrices > 0}
       <p class="rounded-lg border border-amber-300 bg-amber-100/70 px-4 py-3 text-amber-900">
         {pendingPrices} {pendingPrices == 1 ? "element té" : "elements tenen"} el preu pendent ({PLACEHOLDER_PRICE}). Es veu així a la pàgina pública fins que el canviïs.
@@ -109,16 +109,16 @@
     {/if}
 
     {#each sections as section (section.key)}
-      <section class="rounded-xl border border-sepia-400/40 bg-[#f7eedb] p-4 shadow-sm sm:p-5">
+      <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
         <div class="mb-4 space-y-3">
           <label class="block">
-            <span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-sepia-600">Títol de la secció</span>
-            <input class="w-full rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-sepia-400" bind:value={section.title} />
+            <span class="mb-1 block text-sm font-medium text-slate-700">Títol de la secció</span>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500" bind:value={section.title} />
           </label>
           {#if section.key == "cafes" || section.note !== undefined}
             <label class="block">
-              <span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-sepia-600">Nota sota la llista</span>
-              <input class="w-full rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-sepia-400" bind:value={section.note} />
+              <span class="mb-1 block text-sm font-medium text-slate-700">Nota sota la llista</span>
+              <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500" bind:value={section.note} />
             </label>
           {/if}
           <TranslationsEditor
@@ -134,19 +134,19 @@
           {#snippet children(item: Row)}
             <div class="grid gap-3 sm:grid-cols-[1fr_9rem]">
               <label class="block">
-                <span class="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sepia-600">
+                <span class="mb-1 flex items-center gap-2 text-sm font-medium text-slate-700">
                   Nom
                   {#if !item.name.trim()}<span class="rounded-full bg-amber-200 px-2 py-0.5 text-[10px] normal-case tracking-normal text-amber-900">Falta</span>{/if}
                 </span>
                 <input
-                  class="w-full rounded-md border bg-white px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-sepia-400 {item.name.trim() ? 'border-sepia-400/50' : 'border-amber-400'}"
+                  class="w-full rounded-md border bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 {item.name.trim() ? 'border-slate-300' : 'border-amber-400'}"
                   bind:value={item.name}
                 />
               </label>
               <PriceInput bind:value={item.price} pendingValue={PLACEHOLDER_PRICE} />
               <label class="block sm:col-span-2">
-                <span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-sepia-600">Descripció</span>
-                <input class="w-full rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-sepia-400" bind:value={item.description} />
+                <span class="mb-1 block text-sm font-medium text-slate-700">Descripció</span>
+                <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500" bind:value={item.description} />
               </label>
             </div>
             <div class="flex items-start justify-between gap-2">
@@ -164,7 +164,7 @@
           {/snippet}
         </SortableList>
 
-        <button type="button" class="mt-4 w-full rounded-lg border-2 border-dashed border-sepia-400/70 py-3 font-semibold text-sepia-700 hover:bg-sepia-200/30" onclick={() => addItem(section)}>
+        <button type="button" class="mt-4 w-full rounded-lg border-2 border-dashed border-slate-300 py-3 font-semibold text-slate-600 hover:bg-slate-100" onclick={() => addItem(section)}>
           + Afegeix un element
         </button>
       </section>
@@ -177,7 +177,3 @@
 </div>
 
 <SaveBar {dirty} {saving} {invalid} {status} onsave={save} onhistory={() => (historyOpen = !historyOpen)} />
-
-<style>
-  @import url(../../../../static/fonts/fonts.css);
-</style>

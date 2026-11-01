@@ -21,27 +21,27 @@
 
 <div class="grid gap-3 sm:grid-cols-[1fr_8rem]">
   <label class="block">
-    <span class="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sepia-600">
+    <span class="mb-1 flex items-center gap-2 text-sm font-medium text-slate-700">
       Nom
       {#if !dish.name.trim()}<span class="rounded-full bg-amber-200 px-2 py-0.5 text-[10px] normal-case tracking-normal text-amber-900">Falta</span>{/if}
     </span>
     <input
-      class="w-full rounded-md border bg-white px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-sepia-400 {dish.name.trim() ? 'border-sepia-400/50' : 'border-amber-400'}"
+      class="w-full rounded-md border bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 {dish.name.trim() ? 'border-slate-300' : 'border-amber-400'}"
       bind:value={dish.name}
     />
   </label>
   <PriceInput bind:value={dish.price} currency={false} />
   <label class="block sm:col-span-2">
-    <span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-sepia-600">Descripció</span>
-    <input class="w-full rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-sepia-400" bind:value={dish.description} />
+    <span class="mb-1 block text-sm font-medium text-slate-700">Descripció</span>
+    <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500" bind:value={dish.description} />
   </label>
 </div>
 
 <details class="group mt-2">
-  <summary class="flex cursor-pointer list-none items-center gap-2 text-sm text-sepia-700 hover:text-sepia-900">
+  <summary class="flex cursor-pointer list-none items-center gap-2 text-sm text-slate-600 hover:text-slate-900">
     <svg class="h-4 w-4 transition-transform group-open:rotate-90" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6V4z" /></svg>
     Al·lèrgens i opcions
-    {#if optionsCount > 0}<span class="rounded-full bg-sepia-200/60 px-2 py-0.5 text-xs text-sepia-800">{optionsCount}</span>{/if}
+    {#if optionsCount > 0}<span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-800">{optionsCount}</span>{/if}
   </summary>
   <div class="mt-3 space-y-3">
     <div class="flex flex-wrap gap-x-6 gap-y-2">

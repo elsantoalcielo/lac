@@ -1,7 +1,7 @@
 <script lang="ts">
   import { cleanDish, cleanTranslations, sameDish } from "$lib/manage/clean";
   import { putDocument } from "$lib/manage/save";
-  import ManageHeader from "$lib/components/manage/ManageHeader.svelte";
+  import PageHeader from "$lib/components/manage/PageHeader.svelte";
   import UnsavedGuard from "$lib/components/manage/UnsavedGuard.svelte";
   import HistoryPanel from "$lib/components/manage/HistoryPanel.svelte";
   import SortableList from "$lib/components/manage/SortableList.svelte";
@@ -147,12 +147,12 @@
   <meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="min-h-screen bg-[#f3e8d0] pb-28 font-cormorant text-sepia-900">
-  <ManageHeader title="Carta del dia" publicHref="/carta" />
+<div class="pb-28">
 
   <main class="mx-auto max-w-3xl space-y-8 px-4 py-6">
+    <PageHeader title="Carta del dia" description="Els plats de cada secció, el seu ordre, preus i traduccions." publicHref="/carta" />
     {#if data.collection != "current-menu"}
-      <p class="rounded-lg border border-sepia-400/50 bg-[#f7eedb] px-4 py-3 text-sepia-800">Estàs editant l'esborrany ({data.collection}), no la carta pública.</p>
+      <p class="rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800">Estàs editant l'esborrany ({data.collection}), no la carta pública.</p>
     {/if}
 
     {#if syncMessage.text}
@@ -160,11 +160,11 @@
     {/if}
 
     {#each sections as section (section.id)}
-      <section class="rounded-xl border border-sepia-400/40 bg-[#f7eedb] p-4 shadow-sm sm:p-5">
+      <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
         <div class="mb-4">
           <label class="block">
-            <span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-sepia-600">Títol de la secció</span>
-            <input class="w-full rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-sepia-400" bind:value={section.title} />
+            <span class="mb-1 block text-sm font-medium text-slate-700">Títol de la secció</span>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500" bind:value={section.title} />
           </label>
           <TranslationsEditor bind:translations={section.translations} fields={[{ key: "title", label: "Títol" }]} />
         </div>
@@ -174,16 +174,16 @@
             {@const catalogueState = catalogueStatus(dish)}
             <DishFields bind:dish={section.dishes[index]} idPrefix={dish.id} />
 
-            <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-sepia-400/30 pt-2 text-sm">
+            <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-2 text-sm">
               {#if catalogueState == "same"}
                 <span class="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">Igual que al catàleg</span>
               {:else if catalogueState == "differs"}
                 <span class="rounded-full bg-amber-200 px-2 py-0.5 text-xs text-amber-900">Diferent del catàleg</span>
-                <button type="button" class="rounded-md border border-sepia-400 px-2.5 py-1 hover:bg-sepia-200/40" onclick={() => saveToCatalogue(dish)}>Actualitza el catàleg</button>
-                <button type="button" class="rounded-md border border-sepia-400 px-2.5 py-1 hover:bg-sepia-200/40" onclick={() => restoreFromCatalogue(section, index)}>Restaura del catàleg</button>
+                <button type="button" class="rounded-md border border-slate-300 px-2.5 py-1 hover:bg-slate-100" onclick={() => saveToCatalogue(dish)}>Actualitza el catàleg</button>
+                <button type="button" class="rounded-md border border-slate-300 px-2.5 py-1 hover:bg-slate-100" onclick={() => restoreFromCatalogue(section, index)}>Restaura del catàleg</button>
               {:else}
-                <span class="rounded-full bg-sepia-200/60 px-2 py-0.5 text-xs text-sepia-800">{catalogueState == "new" ? "No és al catàleg" : "Ja no és al catàleg"}</span>
-                <button type="button" class="rounded-md border border-sepia-400 px-2.5 py-1 hover:bg-sepia-200/40 disabled:opacity-40" disabled={!dish.name.trim() || !dish.price.trim()} onclick={() => saveToCatalogue(dish)}>Desa al catàleg</button>
+                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-800">{catalogueState == "new" ? "No és al catàleg" : "Ja no és al catàleg"}</span>
+                <button type="button" class="rounded-md border border-slate-300 px-2.5 py-1 hover:bg-slate-100 disabled:opacity-40" disabled={!dish.name.trim() || !dish.price.trim()} onclick={() => saveToCatalogue(dish)}>Desa al catàleg</button>
               {/if}
               <button type="button" class="ml-auto rounded-md px-3 py-1 text-red-700 hover:bg-red-50" onclick={() => deleteDish(section, dish)}>Treu de la carta</button>
             </div>
@@ -191,22 +191,22 @@
         </SortableList>
 
         <div class="mt-4 space-y-2">
-          <button type="button" class="w-full rounded-lg border-2 border-dashed border-sepia-400/70 py-3 font-semibold text-sepia-700 hover:bg-sepia-200/30" onclick={() => addBlank(section)}>+ Plat nou</button>
+          <button type="button" class="w-full rounded-lg border-2 border-dashed border-slate-300 py-3 font-semibold text-slate-600 hover:bg-slate-100" onclick={() => addBlank(section)}>+ Plat nou</button>
           <div class="relative">
             <input
-              class="w-full rounded-md border border-sepia-400/50 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-sepia-400"
+              class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
               placeholder="Afegeix un plat del catàleg…"
               aria-label="Cerca al catàleg"
               bind:value={searches[section.id]}
             />
             {#if matches(section).length > 0}
-              <ul class="mt-1 divide-y divide-sepia-400/20 overflow-hidden rounded-md border border-sepia-400/40 bg-white shadow-sm">
+              <ul class="mt-1 divide-y divide-slate-200 overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
                 {#each matches(section) as match (match._id)}
                   <li>
-                    <button type="button" class="flex w-full items-center justify-between gap-3 px-3 py-2 text-left hover:bg-sepia-200/30" onclick={() => addFromCatalogue(section, match)}>
+                    <button type="button" class="flex w-full items-center justify-between gap-3 px-3 py-2 text-left hover:bg-slate-100" onclick={() => addFromCatalogue(section, match)}>
                       <span class="truncate">{match.name}</span>
-                      <span class="shrink-0 lining-nums tabular-nums text-sepia-600">{match.price} €</span>
+                      <span class="shrink-0 lining-nums tabular-nums text-slate-500">{match.price} €</span>
                     </button>
                   </li>
                 {/each}
@@ -224,7 +224,3 @@
 </div>
 
 <SaveBar {dirty} {saving} {invalid} {status} onsave={save} onhistory={() => (historyOpen = !historyOpen)} />
-
-<style>
-  @import url(../../../../static/fonts/fonts.css);
-</style>

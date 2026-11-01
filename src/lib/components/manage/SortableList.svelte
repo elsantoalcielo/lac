@@ -28,10 +28,10 @@
   }}
 >
   {#each items as item, index (item.id)}
-    <div class="flex items-stretch gap-1 rounded-lg border border-sepia-400/40 bg-[#fbf6ea] shadow-sm" animate:flip={{ duration: flipDurationMs }}>
+    <div class="flex items-stretch gap-1 rounded-lg border border-slate-200 bg-slate-50 shadow-sm" animate:flip={{ duration: flipDurationMs }}>
       <button
         type="button"
-        class="flex w-9 shrink-0 cursor-grab items-center justify-center rounded-l-lg text-sepia-600 hover:bg-sepia-200/40 active:cursor-grabbing"
+        class="flex w-9 shrink-0 cursor-grab items-center justify-center rounded-l-lg text-slate-500 hover:bg-slate-100 active:cursor-grabbing"
         style="touch-action: none"
         aria-label="Arrossega per canviar l'ordre"
         onmousedowncapture={startDrag}

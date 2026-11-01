@@ -16,7 +16,7 @@
     {@const active = values?.includes(allergen) ?? false}
     <button
       type="button"
-      class="flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-sm {active ? 'border-sepia-700 bg-sepia-200/60 font-semibold' : 'border-sepia-400/40 bg-white/60 text-sepia-700'}"
+      class="flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-sm {active ? 'border-slate-500 bg-slate-100 font-semibold' : 'border-slate-200 bg-white/60 text-slate-600'}"
       aria-pressed={active}
       onclick={() => toggle(allergen)}
     >

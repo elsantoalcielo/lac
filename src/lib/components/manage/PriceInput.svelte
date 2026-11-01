@@ -19,7 +19,7 @@
 </script>
 
 <label class="block">
-  <span class="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sepia-600">
+  <span class="mb-1 flex items-center gap-2 text-sm font-medium text-slate-700">
     {label}
     {#if pending}
       <span class="rounded-full bg-amber-200 px-2 py-0.5 text-[10px] normal-case tracking-normal text-amber-900">{missing ? "Falta" : "Pendent"}</span>
@@ -27,13 +27,13 @@
   </span>
   <div class="relative">
     <input
-      class="w-full rounded-md border bg-white px-3 py-2 text-base lining-nums tabular-nums text-sepia-900 focus:outline-none focus:ring-2 focus:ring-sepia-400 {currency ? '' : 'pr-8'} {pending ? 'border-amber-400' : 'border-sepia-400/50'}"
+      class="w-full rounded-md border bg-white px-3 py-2 text-base lining-nums tabular-nums text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 {currency ? '' : 'pr-8'} {pending ? 'border-amber-400' : 'border-slate-300'}"
       inputmode="decimal"
       bind:value
       onblur={normalize}
     />
     {#if !currency}
-      <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sepia-600">€</span>
+      <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">€</span>
     {/if}
   </div>
 </label>

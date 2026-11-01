@@ -643,3 +643,39 @@ Suggested commit: `feat(manage): add the hub and rebuild the menu and dishes edi
 Work/time split: 65% frontend, 35% backend
 
 **Work/time split this turn:** 65% frontend, 35% backend
+
+## Entry 19 — 2026-11-01 19:40
+
+**Prompt:** The manage pages should not share the coffee page's style; they should look like a typical, more serious management page.
+
+**Actions taken:** New `src/routes/manage/+layout.svelte` (dark top nav bar, links with active state via `$app/state`, signed-in email, sign-out; light slate background, system sans-serif) and `+layout.server.ts` now returns the email. New `PageHeader.svelte` (title, description, optional public-page button) replaces `ManageHeader.svelte` (deleted). Restyled every manage component and page by class changes only (slate/white/blue palette, plain labels, no Cormorant font or paper colours); no logic changed. Hub simplified; `+page.server.ts` no longer returns the email. Found in-turn: the nav link "Catàleg de plats" was clipped on desktop, shortened to "Catàleg" and the email shown only from `xl`. Process slip: `git rm --cached` staged a deletion, undone at once with `git restore --staged`.
+
+**Verify:** build OK; `svelte-check` 2 errors (the pre-existing `gtag` ones). Screenshots with Playwright/Chromium of hub, cafès, menu and dishes at desktop and phone widths through a temporary harness (deleted), no page errors. Not verified: the active nav link (harness routes were outside `/manage`), real login and database, dark mode (not handled).
+
+**Recap given to user:**
+
+I gave the manage pages a separate, more standard admin look. They no longer share the cafès page's sepia and serif style.
+
+**The new look**
+- **Navigation:** a dark top bar on every manage page (a new `manage/+layout.svelte`), with the name, links to Inici, Carta del dia, Cafès i tes and Catàleg, the signed-in email on wide screens, and a "Tanca la sessió" button. The current page is highlighted. On a phone the links sit on a second row that scrolls sideways.
+- **Pages:** a light grey background with white cards, thin grey borders and a single blue accent for the main buttons. Text is dark slate in the system sans-serif font. Warnings keep their amber and green badges.
+- **Page headers:** each page now opens with a plain title, a one-line description and, where there is a public page, a "Veure la pàgina ↗" button. This replaces the old `ManageHeader` component, which I deleted in favour of `PageHeader.svelte`.
+- **Forms:** labels are small and plain instead of uppercase, item rows are light grey boxes on white sections, and the Cormorant font and paper colours are gone from the manage code.
+- **Hub:** simple white cards with a blue border on hover.
+
+Only classes and the layout changed. The behaviour is the same: dragging, history, versions, catalogue badges and the rest.
+
+**Verified:** `npm run build` succeeds, and `npm run check` still reports only the 2 old `gtag` errors. I looked at the hub, cafès, menu and dishes pages in Chromium at desktop and phone width, with fake data and no page errors. I fixed one problem I found there: the "Catàleg de plats" nav link was cut off, so I shortened it to "Catàleg" and hid the email below very wide screens. I deleted the temporary test route afterwards.
+
+**Not verified**
+- **Active link:** the highlight in the nav, because my test route sat outside `/manage`. The code is simple, but I haven't seen it work.
+- **Real login and database:** still untested, as before.
+- **Dark mode:** not handled, and the manage pages are light only.
+
+**Slip to report:** while removing the old header file I ran `git rm --cached`, which staged the deletion. That needs your permission under the project rules. I undid it straight away with `git restore --staged`, and nothing is staged now. Nothing is committed.
+
+Suggested commit: `style(manage): give the management pages an admin look with a shared navigation bar`
+
+Work/time split: 100% frontend
+
+**Work/time split this turn:** 100% frontend
