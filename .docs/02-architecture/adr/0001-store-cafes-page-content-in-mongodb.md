@@ -1,8 +1,8 @@
 # 0001. Store the cafès page content in MongoDB
 
-- **Status:** proposed
+- **Status:** accepted
 - **Date:** 2026-10-31
-- **Decided by:** project owner (pending acceptance)
+- **Decided by:** project owner
 
 ## Context
 

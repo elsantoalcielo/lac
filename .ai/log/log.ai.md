@@ -499,3 +499,102 @@ Suggested commit: `feat(cafes): replace the drawings with the bird illustration`
 Work/time split: 100% frontend
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 15 — 2026-10-31 21:06
+
+**Prompt:** Write a log entry stating that the drawing was created with Adobe Firefly.
+
+**Actions taken:** Recorded provenance only. Per the project owner, the bird illustration `static/img/bird_coffee.png` was created with Adobe Firefly (not verifiable from the file itself). `static/img/bird_coffee_sepia.png` is derived from it (Entry 13: transparent, resized to 450×600, recoloured sepia, bottom faded) and used on `/cafes` under the "El bon cafè" text (Entry 14). The Firefly prompt, the model and the licence terms were not provided and are not recorded here. No code or assets changed.
+
+**Verify:** Log only; nothing to build or test.
+
+**Recap given to user:**
+
+I added Entry 15 to `.ai/log/log.ai.md`, recording that the bird illustration was created by you with Adobe Firefly.
+
+The entry states:
+- **Provenance:** you created `static/img/bird_coffee.png` with Adobe Firefly. This comes from your statement. I can't verify it from the file.
+- **Derived file:** `static/img/bird_coffee_sepia.png` is my processed version of it (transparent background, resized, recoloured, bottom faded), used on `/cafes` under the "El bon cafè…" text.
+- **Not recorded:** the Firefly prompt, the model used and the licence terms, since I don't have them. If you want them in the log, tell me and I'll add them in a later entry.
+
+Only the log changed, nothing else, and nothing is committed. The log is not committed per the project rules, so it still needs your commit.
+
+Work/time split: 100% process/docs
+
+**Work/time split this turn:** 100% process/docs
+
+## Entry 16 — 2026-11-01 18:50
+
+**Prompt:** Answers on the management pages: fixed Google user list, phone and computer, do all the changes thought of, sections as they are, no translate button, history collection, Skeleton with a nicer UI, drag-to-reorder.
+
+**Actions taken:** Drafted ADR 0002 (`.docs/02-architecture/adr/0002-shared-management-pages.md`, proposed): hub plus `/manage/{cafes,menu,dishes}`, shared save helper with `version` check and a single `history` collection, shared UI parts, drag handle via `svelte-dnd-action`, Skeleton with the sepia theme, menu sync-not-references first step. No code written: the new dependency and the menu-semantics step need the owner's approval (best-practices §4 and §2). Checked with `npm view` that `svelte-dnd-action` is MIT, 0.9.80, peer range includes Svelte 5; did not test it in the project.
+
+**Verify:** Docs only; nothing to build or test.
+
+**Recap given to user:**
+
+I drafted `.docs/02-architecture/adr/0002-shared-management-pages.md` (`proposed`) and the plan below. I haven't written any code, because two decisions need your approval first.
+
+**Plan, in order**
+1. **Close the open endpoints.** Login check on `PUT/DELETE /api/dishes` and `PUT /api/current-menu`, through one shared helper.
+2. **Shared parts.** A `manage` layout with a single login check; a save helper that checks a `version` number, replaces the document and writes the previous one to a `history` collection; shared components for the save bar, the sortable list, the translations editor and the price field.
+3. **`/manage/cafes`.** The four fixed sections, with items you can add, edit and delete, and reorder by dragging a handle. A "9,99 €" badge marks placeholder prices, and a history panel can restore an old version. Translations are typed by hand.
+4. **Menu and dishes.** The two existing editors rebuilt on the same parts, at `/manage/menu` and `/manage/dishes`, with `/manage` as a hub linking to all three.
+5. **Look.** Skeleton with the sepia palette of the public pages, real input fields instead of `contenteditable`, and a save bar fixed to the bottom on phones. Dragging only starts from a handle, so scrolling on a phone still works.
+
+**Decisions I need from you**
+1. **New dependency `svelte-dnd-action`** for the dragging. It is MIT-licensed and last published in October 2026, and its Svelte peer range includes Svelte 5. I haven't tested it in this project yet. I would test it with a touch-emulating browser on the cafès page before using it on the menu. May I add it?
+2. **Menu, as you said "all the changes you can think of":** I propose a safe first step. The menu keeps embedding copies of dishes, so the public `carta` pages and the production data stay as they are. The editor flags dishes that differ from the catalogue and offers to sync either way. Making menus reference the catalogue by id is cleaner, but it changes every public page and needs a data migration, so I'd leave it for later. Is that right?
+3. **A version check on save**, so two people editing at once can't silently overwrite each other. The second one gets a clear message. You didn't mention it, so I included it with the history. OK?
+
+If you say "go" to all three, I start with steps 1 and 2.
+
+**Also**
+- **Moved URL:** the current menu editor moves from `/manage` to `/manage/menu`. Anyone with it bookmarked gets redirected.
+- **Old Skeleton:** this project uses Skeleton 1.12, an old version. I'd stay on it for now.
+
+Work/time split: 100% process/docs
+
+**Work/time split this turn:** 100% process/docs
+
+## Entry 17 — 2026-11-01 19:11
+
+**Prompt:** Go, to all three (new dependency `svelte-dnd-action`, menu sync-not-references step, version check). Implement the management pages per ADR 0002.
+
+**Actions taken:** Steps 1-3 only. Added `svelte-dnd-action`. New `src/lib/server/auth.ts` (`requireUserPage`/`requireUserApi`) and `src/lib/server/documents.ts` (`saveDocument` with version check via `findOneAndReplace` + history insert, `listHistory`). Login check added to `PUT/DELETE /api/dishes` and `PUT /api/current-menu` (no version/history there yet). `PUT /api/cafes` now validates and saves through `saveDocument`; new `GET /api/history`. New components in `src/lib/components/manage/` (SortableList, PriceInput, TranslationsEditor, SaveBar, runes mode) and the page `src/routes/manage/cafes/` (+page.server.ts, +page.svelte). `version` added to `CafesMenu`, `PLACEHOLDER_PRICE` to `utils.ts`. ADR 0001 and 0002 set to accepted. Found and fixed in-turn: drag handle did not start drags because Svelte 5 delegates `onmousedown`/`ontouchstart` (switched to capture-phase handlers); `structuredClone` failed on a `$state` proxy (JSON clone). Used a temporary harness route (deleted) to test the real page with a stubbed API.
+
+**Verify:** build OK; `svelte-check` 10 errors before and after, none in new files. Playwright/Chromium against the harness: mouse drag, CDP touch drag and phone scroll behave; dirty state, price normalisation, payload (version, order, translations, no temp ids), invalid new item, history load. Not verified: real login, real database save, version conflict, history write (driver 5.1 `findOneAndReplace` result shape handled for both forms but unrun), real phone. Steps 4 (hub, menu, dishes editors) not started.
+
+**Recap given to user:**
+
+Steps 1 to 3 of the plan are done: the login check on the write endpoints, the shared parts, and `/manage/cafes`. The menu and dishes editors (step 4) and the hub are not started. The whole save path has not run against your real database.
+
+**What changed**
+- **Dependency:** `svelte-dnd-action` added, as you approved.
+- **Login check:** `src/lib/server/auth.ts` is the one place that checks the signed-in account against `AUTHORIZED_USERS`. `PUT/DELETE /api/dishes` and `PUT /api/current-menu` now use it, so they no longer accept anonymous writes. I did not add the version check or history to those two yet, because the old menu editor doesn't send a version.
+- **Versioned saves:** `src/lib/server/documents.ts` replaces a document only if you edited its latest version, and answers a conflict otherwise. It then copies the replaced version into a `history` collection with the date and the editor's email. `PUT /api/cafes` uses it and validates the body. `GET /api/history?collection=cafes` lists the last 20 versions.
+- **Shared parts** in `src/lib/components/manage/`: a drag-to-reorder list, a price field, a translations editor and a save bar.
+- **`/manage/cafes`:** the four sections with editable title and note, and items you can add, edit, delete and drag by a handle. The price field turns "1.8" into "1,80 €", and a badge marks missing or `9,99 €` prices, with a count at the top. Translations are typed by hand, with a counter per item. There is a history panel, a warning before leaving with unsaved changes, and a message if someone else saved first. The look uses the sepia palette. The save bar is fixed at the bottom, and the forms stack on a phone. Labels are in Catalan.
+- **ADRs:** 0001 and 0002 are marked accepted, with two implementation notes in 0002. Loading an old version fills the form and you still press save, which is safer than saving directly.
+
+**Verified**
+- `npm run build` succeeds, and `npm run check` shows the same 10 errors as before, none in the new files.
+- **Real page, mocked server:** I ran the real page with sample data and a stubbed API, in Chromium. Dragging with the mouse and with touch events changed the order. Scrolling a phone from the card body did not start a drag. Editing marks the page as unsaved, and the price field reformats. The save request carried the right version, the new order and the translations, with the temporary ids removed. A new empty item blocks saving. The history panel loads an old version into the form. I removed the temporary test route afterwards.
+
+**Not verified**
+- **The real server path:** login, the database save, the version conflict and the history write have not run. `findOneAndReplace` returns a different shape in driver 5.1 than in later versions. I handled both, but only a real save will confirm it. The first save will also upgrade the seeded document from no version to version 1.
+- **Phone:** tested with an emulated phone, not a real one.
+- **Dropdown and history screens:** I looked at the main screens but not every state.
+
+**Notes**
+- There is no link to `/manage/cafes` yet. Open it by URL until the hub exists.
+- `/manage` and `/manage/dishes` are untouched, so they still use their own login checks.
+- Nothing is committed. `package.json` and `package-lock.json` changed too.
+
+Suggested commit: `feat(manage): add the cafes editor with history, versioned saves and drag ordering`
+
+Next: the hub plus the menu and dishes editors, if you want me to continue.
+
+Work/time split: 55% frontend, 45% backend
+
+**Work/time split this turn:** 55% frontend, 45% backend

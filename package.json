@@ -39,7 +39,8 @@
     "@auth/core": "0.41.3",
     "@auth/sveltekit": "^1.11.3",
     "@floating-ui/dom": "^1.2.9",
-    "mongodb": "5.1"
+    "mongodb": "5.1",
+    "svelte-dnd-action": "^0.9.80"
   },
   "overrides": {
     "eslint-plugin-svelte3": {

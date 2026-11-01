@@ -47,6 +47,7 @@ type Sandwich = {
 
 type CafesMenu = {
   _id?: string;
+  version?: number;
   sections: CafesSection[];
 } | null;
 

@@ -75,6 +75,9 @@ export function translateSandwichMenu(sandwichMenu: SandwichMenu, language: stri
   }
 }
 
+// Price the cafès seed uses where the client has not given one yet
+export const PLACEHOLDER_PRICE = "9,99 €";
+
 // Catalan is the stored base text: a missing translation keeps it
 export function translateCafesMenu(cafesMenu: CafesMenu, language: string | null): void {
   if (!language || language == "ca") {

@@ -2,8 +2,11 @@ import { json } from "@sveltejs/kit";
 import { getDb } from '$lib/server/mongo';
 import { ObjectId } from "mongodb";
 import type { RequestHandler } from "./$types";
+import { requireUserApi } from '$lib/server/auth';
 
-export const PUT = (async ({ request }) => {
+export const PUT = (async ({ request, locals }) => {
+  await requireUserApi(locals);
+
   const data = (await request.json()).data;
   let result;
 
@@ -26,7 +29,9 @@ export const PUT = (async ({ request }) => {
   return json(result);
 }) satisfies RequestHandler;
 
-export const DELETE = (async ({ request }) => {
+export const DELETE = (async ({ request, locals }) => {
+  await requireUserApi(locals);
+
   const data = (await request.json()).data;
   let result;
 
