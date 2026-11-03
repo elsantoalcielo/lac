@@ -679,3 +679,37 @@ Suggested commit: `style(manage): give the management pages an admin look with a
 Work/time split: 100% frontend
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 20 — 2026-11-02 21:59
+
+**Prompt:** The clienta and the acólito want the sandwich page in the same style as the coffee page.
+
+**Actions taken:** Rewrote only `src/routes/entrepans/+page.svelte` in the style of `src/routes/cafes/+page.svelte`: aged-paper card, double border with `Corner` ornaments, masked sepia logo (now links to `/`), sepia `Language` selector, Cormorant font. Sections get a fleur-de-lis heading with a bottom rule; each sandwich is a row with name, allergen icons, dotted leader and two fixed-width price columns (medium / large) under a size header row; description and `large_variant` sit on an italic line below. The allergen legend and the footer are kept. The `+page.server.ts` loader and data are untouched. The scoped CSS is copied from the coffee page (no shared extraction, to stay in scope). Dropped the "rotate your phone" hint, since the layout is now responsive. Names may wrap, unlike the coffee page. Did not add the coffee page's hard-coded Catalan slogans or the bird picture (copy and art are the owner's call).
+
+**Verify:** `svelte-check` reports only the 2 existing `gtag` errors; the new warnings are the self-closing-tag style the coffee page also uses. `eslint` fails with a preprocessing error on every `.svelte` file, including the unchanged coffee page, so it could not check this one. NOT verified: no visual check in a browser and no run against the database (not tried), so spacing, long names and the 9 languages are unseen.
+
+**Recap given to user:**
+
+I restyled the sandwich page to match the coffee page. Only `src/routes/entrepans/+page.svelte` changed. The loader and the data are untouched.
+
+**What it looks like now**
+- **Frame:** the same aged-paper card with the double border and corner ornaments, the sepia logo (still a link home), the sepia language selector and the Cormorant font.
+- **Sections:** a fleur-de-lis and an uppercase title over a thin rule.
+- **Rows:** name and allergen icons, then a dotted leader, then the medium and large prices in two aligned columns. A small header row labels the two sizes. Descriptions and the large-size note go on an italic line below.
+- **Bottom:** the allergen legend and the footer text, in the same style.
+
+**Choices to check**
+- I removed the "rotate your phone" hint, since the page now works in portrait.
+- I didn't add the coffee page's Catalan slogans or the bird picture. That copy and artwork are yours to decide.
+- Sandwich names can wrap onto a second line, which the coffee page doesn't allow.
+- The styles are copied from the coffee page, not shared. If you want them in one place, that's a separate change touching both pages.
+
+**Verified:** `npm run check` shows only the 2 old `gtag` errors, plus self-closing-tag warnings of the kind the coffee page also has. `eslint` crashes on every `.svelte` file, the unchanged coffee page included, so it checked nothing here.
+
+**Not verified:** I haven't seen the page in a browser or run it against the database. Spacing, long names and the other languages are unchecked.
+
+Nothing is committed. Suggested commit: `style(entrepans): restyle the sandwich page like the coffee page`
+
+Work/time split: 100% frontend
+
+**Work/time split this turn:** 100% frontend
