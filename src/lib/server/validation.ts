@@ -15,6 +15,8 @@ export const isValidCafesItem = (item: any): boolean => isText(item?.name) && it
 export const isValidCafesSection = (section: any): boolean =>
   isText(section?.key) && isText(section?.title) && isOptionalText(section.note) && Array.isArray(section.items) && section.items.every(isValidCafesItem) && isTranslations(section.translations);
 
+export const isValidCafesMenuTexts = (data: any): boolean => isOptionalText(data?.tagline) && isTranslations(data?.translations);
+
 export const isValidDish = (dish: any): boolean =>
   isText(dish?.name) &&
   dish.name.length > 0 &&

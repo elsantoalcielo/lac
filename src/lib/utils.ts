@@ -84,6 +84,10 @@ export function translateCafesMenu(cafesMenu: CafesMenu, language: string | null
     return;
   }
 
+  if (cafesMenu) {
+    cafesMenu.tagline = cafesMenu.translations?.[language]?.tagline || cafesMenu.tagline;
+  }
+
   cafesMenu?.sections.forEach((section) => {
     const sectionTranslation = section.translations?.[language];
     if (sectionTranslation) {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { LANGUAGES } from "$lib/languages";
 
-  type Field = { key: string; label: string };
+  type Field = { key: string; label: string; multiline?: boolean };
   type Translations = { [language: string]: { [field: string]: string } };
 
   let { translations = $bindable(), fields }: { translations: Translations | undefined; fields: Field[] } = $props();
@@ -31,13 +31,24 @@
         <div class="mb-1 text-sm font-medium text-slate-700">{language.name}</div>
         <div class="grid gap-2 sm:grid-cols-2">
           {#each fields as field}
-            <input
-              class="w-full rounded-md border border-slate-200 bg-white px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={field.label}
-              aria-label="{field.label} ({language.name})"
-              value={get(language.locale, field.key)}
-              oninput={(event) => set(language.locale, field.key, event.currentTarget.value)}
-            />
+            {#if field.multiline}
+              <textarea
+                class="w-full rounded-md border border-slate-200 bg-white px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-2"
+                rows="3"
+                placeholder={field.label}
+                aria-label="{field.label} ({language.name})"
+                value={get(language.locale, field.key)}
+                oninput={(event) => set(language.locale, field.key, event.currentTarget.value)}
+              ></textarea>
+            {:else}
+              <input
+                class="w-full rounded-md border border-slate-200 bg-white px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={field.label}
+                aria-label="{field.label} ({language.name})"
+                value={get(language.locale, field.key)}
+                oninput={(event) => set(language.locale, field.key, event.currentTarget.value)}
+              />
+            {/if}
           {/each}
         </div>
       </div>

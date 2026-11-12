@@ -70,16 +70,16 @@
             </section>
             {/if}
 
+            {#if data.cafesMenu?.tagline}
             <div class="text-center py-2 px-4">
-              <p class="font-script text-2xl sm:text-3xl text-sepia-800 leading-snug">
-                El bon cafè<br />sempre sap millor<br />en bona companyia
-              </p>
+              <p class="tagline font-script text-2xl sm:text-3xl text-sepia-800 leading-snug">{data.cafesMenu.tagline}</p>
               <div class="flex justify-center items-center gap-2 mt-2 text-sepia-700/80">
                 <span class="w-8 h-[1px] bg-sepia-600/50" />
                 <span class="text-xs">♦</span>
                 <span class="w-8 h-[1px] bg-sepia-600/50" />
               </div>
             </div>
+            {/if}
 
             <img class="w-44 md:w-52 mx-auto -mt-2" src="/img/bird_coffee_sepia.png" width="450" height="600" alt="" loading="lazy" />
 
@@ -200,6 +200,11 @@
   .language :global(select:focus-visible) {
     outline: 1.5px solid #785842;
     outline-offset: 2px;
+  }
+
+  /* The tagline is typed with line breaks, and each one is a line on the menu */
+  .tagline {
+    white-space: pre-line;
   }
 
   .menu-shadow {

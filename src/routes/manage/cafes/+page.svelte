@@ -24,7 +24,7 @@
   const toEditable = (sections: CafesSection[]): EditableSection[] =>
     JSON.parse(JSON.stringify(sections)).map((section: CafesSection) => ({ ...section, items: section.items.map((item) => ({ ...item, id: newId() })) }));
 
-  const toSavable = (sections: EditableSection[]): CafesSection[] =>
+  const toSavableSections = (sections: EditableSection[]): CafesSection[] =>
     sections.map((section) => ({
       key: section.key,
       title: section.title.trim(),
@@ -38,6 +38,13 @@
       ...(cleanTranslations(section.translations) ? { translations: cleanTranslations(section.translations) as CafesSectionTranslations } : {}),
     }));
 
+  // Everything the page stores; empty optionals are left out
+  const toSavable = () => ({
+    sections: toSavableSections(sections),
+    ...(tagline.trim() ? { tagline: tagline.trim() } : {}),
+    ...(cleanTranslations(translations) ? { translations: cleanTranslations(translations) as CafesMenuTranslations } : {}),
+  });
+
   // The form starts from the loaded document and is not re-synced from `data` afterwards
   // svelte-ignore state_referenced_locally
   const documentId = data.cafesMenu._id;
@@ -46,22 +53,25 @@
   // svelte-ignore state_referenced_locally
   let sections = $state(toEditable(data.cafesMenu.sections));
   // svelte-ignore state_referenced_locally
-  let savedSnapshot = $state(JSON.stringify(toSavable(sections)));
+  let tagline = $state(data.cafesMenu.tagline ?? "");
+  // svelte-ignore state_referenced_locally
+  let translations = $state<CafesMenuTranslations | undefined>(JSON.parse(JSON.stringify(data.cafesMenu.translations ?? {})));
+  let savedSnapshot = $state(JSON.stringify(toSavable()));
 
   let saving = $state(false);
   let status = $state<Status>({ kind: "idle", text: "" });
 
-  const dirty = $derived(JSON.stringify(toSavable(sections)) != savedSnapshot);
+  const dirty = $derived(JSON.stringify(toSavable()) != savedSnapshot);
   const invalid = $derived(sections.some((section) => section.items.some((item) => !item.name.trim() || !item.price.trim())));
   const pendingPrices = $derived(sections.reduce((total, section) => total + section.items.filter((item) => item.price === PLACEHOLDER_PRICE).length, 0));
 
   const save = async () => {
     saving = true;
     status = { kind: "idle", text: "" };
-    const result = await putDocument("/api/cafes", { _id: documentId, version, sections: toSavable(sections) });
+    const result = await putDocument("/api/cafes", { _id: documentId, version, ...toSavable() });
     if (result.kind == "saved") {
       version = result.version;
-      savedSnapshot = JSON.stringify(toSavable(sections));
+      savedSnapshot = JSON.stringify(toSavable());
       status = { kind: "saved", text: "Desat" };
     } else if (result.kind == "conflict") {
       status = { kind: "conflict", text: "Algú altre ha desat canvis. Recarrega la pàgina abans de continuar." };
@@ -83,9 +93,12 @@
 
   let historyOpen = $state(false);
 
-  const loadVersion = (document: { sections: CafesSection[] }) => {
+  // Versions saved before the tagline existed have none, so loading one clears it
+  const loadVersion = (document: { sections: CafesSection[]; tagline?: string; translations?: CafesMenuTranslations }) => {
     if (dirty && !confirm("Hi ha canvis sense desar. Vols substituir-los per aquesta versió?")) return;
     sections = toEditable(document.sections);
+    tagline = document.tagline ?? "";
+    translations = JSON.parse(JSON.stringify(document.translations ?? {}));
     status = { kind: "idle", text: "" };
     historyOpen = false;
   };
@@ -107,6 +120,15 @@
         {pendingPrices} {pendingPrices == 1 ? "element té" : "elements tenen"} el preu pendent ({PLACEHOLDER_PRICE}). Es veu així a la pàgina pública fins que el canviïs.
       </p>
     {/if}
+
+    <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">Frase</span>
+        <textarea class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" bind:value={tagline}></textarea>
+        <span class="mt-1 block text-sm text-slate-600">Cada línia es mostra com a una línia a la carta. Si la deixes buida, no hi surt.</span>
+      </label>
+      <TranslationsEditor bind:translations fields={[{ key: "tagline", label: "Frase", multiline: true }]} />
+    </section>
 
     {#each sections as section (section.key)}
       <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">

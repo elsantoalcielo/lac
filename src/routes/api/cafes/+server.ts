@@ -2,13 +2,13 @@ import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { requireUserApi } from '$lib/server/auth';
 import { saveDocument, VersionConflictError } from '$lib/server/documents';
-import { isValidCafesSection } from '$lib/server/validation';
+import { isValidCafesMenuTexts, isValidCafesSection } from '$lib/server/validation';
 
 export const PUT = (async ({ request, locals }) => {
   const email = await requireUserApi(locals);
 
   const data = (await request.json()).data;
-  if (!data || typeof data._id !== 'string' || !Array.isArray(data.sections) || !data.sections.every(isValidCafesSection)) {
+  if (!data || typeof data._id !== 'string' || !Array.isArray(data.sections) || !data.sections.every(isValidCafesSection) || !isValidCafesMenuTexts(data)) {
     error(400, 'Invalid cafes document');
   }
 

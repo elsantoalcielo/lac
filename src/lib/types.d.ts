@@ -49,6 +49,9 @@ type CafesMenu = {
   _id?: string;
   version?: number;
   sections: CafesSection[];
+  // Shown on the page as typed, one line per line; hidden when missing
+  tagline?: string;
+  translations?: CafesMenuTranslations;
 } | null;
 
 type CafesSection = {
@@ -92,6 +95,12 @@ declare global {
     [language: string]: {
       title: string;
       note?: string;
+    }
+  }
+
+  type CafesMenuTranslations = {
+    [language: string]: {
+      tagline?: string;
     }
   }
 }

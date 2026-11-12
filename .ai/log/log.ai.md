@@ -721,3 +721,41 @@ Work/time split: 100% frontend
 **Actions taken:** Removed the phrase block, along with its ✤ ornament, from the end of the right column in `src/routes/cafes/+page.svelte`. Build passes. `npm run check` still shows only the 2 old `gtag` errors, and eslint fails on this file with the same preprocessing error as before the edit. Not checked in a browser. Not committed.
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 22 — 2026-11-12 10:40
+
+**Prompt:** Make the remaining cafès tagline ("El bon cafè / sempre sap millor / en bona companyia") configurable, as a field on the `cafes` document (option A), with the hint "Cada línia es mostra com a una línia a la carta. Si la deixes buida, no hi surt."
+
+**Actions taken:** Added `tagline` and document-level `translations: { [language]: { tagline } }` to `CafesMenu` (`src/lib/types.d.ts`). That shape was chosen over a `taglineTranslations` string map so the existing `isTranslations`, `cleanTranslations` and `TranslationsEditor` work unchanged. Added `isValidCafesMenuTexts` (`src/lib/server/validation.ts`), used by `PUT /api/cafes`. `translateCafesMenu` swaps in the translated tagline, falling back to Catalan. The public `/cafes` page renders the tagline as text with `white-space: pre-line` (no `{@html}`) and hides the block, divider included, when it is empty. `TranslationsEditor` gains an optional `multiline` field (textarea). `/manage/cafes` gets a "Frase" card; `toSavable` now covers sections, tagline and translations, because `saveDocument` replaces the whole document. `loadVersion` restores them too, so a pre-change history version clears the tagline. Added the tagline to `scripts/cafes-seed.json`. New ADR 0003 supersedes ADR 0001's "taglines stay in code".
+
+**Verify:** `npm run build` passes. `npm run check`: 2 errors and 1057 warnings, the same as before (the old `gtag` errors). eslint on the changed `.ts` files: 1 error and 5 warnings, against 1 and 4 at HEAD (the old `no-extra-semi` in utils.ts, plus one new `no-explicit-any` matching the file's pattern). The seed parses as JSON. NOT verified: `.svelte` lint (eslint crashes on them), browser checks of the editor and page, Playwright tests.
+
+**Recap given to user:**
+
+The phrase is now stored in the `cafes` document and edited from `/manage/cafes`. Nothing is committed.
+
+**What changed**
+- **Public page** (`src/routes/cafes/+page.svelte`): shows the `tagline` from the database, with each line typed in the editor shown as a line on the menu. If the phrase is empty, the phrase and its ♦ divider are hidden.
+- **Translations** (`src/lib/utils.ts`): the selected language's translation replaces the Catalan phrase. A language without one shows the Catalan text.
+- **Editor** (`src/routes/manage/cafes/+page.svelte`): a new "Frase" card above the sections, with your hint text, a translations section, unsaved-change tracking and history restore. The phrase is saved together with the sections.
+- **Shared component** (`src/lib/components/manage/TranslationsEditor.svelte`): a field can now ask for a multi-line box. The existing editors don't use it, so they look the same.
+- **Server and types**: `PUT /api/cafes` checks `tagline` and `translations` (`isValidCafesMenuTexts` in `src/lib/server/validation.ts`). `CafesMenu` gains both fields in `src/lib/types.d.ts`.
+- **Seed** (`scripts/cafes-seed.json`): now includes the Catalan phrase.
+- **New decision record**: `.docs/02-architecture/adr/0003-make-the-cafes-tagline-configurable.md`, which replaces ADR 0001's "taglines stay in code".
+
+**Action needed before deploying:** the live document has no phrase yet. Until someone types it in the editor, or you add it to the database, `/cafes` won't show it.
+
+**Verified**
+- `npm run build` passes.
+- `npm run check`: 2 errors and 1057 warnings, the same as before. The errors are the old `gtag` ones, and the warnings in the cafes page are its existing self-closing tags.
+- `eslint` on the three changed `.ts` files: 1 error and 5 warnings, against 1 error and 4 warnings before. The error is the old extra semicolon in `utils.ts`. The new warning is the `any` in my validator, written like the 4 validators already in that file.
+- The seed is valid JSON and contains the phrase.
+
+**Not verified**
+- `eslint` can't read `.svelte` files.
+- I haven't opened the editor or the page in a browser, and I haven't run the Playwright tests.
+- Still to check: saving from `/manage/cafes`, the line breaks on `/cafes` in Catalan and one other language, an empty phrase, and restoring an old version.
+
+Work/time split: 70% frontend, 15% backend, 15% docs
+
+**Work/time split this turn:** 70% frontend, 15% backend, 15% docs
