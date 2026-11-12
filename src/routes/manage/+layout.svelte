@@ -5,14 +5,13 @@
   let { data, children } = $props();
 
   const links = [
-    { href: "/manage", label: "Inici" },
     { href: "/manage/menu", label: "Carta del dia" },
     { href: "/manage/cafes", label: "Cafès i tes" },
     { href: "/manage/sandwiches", label: "Entrepans" },
     { href: "/manage/dishes", label: "Catàleg" },
   ];
 
-  const isActive = (href: string) => (href == "/manage" ? page.url.pathname == "/manage" : page.url.pathname.startsWith(href));
+  const isActive = (href: string) => page.url.pathname.startsWith(href);
 </script>
 
 <div class="min-h-screen bg-slate-100 font-sans text-slate-900 antialiased">

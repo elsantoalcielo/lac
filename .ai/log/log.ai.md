@@ -876,3 +876,11 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** Added the missing "Entrepans" link (`/manage/sandwiches`) to the management navigation bar in `src/routes/manage/+layout.svelte`, after "Catàleg" as on the hub. This was missed in Entry 24. `npm run check` is unchanged (2 old `gtag` errors) and the build passes; not checked in a browser. Not committed.
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 26 — 2026-11-12 21:50
+
+**Prompt:** The management menu looks vertically misaligned and its last option is truncated; remove "Inici", which does the same as the "Gestió" link.
+
+**Actions taken:** Removed the "Inici" link from `src/routes/manage/+layout.svelte` and simplified `isActive` (its `/manage` special case is no longer needed). Kept the owner's order (Entrepans before Catàleg). Likely remaining cause, from the code: at `sm` widths the links share a row with the brand and the sign-out button in an `overflow-x-auto` box, so it can still clip or scroll at about 640–750px; suggested `sm:` → `md:`, not applied. Check unchanged (2 old `gtag` errors), build passes; not checked in a browser. Not committed.
+
+**Work/time split this turn:** 100% frontend
