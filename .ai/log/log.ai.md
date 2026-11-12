@@ -713,3 +713,11 @@ Nothing is committed. Suggested commit: `style(entrepans): restyle the sandwich 
 Work/time split: 100% frontend
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 21 — 2026-11-12 10:19
+
+**Prompt:** Remove the second hard-coded phrase ("La vida / també es gaudeix / en tassa") from the cafes menu.
+
+**Actions taken:** Removed the phrase block, along with its ✤ ornament, from the end of the right column in `src/routes/cafes/+page.svelte`. Build passes. `npm run check` still shows only the 2 old `gtag` errors, and eslint fails on this file with the same preprocessing error as before the edit. Not checked in a browser. Not committed.
+
+**Work/time split this turn:** 100% frontend
