@@ -9,6 +9,7 @@
   import SortableList from "$lib/components/manage/SortableList.svelte";
   import PriceInput from "$lib/components/manage/PriceInput.svelte";
   import TranslationsEditor from "$lib/components/manage/TranslationsEditor.svelte";
+  import AllergenPicker from "$lib/components/manage/AllergenPicker.svelte";
   import SaveBar from "$lib/components/manage/SaveBar.svelte";
 
   let { data } = $props();
@@ -33,6 +34,7 @@
         name: item.name.trim(),
         price: item.price.trim(),
         ...(item.description?.trim() ? { description: item.description.trim() } : {}),
+        ...(item.allergens?.length ? { allergens: item.allergens } : {}),
         ...(cleanTranslations(item.translations) ? { translations: cleanTranslations(item.translations) as DishTranslations } : {}),
       })),
       ...(cleanTranslations(section.translations) ? { translations: cleanTranslations(section.translations) as CafesSectionTranslations } : {}),
@@ -173,6 +175,16 @@
             </div>
             <div class="flex items-start justify-between gap-2">
               <div class="min-w-0 flex-1">
+                <details class="group mt-2">
+                  <summary class="flex cursor-pointer list-none items-center gap-2 text-sm text-slate-600 hover:text-slate-900">
+                    <svg class="h-4 w-4 transition-transform group-open:rotate-90" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6V4z" /></svg>
+                    Al·lèrgens
+                    {#if item.allergens?.length}<span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-800">{item.allergens.length}</span>{/if}
+                  </summary>
+                  <div class="mt-3">
+                    <AllergenPicker bind:values={item.allergens} />
+                  </div>
+                </details>
                 <TranslationsEditor
                   bind:translations={item.translations}
                   fields={[

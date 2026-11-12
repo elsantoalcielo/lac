@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { translateAllergen } from "$lib/utils";
-
-  const ALLERGENS = ["gluten", "crustaceans", "eggs", "fish", "peanuts", "soybeans", "milk", "nuts", "celery", "mustard", "sesame", "sulphites", "lupin", "molluscs"];
+  import { ALLERGENS, translateAllergen } from "$lib/utils";
 
   let { values = $bindable() }: { values: string[] | undefined } = $props();
 

@@ -3,11 +3,15 @@
 
   import Language from "$lib/components/language.svelte";
   import type { CafesItem } from "$lib/types";
+  import { ALLERGENS, translateAllergen } from "$lib/utils";
 
   export let data;
 
   // The sections are keyed: the icons and layout below are fixed per key
   $: sections = Object.fromEntries(data.cafesMenu?.sections.map((section) => [section.key, section]) ?? []);
+
+  // The legend follows the content: only the allergens some item has
+  $: legendAllergens = ALLERGENS.filter((allergen) => data.cafesMenu?.sections.some((section) => section.items.some((item) => item.allergens?.includes(allergen))));
 
   const fleurDeLis =
     "M12,2 C11.5,5 9.5,7 8,8 C6.5,7 4.5,7.5 4,9.5 C3.5,12 6,13.5 7.5,13.5 C9,13.5 10,12.5 10.5,11.5 C10.8,13 10.5,15.5 8,16.5 L8,18 L10.5,18 C11,18 11.5,19 12,21 C12.5,19 13,18 13.5,18 L16,18 L16,16.5 C13.5,15.5 13.2,13 13.5,11.5 C14,12.5 15,13.5 16.5,13.5 C18,13.5 20.5,12 20,9.5 C19.5,7.5 17.5,7 16,8 C14.5,7 12.5,5 12,2 Z";
@@ -15,7 +19,12 @@
 
 {#snippet row(item: CafesItem)}
   <div class="menu-item">
-    <span class="name">{item.name}</span>
+    <span class="name">
+      {item.name}
+      {#each item.allergens ?? [] as allergen}
+        <img class="allergen" src="/img/allergens/{allergen}.jpg" alt={translateAllergen(allergen, data.language)} />
+      {/each}
+    </span>
     <span class="leader" /><span class="price">{item.price}</span>
   </div>
   {#if item.description}<p class="description">{item.description}</p>{/if}
@@ -148,6 +157,22 @@
 
           </div>
         </div>
+
+        {#if legendAllergens.length > 0}
+        <div class="flex justify-center items-center gap-2 mt-8 text-sepia-700/80">
+          <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+          <span class="text-xs">♦</span>
+          <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+        </div>
+
+        <ul class="flex flex-wrap justify-center gap-x-5 gap-y-1 mt-4 text-sm sm:text-base">
+          {#each legendAllergens as allergen}
+            <li class="flex items-center">
+              <img class="allergen" src="/img/allergens/{allergen}.jpg" alt="" /><span class="ml-1.5">{translateAllergen(allergen, data.language)}</span>
+            </li>
+          {/each}
+        </ul>
+        {/if}
       </div>
     </div>
   </main>
@@ -233,6 +258,14 @@
     bottom: 0.28em;
     margin: 0 0.2rem;
     opacity: 0.8;
+  }
+
+  .allergen {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-left: 0.3rem;
+    vertical-align: -0.15em;
   }
 
   .description {

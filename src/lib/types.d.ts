@@ -67,6 +67,8 @@ type CafesItem = {
   name: string;
   price: string;
   description?: string;
+  // Names from ALLERGENS in $lib/utils
+  allergens?: string[];
   translations?: DishTranslations;
 }
 

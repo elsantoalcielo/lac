@@ -61,6 +61,56 @@
       ]
     },
     {
+      "key": "xocolates",
+      "title": "Xocolates",
+      "items": [
+        {
+          "name": "Xocolata a la tassa",
+          "price": "3,25 €",
+          "allergens": [
+            "gluten",
+            "milk",
+            "sulphites"
+          ]
+        },
+        {
+          "name": "Xocolata a la tassa petita",
+          "price": "2,50 €",
+          "allergens": [
+            "gluten",
+            "milk",
+            "sulphites"
+          ]
+        },
+        {
+          "name": "Suís",
+          "price": "3,65 €",
+          "allergens": [
+            "gluten",
+            "milk",
+            "sulphites"
+          ]
+        },
+        {
+          "name": "Suís petit",
+          "price": "2,00 €",
+          "allergens": [
+            "gluten",
+            "milk",
+            "sulphites"
+          ]
+        },
+        {
+          "name": "Cacaolat",
+          "price": "2,80 €"
+        },
+        {
+          "name": "Cola Cao",
+          "price": "2,50 €"
+        }
+      ]
+    },
+    {
       "key": "tes",
       "title": "Tes",
       "items": [

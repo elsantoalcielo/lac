@@ -759,3 +759,67 @@ The phrase is now stored in the `cafes` document and edited from `/manage/cafes`
 Work/time split: 70% frontend, 15% backend, 15% docs
 
 **Work/time split this turn:** 70% frontend, 15% backend, 15% docs
+
+## Entry 23 — 2026-11-12 19:25
+
+**Prompt:** Add a Xocolates section from the client's list (Xocolata a la tassa 3,25/petita 2,50; Suís 3,65/petit 2; Cacaolat 2,80; Cola Cao 2,50), with allergens (Xoco tassa and Suís: lactis, gluten, sulfits). The owner chose two separate items for the two sizes, allergens on cafes items, and adding the section to the database themselves. An ADR is wanted.
+
+**Actions taken:** `CafesItem.allergens?: string[]`. The allergen list was moved from `AllergenPicker` to `ALLERGENS` in `src/lib/utils.ts`, shared with the new `isOptionalAllergens` check in `isValidCafesItem` (unknown names rejected). Editor: a folded "Al·lèrgens" picker per item, and `toSavableSections` keeps `allergens` (otherwise every save would drop them). Public `/cafes`: icons after item names (sandwich-page style) and a legend derived from the allergens in use, translated, hidden when empty. Seed: `xocolates` section after `cafes` with 6 items. The 4 chocolate/Suís items have gluten, milk and sulphites; the small sizes are assumed to share the full sizes' allergens; Cacaolat and Cola Cao have none, as given. Gave the owner a `mongosh` `updateOne` (idempotent filter, `$position: 1`, `$inc version`) to run after deploying. New ADR 0004.
+
+**Verify:** `npm run build` passes. `npm run check`: 2 errors and 1057 warnings, unchanged (the old `gtag` errors and existing self-closing-tag warnings). eslint on `utils.ts`/`validation.ts`: 1 error and 5 warnings, the same as after Entry 22. The seed parses, in the order cafes, xocolates, tes, infusions. NOT verified: `.svelte` lint, browser checks, Playwright, the `mongosh` command.
+
+**Recap given to user:**
+
+The Xocolates section and allergens for cafes items are ready in code and in the seed. The live database still needs the section, which is your step below. Nothing is committed.
+
+**What changed**
+- **Allergens on cafes items** (`src/lib/types.d.ts`, `src/lib/server/validation.ts`): items have optional `allergens`, and the server rejects names it doesn't know. The list moved to `ALLERGENS` in `src/lib/utils.ts`, so `AllergenPicker` and the server check share it.
+- **Editor** (`src/routes/manage/cafes/+page.svelte`): each item has a folded "Al·lèrgens" picker, and saving now keeps the allergens.
+- **Public page** (`src/routes/cafes/+page.svelte`): icons after the item name. A legend at the bottom lists only the allergens in use, translated, and is hidden when none are set.
+- **Seed** (`scripts/cafes-seed.json`): `xocolates` section after `cafes`, with the 6 items. The two drinks with sizes are separate items, and the 4 chocolate and Suís items have gluten, milk (lactis) and sulphites.
+- **Decision record**: `.docs/02-architecture/adr/0004-cafes-items-carry-allergens.md`.
+
+**Your step: add the section to the live database.** Do it after deploying, because the editor that's live now deletes allergens when it saves:
+
+```js
+use amagat
+db.cafes.updateOne(
+  { "sections.key": { $ne: "xocolates" } },
+  {
+    $push: { sections: { $each: [{
+      key: "xocolates", title: "Xocolates", items: [
+        { name: "Xocolata a la tassa", price: "3,25 €", allergens: ["gluten", "milk", "sulphites"] },
+        { name: "Xocolata a la tassa petita", price: "2,50 €", allergens: ["gluten", "milk", "sulphites"] },
+        { name: "Suís", price: "3,65 €", allergens: ["gluten", "milk", "sulphites"] },
+        { name: "Suís petit", price: "2,00 €", allergens: ["gluten", "milk", "sulphites"] },
+        { name: "Cacaolat", price: "2,80 €" },
+        { name: "Cola Cao", price: "2,50 €" }
+      ] }], $position: 1 } },
+    $inc: { version: 1 }
+  }
+)
+```
+
+- The filter matches only while the document has no `xocolates` section, so running it twice does nothing the second time.
+- `$position: 1` places the section second in the editor. The public page places it by key anyway.
+- `$inc: { version: 1 }` makes any editor tab that's already open reload instead of overwriting it.
+- This direct edit adds no entry to the history.
+
+**To confirm with the client**
+- The small sizes: I gave them the same allergens as the full size.
+- Cacaolat and Cola Cao: the client gave no allergens, so they show no icons, which can read as "allergen-free". Cacaolat contains milk. I didn't add anything I wasn't given.
+
+**Verified**
+- `npm run build` passes.
+- `npm run check`: still 2 errors and 1057 warnings. The errors are the old `gtag` ones, and the warnings in the cafes page are its existing self-closing tags.
+- `eslint` on `utils.ts` and `validation.ts` gives the same results as after the last change. The error is the old extra semicolon. The warnings are the `any` parameters the validators already had.
+- The seed parses as JSON, with sections in the order cafes, xocolates, tes, infusions.
+
+**Not verified**
+- `eslint` can't read `.svelte` files.
+- I haven't opened anything in a browser, haven't run the Playwright tests and haven't tried the `mongosh` command.
+- Still to check in a browser: the icons beside long names on phones, the legend in each language, saving allergens from the editor, and that an unknown allergen name is refused.
+
+Work/time split: 65% frontend, 15% backend, 20% docs/data
+
+**Work/time split this turn:** 65% frontend, 15% backend, 20% docs/data

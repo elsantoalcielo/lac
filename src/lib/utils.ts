@@ -107,6 +107,9 @@ export function translateCafesMenu(cafesMenu: CafesMenu, language: string | null
 
 export enum AllergenName { gluten, crustaceans, eggs, fish, peanuts, soybeans, milk, nuts, celery, mustard, sesame, sulphites, molluscs };
 
+// Every allergen with an icon in /img/allergens, in the order the pickers and legends show them
+export const ALLERGENS = ["gluten", "crustaceans", "eggs", "fish", "peanuts", "soybeans", "milk", "nuts", "celery", "mustard", "sesame", "sulphites", "lupin", "molluscs"];
+
 export function translateAllergen(allergen: string, language: string | undefined): string {
   const TRANSLATIONS: { [language: string]: { [allergen: string]: string } } = {
     ca: {
