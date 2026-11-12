@@ -3,6 +3,8 @@ type Menu = {
 } | null;
 
 type SandwichMenu = {
+  _id?: string;
+  version?: number;
   sections: SandwichSection[];
 } | null;
 
@@ -37,11 +39,15 @@ type Dish = {
 type Sandwich = {
   name: string;
   description?: string;
+  // Stored without the € sign; sandwiches with one size have no medium price
   price: {
     large: string,
-    medium: string
+    medium?: string
   },
-  allergens?: Allergen[];
+  // Names from ALLERGENS in $lib/utils
+  allergens?: string[];
+  // A word for translateOther shown under the large price, e.g. "barra"
+  large_variant?: string;
   translations?: SandwichTranslations;
 }
 

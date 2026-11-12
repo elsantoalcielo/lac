@@ -2,13 +2,15 @@
   import Corner from "$lib/components/corner.svelte";
   import Language from "$lib/components/language.svelte";
   import Opengraph from "$lib/components/opengraph.svelte";
-  import { translateAllergen, translateOther } from "$lib/utils";
+  import { ALLERGENS, translateAllergen, translateOther } from "$lib/utils";
   import type { PageData } from "./$types";
+  import type { Sandwich, SandwichSection } from "$lib/types";
   export let data: PageData;
 
   const { sandwichMenu, title, footer, language } = data;
 
-  const legendAllergens = ["gluten", "eggs", "fish", "milk", "sesame"];
+  // The legend follows the content: only the allergens some sandwich has
+  const legendAllergens = ALLERGENS.filter((allergen) => sandwichMenu?.sections.some((section: SandwichSection) => section.sandwiches.some((sandwich: Sandwich) => sandwich.allergens?.includes(allergen))));
 
   const fleurDeLis =
     "M12,2 C11.5,5 9.5,7 8,8 C6.5,7 4.5,7.5 4,9.5 C3.5,12 6,13.5 7.5,13.5 C9,13.5 10,12.5 10.5,11.5 C10.8,13 10.5,15.5 8,16.5 L8,18 L10.5,18 C11,18 11.5,19 12,21 C12.5,19 13,18 13.5,18 L16,18 L16,16.5 C13.5,15.5 13.2,13 13.5,11.5 C14,12.5 15,13.5 16.5,13.5 C18,13.5 20.5,12 20,9.5 C19.5,7.5 17.5,7 16,8 C14.5,7 12.5,5 12,2 Z";

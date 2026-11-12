@@ -823,3 +823,48 @@ db.cafes.updateOne(
 Work/time split: 65% frontend, 15% backend, 20% docs/data
 
 **Work/time split this turn:** 65% frontend, 15% backend, 20% docs/data
+
+## Entry 24 — 2026-11-12 21:30
+
+**Prompt:** Build a management page for the sandwich menu, with a data-driven allergen legend on `/entrepans` and a `.gitignore` entry for the client data sample. The plan was reviewed against `.docs/00-context/client-samples/current-sandwich-menu.json`.
+
+**Actions taken:** New `/manage/sandwiches` (loader and page) and `PUT /api/sandwiches`, following the cafes and menu editors and ADR 0002 (no new ADR). The page supports section add, delete and ↑/↓ reorder (the public page loops over sections) and optional section titles. Each item has medium (optional) and large prices via `PriceInput currency={false}` (stored without €), a `large_variant` select (none/barra, plus any unknown stored value), allergens and translations. `toSavable` keeps unknown fields and drops empty optionals, so a first save removes `large_variant: ""` from five items. Added `SANDWICH_COLLECTION` to `VERSIONED_COLLECTIONS`, `isValidSandwich` and `isValidSandwichSection`. Types: `SandwichMenu._id/version`, `price.medium?`, `large_variant?`, and `Sandwich.allergens` changed from `Allergen[]` to `string[]` (the enum type caused check errors and doesn't match the data). The `/entrepans` legend is now derived from `ALLERGENS` filtered by use (same 5 today). Hub grid 3 → 2 columns. `.gitignore`: `/.docs/00-context/client-samples/`.
+
+**Verify:** `npm run check`: 2 errors and 1057 warnings, as before (the first pass had 3 new errors, fixed). `npm run build` passes. The validators were run with vite-node against the local sample: 3/3 sections valid; missing or empty large price, unknown allergen and non-object price rejected; untitled section accepted. eslint on the server `.ts` files: 0 errors and 8 `no-explicit-any` warnings (2 new). `git check-ignore` confirms the sample is ignored. NOT verified: `.svelte` lint, a browser save/reload, history, section moves, mobile layout, Playwright. Dev mode writes to the live collection.
+
+**Recap given to user:**
+
+The sandwich editor is at `/manage/sandwiches`, with a new "Entrepans" card on the hub. Nothing is committed.
+
+**What changed**
+- **Editor** (`src/routes/manage/sandwiches/`): built on the same shared parts as the cafes editor (save bar, unsaved-changes guard, history, drag to reorder items).
+  - **Sections:** title (an empty title means no heading, as for "Extres") with translations, ↑/↓ to reorder, delete with confirmation, and "+ Afegeix una secció".
+  - **Each item:** name, medium price (empty means large only), large price (required), description, a "large size" note (none or Barra), allergens, and translations of the name and description.
+  - Prices are stored without €, like today. Fields the editor doesn't know about are kept when saving.
+- **API** (`src/routes/api/sandwiches/+server.ts`): `PUT` with the login check, validation (`isValidSandwich` and `isValidSandwichSection`), version check and history. `current-sandwich-menu` is now in `VERSIONED_COLLECTIONS` (`SANDWICH_COLLECTION` in `src/lib/server/documents.ts`).
+- **Types:** `SandwichMenu` gains `_id` and `version`. `Sandwich.price.medium` is now optional, `large_variant` is declared, and `allergens` is `string[]`. The enum type didn't match the stored names and broke the type check.
+- **`/entrepans`:** the allergen legend now lists the allergens in use. With today's data it shows the same five, in the same order.
+- **Hub:** the cards are in 2 columns now, so the 4 cards fill two rows.
+- **`.gitignore`:** `/.docs/00-context/client-samples/` is ignored, and `git check-ignore` confirms it.
+
+**The first save from the editor will also change these:**
+- The five bikinis lose their empty `large_variant: ""`. Nothing changes on the page.
+- The document gets `version: 1`.
+
+**Verified**
+- `npm run check`: 2 errors and 1057 warnings, the same as before. My first version had 3 new errors, which are fixed.
+- `npm run build` passes.
+- Validator: ran locally against your sample file. All 3 sections pass. A missing or empty large price, an unknown allergen, a price that isn't an object are all rejected, and a section without a title is accepted.
+- `eslint` on the server files: 0 errors and 8 `any` warnings. 2 are new, written like the existing validators.
+
+**Not verified**
+- `eslint` can't read `.svelte` files.
+- I haven't opened the editor or `/entrepans` in a browser, and I haven't run the Playwright tests.
+- Still to check: a real save and a reload, the history panel, section moves, the price fields on a phone, and the legend after adding a new allergen.
+- **Careful when testing:** `npm run dev` edits the live sandwich menu, because there's no draft copy.
+
+The data problems I listed earlier are unchanged. They're all fixable from the editor now. The one to ask the client about is the missing milk allergen on Bikini Especial.
+
+Work/time split: 70% frontend, 20% backend, 10% config/docs
+
+**Work/time split this turn:** 70% frontend, 20% backend, 10% config/docs

@@ -33,3 +33,19 @@ export const isValidDish = (dish: any): boolean =>
 
 export const isValidMenuSection = (section: any): boolean =>
   isOptionalText(section?.title) && Array.isArray(section.dishes) && section.dishes.every(isValidDish) && isTranslations(section.translations);
+
+export const isValidSandwich = (sandwich: any): boolean =>
+  isText(sandwich?.name) &&
+  sandwich.name.length > 0 &&
+  typeof sandwich.price === 'object' &&
+  sandwich.price !== null &&
+  isText(sandwich.price.large) &&
+  sandwich.price.large.length > 0 &&
+  isOptionalText(sandwich.price.medium) &&
+  isOptionalText(sandwich.description) &&
+  isOptionalText(sandwich.large_variant) &&
+  isOptionalAllergens(sandwich.allergens) &&
+  isTranslations(sandwich.translations);
+
+export const isValidSandwichSection = (section: any): boolean =>
+  isOptionalText(section?.title) && Array.isArray(section.sandwiches) && section.sandwiches.every(isValidSandwich) && isTranslations(section.translations);

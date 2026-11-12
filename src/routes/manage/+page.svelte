@@ -5,6 +5,7 @@
     { href: "/manage/menu", title: "Carta del dia", text: "Els plats de cada secció, l'ordre, els preus i les traduccions." },
     { href: "/manage/cafes", title: "Cafès i tes", text: "Cafès, tes i infusions de la pàgina de cafès." },
     { href: "/manage/dishes", title: "Catàleg de plats", text: "Tots els plats desats, per reutilitzar-los a la carta." },
+    { href: "/manage/sandwiches", title: "Entrepans", text: "Entrepans i extres, els preus per mida, els al·lèrgens i les traduccions." },
   ];
 </script>
 
@@ -16,7 +17,7 @@
 <main class="mx-auto max-w-3xl px-4 py-6">
   <PageHeader title="Gestió" description="Tria què vols editar." />
 
-  <div class="grid gap-4 sm:grid-cols-3">
+  <div class="grid gap-4 sm:grid-cols-2">
     {#each pages as page}
       <a class="block rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-400 hover:shadow" href={page.href}>
         <h2 class="mb-1 font-semibold text-slate-900">{page.title}</h2>
