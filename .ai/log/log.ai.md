@@ -868,3 +868,11 @@ The data problems I listed earlier are unchanged. They're all fixable from the e
 Work/time split: 70% frontend, 20% backend, 10% config/docs
 
 **Work/time split this turn:** 70% frontend, 20% backend, 10% config/docs
+
+## Entry 25 — 2026-11-12 21:42
+
+**Prompt:** No menu option for sandwiches management?
+
+**Actions taken:** Added the missing "Entrepans" link (`/manage/sandwiches`) to the management navigation bar in `src/routes/manage/+layout.svelte`, after "Catàleg" as on the hub. This was missed in Entry 24. `npm run check` is unchanged (2 old `gtag` errors) and the build passes; not checked in a browser. Not committed.
+
+**Work/time split this turn:** 100% frontend

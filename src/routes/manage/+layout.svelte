@@ -8,6 +8,7 @@
     { href: "/manage", label: "Inici" },
     { href: "/manage/menu", label: "Carta del dia" },
     { href: "/manage/cafes", label: "Cafès i tes" },
+    { href: "/manage/sandwiches", label: "Entrepans" },
     { href: "/manage/dishes", label: "Catàleg" },
   ];
 
