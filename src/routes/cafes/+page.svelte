@@ -146,15 +146,6 @@
             </section>
             {/if}
 
-            <div class="text-center pt-2 px-2">
-              <p class="font-script text-2xl sm:text-3xl text-sepia-800 leading-snug">
-                La vida<br />també es gaudeix<br />en tassa
-              </p>
-              <div class="flex justify-center items-center mt-2 text-sepia-700/80">
-                <span class="text-sm">✤</span>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
