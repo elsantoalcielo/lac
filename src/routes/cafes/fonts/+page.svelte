@@ -1,0 +1,431 @@
+<script lang="ts">
+  import Corner from "$lib/components/corner.svelte";
+
+  import Language from "$lib/components/language.svelte";
+  import type { CafesItem } from "$lib/types";
+  import { ALLERGENS, translateAllergen } from "$lib/utils";
+
+  export let data;
+
+  // The sections are keyed: the icons and layout below are fixed per key
+  $: sections = Object.fromEntries(data.cafesMenu?.sections.map((section) => [section.key, section]) ?? []);
+
+  // The legend follows the content: only the allergens some item has
+  $: legendAllergens = ALLERGENS.filter((allergen) => data.cafesMenu?.sections.some((section) => section.items.some((item) => item.allergens?.includes(allergen))));
+
+  // Test page: each section gets its own font, weight and ink colour, with a caption naming the combination
+  const variants: Record<string, { font: string; weight: number; ink: string; label: string }> = {
+    cafes: { font: '"Cormorant Garamond", serif', weight: 700, ink: "#1a0f08", label: "Cormorant Garamond · negreta · #1a0f08" },
+    sucs: { font: '"Lora Var", serif', weight: 600, ink: "#24140c", label: "Lora · seminegreta · #24140c" },
+    xocolates: { font: '"Alegreya Var", serif', weight: 600, ink: "#1c0e07", label: "Alegreya · seminegreta · #1c0e07" },
+    tes: { font: '"Montserrat Var", sans-serif', weight: 500, ink: "#17120f", label: "Montserrat · mitjana · #17120f" },
+    infusions: { font: '"Nunito Var", sans-serif', weight: 600, ink: "#2b1a11", label: "Nunito · seminegreta · #2b1a11 (el color actual)" },
+  };
+
+  const variantStyle = (key: string) => `--font: ${variants[key].font}; --weight: ${variants[key].weight}; --ink: ${variants[key].ink}`;
+
+  const fleurDeLis =
+    "M12,2 C11.5,5 9.5,7 8,8 C6.5,7 4.5,7.5 4,9.5 C3.5,12 6,13.5 7.5,13.5 C9,13.5 10,12.5 10.5,11.5 C10.8,13 10.5,15.5 8,16.5 L8,18 L10.5,18 C11,18 11.5,19 12,21 C12.5,19 13,18 13.5,18 L16,18 L16,16.5 C13.5,15.5 13.2,13 13.5,11.5 C14,12.5 15,13.5 16.5,13.5 C18,13.5 20.5,12 20,9.5 C19.5,7.5 17.5,7 16,8 C14.5,7 12.5,5 12,2 Z";
+</script>
+
+{#snippet row(item: CafesItem)}
+  <div class="menu-item">
+    <span class="name">
+      {item.name}
+      {#each item.allergens ?? [] as allergen}
+        <img class="allergen" src="/img/allergens/{allergen}.jpg" alt={translateAllergen(allergen, data.language)} />
+      {/each}
+    </span>
+    <span class="leader" /><span class="price">{item.price}</span>
+  </div>
+  {#if item.description}<p class="description">{item.description}</p>{/if}
+{/snippet}
+
+{#snippet allergenLegend()}
+  {#if legendAllergens.length > 0}
+  <div class="flex justify-center items-center gap-2 mt-8 text-sepia-700/80">
+    <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+    <span class="text-xs">♦</span>
+    <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+  </div>
+
+  <ul class="flex flex-wrap justify-center gap-x-5 gap-y-1 mt-4 text-sm sm:text-base">
+    {#each legendAllergens as allergen}
+      <li class="flex items-center">
+        <img class="allergen" src="/img/allergens/{allergen}.jpg" alt="" /><span class="ml-1.5">{translateAllergen(allergen, data.language)}</span>
+      </li>
+    {/each}
+  </ul>
+  {/if}
+{/snippet}
+
+{#snippet logo()}
+  <div class="logo bg-sepia-900" role="img" aria-label="L'Amagat Cafè"></div>
+{/snippet}
+
+<svelte:head>
+  <title>Cafès (proves de tipografia) · L'Amagat Cafè</title>
+</svelte:head>
+
+<div class="page bg-stone-300 min-h-screen py-6 px-2 sm:px-4 flex items-center justify-center font-cormorant text-sepia-900 antialiased selection:bg-amber-900 selection:text-amber-100">
+  <main class="sheet w-full max-w-[850px] bg-aged-paper menu-shadow rounded-sm relative p-4 sm:p-6 md:p-10 border border-sepia-400/40">
+    <!-- Ornate double outer border -->
+    <div class="border-[1.5px] border-sepia-700/80 p-1 sm:p-2 relative h-full">
+      <div class="border border-sepia-600/60 p-4 sm:p-6 md:p-8 relative">
+        <Corner filled class="-top-3.5 -left-3.5" />
+        <Corner class="-top-3.5 -right-3.5 rotate-90" />
+        <Corner class="-bottom-3.5 -left-3.5 -rotate-90" />
+        <Corner class="-bottom-3.5 -right-3.5 rotate-180" />
+
+        <div class="language flex justify-end">
+          <Language language={data.language} />
+        </div>
+
+        <header class="flex justify-center pt-2 pb-6 md:pb-8 print:hidden">
+          {@render logo()}
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative">
+          <div class="hidden md:block absolute left-1/2 top-4 bottom-8 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-sepia-700/40 to-transparent" />
+
+          <!-- Left column: Cafès & Xocolates -->
+          <div class="flex flex-col space-y-6 sm:space-y-8">
+            {#if sections.cafes}
+            <section class="variant" style={variantStyle("cafes")}>
+              <p class="caption print:hidden">{variants.cafes.label}</p>
+              <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
+                <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
+                  <path d="M14 26 C14 42 22 47 34 47 C46 47 54 42 54 26 L14 26 Z" />
+                  <path d="M54 30 C58 30 61 33 61 37 C61 41 57 43 53 43" />
+                  <ellipse cx="34" cy="53" rx="26" ry="5" />
+                  <path d="M26 19 C25 15 28 13 27 9" stroke-width="1.8" />
+                  <path d="M34 20 C33 16 36 14 35 10" stroke-width="1.8" />
+                  <path d="M42 19 C41 15 44 13 43 9" stroke-width="1.8" />
+                </svg>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.cafes.title}</h2>
+              </div>
+              <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
+                {#each sections.cafes.items as item}
+                  {@render row(item)}
+                {/each}
+                {#if sections.cafes.note}<p class="description mt-2">{sections.cafes.note}</p>{/if}
+              </div>
+            </section>
+            {/if}
+
+            {#if data.cafesMenu?.tagline}
+            <div class="text-center py-2 px-4">
+              <p class="tagline font-script text-2xl sm:text-3xl text-sepia-800 leading-snug">{data.cafesMenu.tagline}</p>
+              <div class="flex justify-center items-center gap-2 mt-2 text-sepia-700/80">
+                <span class="w-8 h-[1px] bg-sepia-600/50" />
+                <span class="text-xs">♦</span>
+                <span class="w-8 h-[1px] bg-sepia-600/50" />
+              </div>
+            </div>
+            {/if}
+
+            <img class="bird w-44 md:w-52 mx-auto -mt-2" src="/img/bird_coffee_sepia.png" width="450" height="600" alt="" loading="lazy" />
+
+            {#if sections.xocolates}
+            <section class="variant" style={variantStyle("xocolates")}>
+              <p class="caption print:hidden">{variants.xocolates.label}</p>
+              <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
+                <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
+                  <path d="M16 28 C16 43 24 48 34 48 C44 48 52 43 52 28 Z" />
+                  <path d="M52 32 C56 32 59 34 59 38 C59 42 56 44 52 44" />
+                  <ellipse cx="34" cy="53" rx="22" ry="4.5" />
+                  <circle cx="34" cy="38" fill="currentColor" r="2" />
+                </svg>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.xocolates.title}</h2>
+              </div>
+              <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
+                {#each sections.xocolates.items as item}
+                  {@render row(item)}
+                {/each}
+              </div>
+            </section>
+            {/if}
+
+          </div>
+
+          <!-- Right column: Sucs, Tes & Infusions. A gap, not space-y: the print-only logo is hidden on screen but space-y still counts it -->
+          <div class="flex flex-col gap-6 sm:gap-8">
+            <!-- Printed on a sheet folded in half, the centred logo and legend would sit on the fold: they go in the right half -->
+            <header class="hidden print:flex justify-center pt-2">
+              {@render logo()}
+            </header>
+
+            {#if sections.sucs}
+            <section class="variant" style={variantStyle("sucs")}>
+              <p class="caption print:hidden">{variants.sucs.label}</p>
+              <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
+                <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
+                  <path d="M17 22 L21 53 C21.3 55 23 56 25 56 L39 56 C41 56 42.7 55 43 53 L47 22 Z" />
+                  <path d="M19 32 L45 32" stroke-width="1.8" />
+                  <path d="M33 26 L43 6 L52 6" />
+                </svg>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.sucs.title}</h2>
+              </div>
+              <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
+                {#each sections.sucs.items as item}
+                  {@render row(item)}
+                {/each}
+              </div>
+            </section>
+            {/if}
+
+            {#if sections.tes}
+            <section class="variant" style={variantStyle("tes")}>
+              <p class="caption print:hidden">{variants.tes.label}</p>
+              <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
+                <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewBox="0 0 64 64">
+                  <path d="M22 24 C22 18 42 18 42 24 L44 38 C44 48 20 48 20 38 Z" />
+                  <path d="M32 18 L32 14 C32 12 34 11 36 11" />
+                  <path d="M20 30 C12 28 8 36 18 41" />
+                  <path d="M44 28 C56 26 58 40 43 43" />
+                  <ellipse cx="32" cy="49" rx="14" ry="2.5" />
+                </svg>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.tes.title}</h2>
+              </div>
+              <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
+                {#each sections.tes.items as item}
+                  {@render row(item)}
+                {/each}
+              </div>
+            </section>
+            {/if}
+
+            {#if sections.infusions}
+            <section class="variant border border-sepia-600/70 p-4 sm:p-5 rounded-sm relative mt-2 bg-sepia-200/10" style={variantStyle("infusions")}>
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-aged-paper px-2 text-sepia-800">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d={fleurDeLis} />
+                </svg>
+              </div>
+              <span class="absolute top-1 left-1 w-2 h-2 border-t border-l border-sepia-700" />
+              <span class="absolute top-1 right-1 w-2 h-2 border-t border-r border-sepia-700" />
+              <span class="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-sepia-700" />
+              <span class="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-sepia-700" />
+              <p class="caption print:hidden">{variants.infusions.label}</p>
+              <h3 class="text-center font-bold tracking-[0.25em] text-sepia-900 text-sm sm:text-base uppercase mb-3">{sections.infusions.title}</h3>
+              <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
+                {#each sections.infusions.items as item}
+                  {@render row(item)}
+                {/each}
+              </div>
+            </section>
+            {/if}
+
+            <div class="hidden print:block">
+              {@render allergenLegend()}
+            </div>
+          </div>
+        </div>
+
+        <div class="print:hidden">
+          {@render allergenLegend()}
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<style>
+  @import url(../../../../static/fonts/fonts.css);
+
+  /* The shared fonts.css declares these at weight 400 only: here they get their weight range, for this test page */
+  @font-face {
+    font-family: "Lora Var";
+    font-weight: 400 700;
+    src: url(/fonts/Lora-VariableFont_wght.ttf) format("truetype");
+  }
+
+  @font-face {
+    font-family: "Alegreya Var";
+    font-weight: 400 900;
+    src: url(/fonts/Alegreya-VariableFont_wght.ttf) format("truetype");
+  }
+
+  @font-face {
+    font-family: "Montserrat Var";
+    font-weight: 100 900;
+    src: url(/fonts/Montserrat-VariableFont_wght.ttf) format("truetype");
+  }
+
+  @font-face {
+    font-family: "Nunito Var";
+    font-weight: 200 1000;
+    src: url(/fonts/Nunito-VariableFont_wght.ttf) format("truetype");
+  }
+
+  .bg-aged-paper {
+    background-color: #f7eedb;
+    background-image: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.45) 0%, rgba(243, 229, 203, 0.4) 60%, rgba(216, 193, 155, 0.7) 100%),
+      radial-gradient(circle at 10% 10%, rgba(200, 172, 134, 0.35) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(195, 166, 128, 0.4) 0%, transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(195, 166, 128, 0.35) 0%, transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(195, 166, 128, 0.4) 0%, transparent 40%);
+  }
+
+  /* The logo is black on transparent: use it as a mask so it takes the sepia fill */
+  .logo {
+    width: 11rem;
+    aspect-ratio: 496 / 426;
+    -webkit-mask: url(/img/logo.png) center / contain no-repeat;
+    mask: url(/img/logo.png) center / contain no-repeat;
+  }
+
+  @media (min-width: 768px) {
+    .logo {
+      width: 14rem;
+    }
+  }
+
+  /* The selector is a shared component with no styles of its own: dress it as part of the menu */
+  .language :global(select) {
+    font-family: inherit;
+    font-size: 1rem;
+    color: #2b1a11;
+    background-color: transparent;
+    border: 1px solid rgba(120, 88, 66, 0.6);
+    border-radius: 2px;
+    padding: 0.15rem 0.4rem;
+    cursor: pointer;
+  }
+
+  /* The open list is not transparent-friendly: give it the flat paper colour */
+  .language :global(option) {
+    background-color: #f7eedb;
+    color: #2b1a11;
+  }
+
+  .language :global(select:focus-visible) {
+    outline: 1.5px solid #785842;
+    outline-offset: 2px;
+  }
+
+  /* The tagline is typed with line breaks, and each one is a line on the menu */
+  .tagline {
+    white-space: pre-line;
+  }
+
+  .menu-shadow {
+    box-shadow: 0 15px 40px -10px rgba(71, 46, 27, 0.35), 0 0 0 1px rgba(100, 68, 42, 0.15);
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: baseline;
+    position: relative;
+    margin-bottom: 0.22rem;
+  }
+
+  .menu-item .name {
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+    padding-right: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .menu-item .leader {
+    flex-grow: 1;
+    border-bottom: 1.5px dotted #785842;
+    position: relative;
+    bottom: 0.28em;
+    margin: 0 0.2rem;
+    opacity: 0.8;
+  }
+
+  .allergen {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-left: 0.3rem;
+    vertical-align: -0.15em;
+  }
+
+  .description {
+    font-style: italic;
+    font-size: 0.9em;
+    line-height: 1.3;
+    opacity: 0.8;
+    margin-bottom: 0.45rem;
+  }
+
+  .menu-item .price {
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+    padding-left: 0.3rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* printing */
+
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  @media print {
+    /* The selector is for the screen: the printed menu is a single language */
+    .language {
+      display: none;
+    }
+
+    /* The sheet is the page: no screen backdrop, shadow or width cap, and the paper texture is kept */
+    .page {
+      min-height: 0;
+      padding: 0;
+      background: none;
+      display: block;
+    }
+
+    .sheet {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      max-width: none;
+      box-shadow: none;
+      border-radius: 0;
+      /* The menu is taller than an A3 page at screen size: scale it down to fit on one sheet; the two columns are the two halves */
+      zoom: 0.44;
+      padding: 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .bird {
+      width: 9rem;
+    }
+  }
+
+  /* The variant sets font, weight and colour for everything in its section, over the utility classes in the markup */
+  .variant,
+  .variant h2,
+  .variant h3,
+  .variant > div,
+  .variant svg {
+    font-family: var(--font);
+    font-weight: var(--weight);
+    color: var(--ink);
+  }
+
+  .variant .description {
+    opacity: 0.95;
+  }
+
+  /* The wider fonts would push the price out of the column on the longest names */
+  .variant .name {
+    white-space: normal;
+  }
+
+  .caption {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: #8a6a55;
+    margin-bottom: 0.35rem;
+    text-align: center;
+  }
+</style>

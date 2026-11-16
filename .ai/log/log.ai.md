@@ -940,3 +940,11 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** Cause: the right column used `space-y`, which still counts the print-only logo header (`hidden` class, not the `[hidden]` attribute) as a sibling, so Sucs got a 32px top margin on screen. In `src/routes/cafes/+page.svelte` changed the right column to `gap-6 sm:gap-8`. Measured in Playwright at 1280px: screen heading tops Cafès 368 / Sucs 368 (before 368 / 400); print positions unchanged (Sucs 128, Tes 267). Dev server stopped by PID. Not committed.
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 34 — 2026-11-16 15:20
+
+**Prompt:** The client would like the cafes menu with more intense lettering; prepare a test page, a copy of the cafes page, with a different font (and maybe colour) per section for them to choose from.
+
+**Actions taken:** New route `/cafes/fonts`: `src/routes/cafes/fonts/+page.svelte` (copy of the cafes page, print rules included) and `+page.server.ts` re-exporting the cafes `load`, so it shows the live data. Each section gets its own font, weight and ink colour, with a small caption naming the combination (hidden when printing): Cafès Cormorant Garamond 700 `#1a0f08`, Sucs Lora 600 `#24140c`, Xocolates Alegreya 600 `#1c0e07`, Tes Montserrat 500 `#17120f`, Infusions Nunito 600 `#2b1a11` (current colour). The shared `fonts.css` declares these fonts at weight 400 only, so the test page declares its own variable-weight `@font-face` aliases (`Lora Var`, etc.) instead of editing the shared file. Descriptions at 0.95 opacity (0.8 on the real page); names may wrap so wide fonts don't push the price out. Playwright: fonts load with no errors, computed font/weight/colour per section as intended, prices aligned per section. `npm run check` unchanged (2 old `gtag` errors; the new warnings are the same self-closing-tag ones as the copied page). Dev server stopped by PID. Not committed.
+
+**Work/time split this turn:** 100% frontend
