@@ -30,12 +30,34 @@
   {#if item.description}<p class="description">{item.description}</p>{/if}
 {/snippet}
 
+{#snippet allergenLegend()}
+  {#if legendAllergens.length > 0}
+  <div class="flex justify-center items-center gap-2 mt-8 text-sepia-700/80">
+    <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+    <span class="text-xs">♦</span>
+    <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+  </div>
+
+  <ul class="flex flex-wrap justify-center gap-x-5 gap-y-1 mt-4 text-sm sm:text-base">
+    {#each legendAllergens as allergen}
+      <li class="flex items-center">
+        <img class="allergen" src="/img/allergens/{allergen}.jpg" alt="" /><span class="ml-1.5">{translateAllergen(allergen, data.language)}</span>
+      </li>
+    {/each}
+  </ul>
+  {/if}
+{/snippet}
+
+{#snippet logo()}
+  <div class="logo bg-sepia-900" role="img" aria-label="L'Amagat Cafè"></div>
+{/snippet}
+
 <svelte:head>
   <title>Cafès · L'Amagat Cafè</title>
 </svelte:head>
 
-<div class="bg-stone-300 min-h-screen py-6 px-2 sm:px-4 flex items-center justify-center font-cormorant text-sepia-900 antialiased selection:bg-amber-900 selection:text-amber-100">
-  <main class="w-full max-w-[850px] bg-aged-paper menu-shadow rounded-sm relative p-4 sm:p-6 md:p-10 border border-sepia-400/40">
+<div class="page bg-stone-300 min-h-screen py-6 px-2 sm:px-4 flex items-center justify-center font-cormorant text-sepia-900 antialiased selection:bg-amber-900 selection:text-amber-100">
+  <main class="sheet w-full max-w-[850px] bg-aged-paper menu-shadow rounded-sm relative p-4 sm:p-6 md:p-10 border border-sepia-400/40">
     <!-- Ornate double outer border -->
     <div class="border-[1.5px] border-sepia-700/80 p-1 sm:p-2 relative h-full">
       <div class="border border-sepia-600/60 p-4 sm:p-6 md:p-8 relative">
@@ -48,8 +70,8 @@
           <Language language={data.language} />
         </div>
 
-        <header class="flex justify-center pt-2 pb-6 md:pb-8">
-          <div class="logo bg-sepia-900" role="img" aria-label="L'Amagat Cafè" />
+        <header class="flex justify-center pt-2 pb-6 md:pb-8 print:hidden">
+          {@render logo()}
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative">
@@ -90,7 +112,7 @@
             </div>
             {/if}
 
-            <img class="w-44 md:w-52 mx-auto -mt-2" src="/img/bird_coffee_sepia.png" width="450" height="600" alt="" loading="lazy" />
+            <img class="bird w-44 md:w-52 mx-auto -mt-2" src="/img/bird_coffee_sepia.png" width="450" height="600" alt="" loading="lazy" />
 
             {#if sections.xocolates}
             <section>
@@ -115,6 +137,11 @@
 
           <!-- Right column: Tes, Infusions & teacup -->
           <div class="flex flex-col space-y-6 sm:space-y-8">
+            <!-- Printed on a sheet folded in half, the centred logo and legend would sit on the fold: they go in the right half -->
+            <header class="hidden print:flex justify-center pt-2">
+              {@render logo()}
+            </header>
+
             {#if sections.tes}
             <section>
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
@@ -155,24 +182,15 @@
             </section>
             {/if}
 
+            <div class="hidden print:block">
+              {@render allergenLegend()}
+            </div>
           </div>
         </div>
 
-        {#if legendAllergens.length > 0}
-        <div class="flex justify-center items-center gap-2 mt-8 text-sepia-700/80">
-          <span class="w-8 h-[1px] bg-sepia-600/50"></span>
-          <span class="text-xs">♦</span>
-          <span class="w-8 h-[1px] bg-sepia-600/50"></span>
+        <div class="print:hidden">
+          {@render allergenLegend()}
         </div>
-
-        <ul class="flex flex-wrap justify-center gap-x-5 gap-y-1 mt-4 text-sm sm:text-base">
-          {#each legendAllergens as allergen}
-            <li class="flex items-center">
-              <img class="allergen" src="/img/allergens/{allergen}.jpg" alt="" /><span class="ml-1.5">{translateAllergen(allergen, data.language)}</span>
-            </li>
-          {/each}
-        </ul>
-        {/if}
       </div>
     </div>
   </main>
@@ -283,5 +301,43 @@
     padding-left: 0.3rem;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* printing */
+
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  @media print {
+    /* The selector is for the screen: the printed menu is a single language */
+    .language {
+      display: none;
+    }
+
+    /* The sheet is the page: no screen backdrop, shadow or width cap, and the paper texture is kept */
+    .page {
+      min-height: 0;
+      padding: 0;
+      background: none;
+      display: block;
+    }
+
+    .sheet {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      max-width: none;
+      box-shadow: none;
+      border-radius: 0;
+      /* The menu is taller than an A3 page at screen size: scale it down to fit on one sheet; the two columns are the two halves */
+      zoom: 0.46;
+      padding: 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .bird {
+      width: 9rem;
+    }
   }
 </style>

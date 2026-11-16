@@ -884,3 +884,27 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** Removed the "Inici" link from `src/routes/manage/+layout.svelte` and simplified `isActive` (its `/manage` special case is no longer needed). Kept the owner's order (Entrepans before Catàleg). Likely remaining cause, from the code: at `sm` widths the links share a row with the brand and the sign-out button in an `overflow-x-auto` box, so it can still clip or scroll at about 640–750px; suggested `sm:` → `md:`, not applied. Check unchanged (2 old `gtag` errors), build passes; not checked in a browser. Not committed.
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 27 — 2026-11-13 17:40
+
+**Prompt:** Prepare the coffee menu (`/cafes`) to print on an A3, with the language selector hidden.
+
+**Actions taken:** Added a print section to `src/routes/cafes/+page.svelte`: `@page { size: A3 portrait; margin: 0 }`, and `@media print` rules that hide the language selector, drop the screen backdrop, shadow and width cap, keep the paper texture, and scale the sheet to 0.8 so it fits one page (at screen size it is about 1900px tall against 1587px of A3 portrait). Rendered to PDF with Playwright: 1 page, A3 portrait. `npm run check` unchanged (2 old `gtag` errors). Not looked at the PDF visually; not committed. Assumed portrait.
+
+**Work/time split this turn:** 100% frontend
+
+## Entry 28 — 2026-11-13 18:05
+
+**Prompt:** Make the A3 landscape: the client wants to fold the printed page in half, with half of the sections on each side.
+
+**Actions taken:** In `src/routes/cafes/+page.svelte`, changed `@page` to `A3 landscape`. The two existing columns are the two halves (left: Cafès, tagline, bird, Xocolates; right: Tes, Infusions). The centred logo and allergen legend would have sat on the fold, so for print they are rendered (via two new snippets) in the right half, and the screen copies are hidden with `print:hidden`. Print padding reduced, bird narrower, zoom 0.66 so it fits one page. Verified with Playwright: 1 page, 1191×842 pt, fold at x=794 between the columns, selector hidden. `npm run check` unchanged (2 old `gtag` errors). Dev server on port 5199 started and stopped by PID (the owner's own was left alone). Not committed.
+
+**Work/time split this turn:** 100% frontend
+
+## Entry 29 — 2026-11-13 18:30
+
+**Prompt:** The print preview hangs on the A3 version; first change it to A4 landscape.
+
+**Actions taken:** Tried to reproduce the hang with headless Chromium (PDF renders in under a second, also without `zoom` and without the lazy image); not reproduced, cause unknown (main suspect: `zoom`). Changed `@page` to `A4 landscape` and `zoom` from 0.66 to 0.46 in `src/routes/cafes/+page.svelte`. Playwright: 1 page, 842×595 pt, sheet 772px of 794px, fold between the columns, selector hidden. Own dev server stopped by PID. Not committed.
+
+**Work/time split this turn:** 100% frontend
