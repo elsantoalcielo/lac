@@ -13,13 +13,15 @@
   // The legend follows the content: only the allergens some item has
   $: legendAllergens = ALLERGENS.filter((allergen) => data.cafesMenu?.sections.some((section) => section.items.some((item) => item.allergens?.includes(allergen))));
 
-  // Test page: each section gets its own font, weight and ink colour, with a caption naming the combination
+  // Test page: Alegreya and Lora semibold alternate block by block (down each column, so no two neighbours match), all in the same ink so only the font differs
+  const alegreya = { font: '"Alegreya Var", serif', weight: 600, ink: "#1a0f08", label: "Alegreya · seminegreta" };
+  const lora = { font: '"Lora Var", serif', weight: 600, ink: "#1a0f08", label: "Lora · seminegreta" };
   const variants: Record<string, { font: string; weight: number; ink: string; label: string }> = {
-    cafes: { font: '"Cormorant Garamond", serif', weight: 700, ink: "#1a0f08", label: "Cormorant Garamond · negreta · #1a0f08" },
-    sucs: { font: '"Lora Var", serif', weight: 600, ink: "#24140c", label: "Lora · seminegreta · #24140c" },
-    xocolates: { font: '"Alegreya Var", serif', weight: 600, ink: "#1c0e07", label: "Alegreya · seminegreta · #1c0e07" },
-    tes: { font: '"Montserrat Var", sans-serif', weight: 500, ink: "#17120f", label: "Montserrat · mitjana · #17120f" },
-    infusions: { font: '"Nunito Var", sans-serif', weight: 600, ink: "#2b1a11", label: "Nunito · seminegreta · #2b1a11 (el color actual)" },
+    cafes: alegreya,
+    xocolates: lora,
+    sucs: lora,
+    tes: alegreya,
+    infusions: lora,
   };
 
   const variantStyle = (key: string) => `--font: ${variants[key].font}; --weight: ${variants[key].weight}; --ink: ${variants[key].ink}`;
@@ -246,17 +248,7 @@
     src: url(/fonts/Alegreya-VariableFont_wght.ttf) format("truetype");
   }
 
-  @font-face {
-    font-family: "Montserrat Var";
-    font-weight: 100 900;
-    src: url(/fonts/Montserrat-VariableFont_wght.ttf) format("truetype");
-  }
 
-  @font-face {
-    font-family: "Nunito Var";
-    font-weight: 200 1000;
-    src: url(/fonts/Nunito-VariableFont_wght.ttf) format("truetype");
-  }
 
   .bg-aged-paper {
     background-color: #f7eedb;
@@ -415,7 +407,7 @@
     opacity: 0.95;
   }
 
-  /* The wider fonts would push the price out of the column on the longest names */
+  /* Keeps a long name from pushing the price out of the column */
   .variant .name {
     white-space: normal;
   }

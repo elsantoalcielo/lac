@@ -948,3 +948,11 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** New route `/cafes/fonts`: `src/routes/cafes/fonts/+page.svelte` (copy of the cafes page, print rules included) and `+page.server.ts` re-exporting the cafes `load`, so it shows the live data. Each section gets its own font, weight and ink colour, with a small caption naming the combination (hidden when printing): Cafès Cormorant Garamond 700 `#1a0f08`, Sucs Lora 600 `#24140c`, Xocolates Alegreya 600 `#1c0e07`, Tes Montserrat 500 `#17120f`, Infusions Nunito 600 `#2b1a11` (current colour). The shared `fonts.css` declares these fonts at weight 400 only, so the test page declares its own variable-weight `@font-face` aliases (`Lora Var`, etc.) instead of editing the shared file. Descriptions at 0.95 opacity (0.8 on the real page); names may wrap so wide fonts don't push the price out. Playwright: fonts load with no errors, computed font/weight/colour per section as intended, prices aligned per section. `npm run check` unchanged (2 old `gtag` errors; the new warnings are the same self-closing-tag ones as the copied page). Dev server stopped by PID. Not committed.
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 35 — 2026-11-16 16:05
+
+**Prompt:** The client wants to compare Alegreya semibold and Lora semibold alternating block by block on the test page.
+
+**Actions taken:** In `src/routes/cafes/fonts/+page.svelte` the five sections now alternate Alegreya 600 and Lora 600, in one ink (`#1a0f08`) so only the font differs: Cafès Alegreya, Xocolates Lora (left column); Sucs Lora, Tes Alegreya, Infusions Lora (right column), so no two neighbours in a column or row share a font. Removed the unused Montserrat and Nunito font aliases. Playwright: computed font/weight/colour per section as above, no load errors. `npm run check` unchanged (2 old `gtag` errors). Dev server stopped by PID. Not committed (entry 34 and the test page from the previous turn are also still uncommitted).
+
+**Work/time split this turn:** 100% frontend
