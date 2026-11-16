@@ -908,3 +908,27 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** Tried to reproduce the hang with headless Chromium (PDF renders in under a second, also without `zoom` and without the lazy image); not reproduced, cause unknown (main suspect: `zoom`). Changed `@page` to `A4 landscape` and `zoom` from 0.66 to 0.46 in `src/routes/cafes/+page.svelte`. Playwright: 1 page, 842×595 pt, sheet 772px of 794px, fold between the columns, selector hidden. Own dev server stopped by PID. Not committed.
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 30 — 2026-11-16 09:30
+
+**Prompt:** Add a new "Sucs" section after Cafès and before Tes; the owner chose option (b), top of the right column.
+
+**Actions taken:** Read ADR 0001/0004, the cafes page, validation and the editor: ADR 0001 fixes the four sections, so a fifth needs a new ADR before implementing (`workflow.md` §8). Wrote `.docs/02-architecture/adr/0005-add-the-sucs-section-to-the-cafes-page.md`, status `proposed`, for the owner's approval. No code changed. Still needed from the owner: the items, prices and allergens, the icon and the title wording. Not committed.
+
+**Work/time split this turn:** 100% docs
+
+## Entry 31 — 2026-11-16 10:05
+
+**Prompt:** ADR 0005 approved; add the "Sucs" section with just "Suc de taronja", with the suggested icon.
+
+**Actions taken:** ADR 0005 set to `accepted`. In `src/routes/cafes/+page.svelte` added the `sucs` section (glass-and-straw icon) at the top of the right column, above Tes; print `zoom` 0.46 → 0.44 so it still fits one A4 landscape page. Key comment in `src/lib/types.d.ts` updated. `scripts/cafes-seed.json` gets a `sucs` entry after `cafes` ("Suc de taronja", placeholder `9,99 €`) for the owner to insert. Not in the live database, so checked by injecting an equivalent block into the rendered page: 1 page in Playwright (sheet 764 of 794px); icon looked at on its own. `npm run check` unchanged (2 old `gtag` errors). Noticed the live Xocolates section now holds juice items (Suc de Taronja Natural Gran/Petit, Pinya, Préssec): reported, not touched. Not committed.
+
+**Work/time split this turn:** 80% frontend, 20% docs
+
+## Entry 32 — 2026-11-16 10:30
+
+**Prompt:** Use the existing juice items for the sucs seed entry.
+
+**Actions taken:** The direct read of the `cafes` document (a script reading `MONGODB_URI` from `.env`) was denied by the permission system and not retried. Read the items from the public `/cafes` page on my own dev server instead, in all 10 languages: 4 juice items (Taronja Natural Gran/Petit, Pinya, Préssec) with price and description, no allergens, no translations (every language shows the Catalan text). Put them in the `sucs` entry of `scripts/cafes-seed.json`, replacing "Suc de taronja", with the names exactly as stored (capitals and trailing full stops). The live data still has them under Xocolates; not touched. Dev server stopped by PID. Not committed.
+
+**Work/time split this turn:** 100% config/data

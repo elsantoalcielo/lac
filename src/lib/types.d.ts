@@ -61,7 +61,7 @@ type CafesMenu = {
 } | null;
 
 type CafesSection = {
-  // Maps to the icon and layout hard-coded in the page: cafes, xocolates, tes, infusions
+  // Maps to the icon and layout hard-coded in the page: cafes, xocolates, sucs, tes, infusions
   key: string;
   title: string;
   note?: string;

@@ -61,6 +61,32 @@
       ]
     },
     {
+      "key": "sucs",
+      "title": "Sucs",
+      "items": [
+        {
+          "name": "Suc de Taronja Natural Gran.",
+          "price": "3,70 €",
+          "description": "Suc 100% natural acabat d'exprémer."
+        },
+        {
+          "name": "Suc de Taronja Natural Petit.",
+          "price": "2,75 €",
+          "description": "Suc 100% natural acabat d'exprémer."
+        },
+        {
+          "name": "Suc de Pinya Minute Maid.",
+          "price": "2,50 €",
+          "description": "Suc de Pinya d'Ampolla."
+        },
+        {
+          "name": "Suc de Préssec Minute Maid.",
+          "price": "2,50 €",
+          "description": "Suc de Préssec d'Ampolla."
+        }
+      ]
+    },
+    {
       "key": "xocolates",
       "title": "Xocolates",
       "items": [

@@ -135,12 +135,30 @@
 
           </div>
 
-          <!-- Right column: Tes, Infusions & teacup -->
+          <!-- Right column: Sucs, Tes & Infusions -->
           <div class="flex flex-col space-y-6 sm:space-y-8">
             <!-- Printed on a sheet folded in half, the centred logo and legend would sit on the fold: they go in the right half -->
             <header class="hidden print:flex justify-center pt-2">
               {@render logo()}
             </header>
+
+            {#if sections.sucs}
+            <section>
+              <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
+                <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
+                  <path d="M17 22 L21 53 C21.3 55 23 56 25 56 L39 56 C41 56 42.7 55 43 53 L47 22 Z" />
+                  <path d="M19 32 L45 32" stroke-width="1.8" />
+                  <path d="M33 26 L43 6 L52 6" />
+                </svg>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-[0.2em] text-sepia-900 uppercase">{sections.sucs.title}</h2>
+              </div>
+              <div class="text-base sm:text-[17px] text-sepia-900 leading-relaxed font-normal">
+                {#each sections.sucs.items as item}
+                  {@render row(item)}
+                {/each}
+              </div>
+            </section>
+            {/if}
 
             {#if sections.tes}
             <section>
@@ -331,7 +349,7 @@
       box-shadow: none;
       border-radius: 0;
       /* The menu is taller than an A3 page at screen size: scale it down to fit on one sheet; the two columns are the two halves */
-      zoom: 0.46;
+      zoom: 0.44;
       padding: 0.75rem;
       box-sizing: border-box;
     }
