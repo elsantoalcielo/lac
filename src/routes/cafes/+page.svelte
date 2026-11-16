@@ -135,8 +135,8 @@
 
           </div>
 
-          <!-- Right column: Sucs, Tes & Infusions -->
-          <div class="flex flex-col space-y-6 sm:space-y-8">
+          <!-- Right column: Sucs, Tes & Infusions. A gap, not space-y: the print-only logo is hidden on screen but space-y still counts it -->
+          <div class="flex flex-col gap-6 sm:gap-8">
             <!-- Printed on a sheet folded in half, the centred logo and legend would sit on the fold: they go in the right half -->
             <header class="hidden print:flex justify-center pt-2">
               {@render logo()}

@@ -932,3 +932,11 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** The direct read of the `cafes` document (a script reading `MONGODB_URI` from `.env`) was denied by the permission system and not retried. Read the items from the public `/cafes` page on my own dev server instead, in all 10 languages: 4 juice items (Taronja Natural Gran/Petit, Pinya, Préssec) with price and description, no allergens, no translations (every language shows the Catalan text). Put them in the `sucs` entry of `scripts/cafes-seed.json`, replacing "Suc de taronja", with the names exactly as stored (capitals and trailing full stops). The live data still has them under Xocolates; not touched. Dev server stopped by PID. Not committed.
 
 **Work/time split this turn:** 100% config/data
+
+## Entry 33 — 2026-11-16 12:10
+
+**Prompt:** The deployed Sucs section is vertically misaligned with Cafès.
+
+**Actions taken:** Cause: the right column used `space-y`, which still counts the print-only logo header (`hidden` class, not the `[hidden]` attribute) as a sibling, so Sucs got a 32px top margin on screen. In `src/routes/cafes/+page.svelte` changed the right column to `gap-6 sm:gap-8`. Measured in Playwright at 1280px: screen heading tops Cafès 368 / Sucs 368 (before 368 / 400); print positions unchanged (Sucs 128, Tes 267). Dev server stopped by PID. Not committed.
+
+**Work/time split this turn:** 100% frontend
