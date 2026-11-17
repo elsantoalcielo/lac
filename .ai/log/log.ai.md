@@ -956,3 +956,11 @@ Work/time split: 70% frontend, 20% backend, 10% config/docs
 **Actions taken:** In `src/routes/cafes/fonts/+page.svelte` the five sections now alternate Alegreya 600 and Lora 600, in one ink (`#1a0f08`) so only the font differs: Cafès Alegreya, Xocolates Lora (left column); Sucs Lora, Tes Alegreya, Infusions Lora (right column), so no two neighbours in a column or row share a font. Removed the unused Montserrat and Nunito font aliases. Playwright: computed font/weight/colour per section as above, no load errors. `npm run check` unchanged (2 old `gtag` errors). Dev server stopped by PID. Not committed (entry 34 and the test page from the previous turn are also still uncommitted).
 
 **Work/time split this turn:** 100% frontend
+
+## Entry 36 — 2026-11-17 10:10
+
+**Prompt:** The client approved the font test page; apply the alternating Alegreya/Lora semibold to the real coffee menu and the sandwich menu (leave the test page).
+
+**Actions taken:** `static/fonts/fonts.css`: added the `Lora Var` and `Alegreya Var` aliases with weight ranges (additive; the existing 400-only entries other pages use are untouched). `src/routes/cafes/+page.svelte`: Cafès and Tes in Alegreya, Xocolates, Sucs and Infusions in Lora (as on the test page), semibold, ink `#1a0f08`, descriptions at 0.95 opacity, names may wrap; print `zoom` 0.44 → 0.40 because the wider fonts made the sheet 856px against 794px (now 779px, 1 A4 landscape page in Playwright). `src/routes/entrepans/+page.svelte`: sections alternate by position, starting with Alegreya (live data: Freds Alegreya, Calents Lora, the untitled Extres block Alegreya), same styling; price columns 4.5rem → 5rem so Lora's two prices don't touch (min gap 21px). Playwright: computed font/weight/colour per section as intended, no load errors, Cafès and Sucs headings still aligned (368). `npm run check` unchanged (2 old `gtag` errors, no new warnings). Test page `/cafes/fonts` untouched. Dev server stopped by PID. Not committed.
+
+**Work/time split this turn:** 100% frontend

@@ -80,7 +80,7 @@
           <!-- Left column: Cafès & Xocolates -->
           <div class="flex flex-col space-y-6 sm:space-y-8">
             {#if sections.cafes}
-            <section>
+            <section class="alegreya">
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
                   <path d="M14 26 C14 42 22 47 34 47 C46 47 54 42 54 26 L14 26 Z" />
@@ -115,7 +115,7 @@
             <img class="bird w-44 md:w-52 mx-auto -mt-2" src="/img/bird_coffee_sepia.png" width="450" height="600" alt="" loading="lazy" />
 
             {#if sections.xocolates}
-            <section>
+            <section class="lora">
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
                   <path d="M16 28 C16 43 24 48 34 48 C44 48 52 43 52 28 Z" />
@@ -143,7 +143,7 @@
             </header>
 
             {#if sections.sucs}
-            <section>
+            <section class="lora">
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 64 64">
                   <path d="M17 22 L21 53 C21.3 55 23 56 25 56 L39 56 C41 56 42.7 55 43 53 L47 22 Z" />
@@ -161,7 +161,7 @@
             {/if}
 
             {#if sections.tes}
-            <section>
+            <section class="alegreya">
               <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                 <svg class="w-7 h-7 text-sepia-800 shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewBox="0 0 64 64">
                   <path d="M22 24 C22 18 42 18 42 24 L44 38 C44 48 20 48 20 38 Z" />
@@ -181,7 +181,7 @@
             {/if}
 
             {#if sections.infusions}
-            <section class="border border-sepia-600/70 p-4 sm:p-5 rounded-sm relative mt-2 bg-sepia-200/10">
+            <section class="lora border border-sepia-600/70 p-4 sm:p-5 rounded-sm relative mt-2 bg-sepia-200/10">
               <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-aged-paper px-2 text-sepia-800">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d={fleurDeLis} />
@@ -321,6 +321,37 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Alegreya and Lora semibold alternate from block to block, in a darker ink (chosen on /cafes/fonts) */
+  .alegreya {
+    font-family: "Alegreya Var", serif;
+  }
+
+  .lora {
+    font-family: "Lora Var", serif;
+  }
+
+  .alegreya h2,
+  .alegreya > div,
+  .alegreya svg,
+  .lora h2,
+  .lora h3,
+  .lora > div,
+  .lora svg {
+    font-weight: 600;
+    color: #1a0f08;
+  }
+
+  .alegreya .description,
+  .lora .description {
+    opacity: 0.95;
+  }
+
+  /* Keeps a long name from pushing the price out of the column */
+  .alegreya .name,
+  .lora .name {
+    white-space: normal;
+  }
+
   /* printing */
 
   @page {
@@ -349,7 +380,7 @@
       box-shadow: none;
       border-radius: 0;
       /* The menu is taller than an A3 page at screen size: scale it down to fit on one sheet; the two columns are the two halves */
-      zoom: 0.44;
+      zoom: 0.4;
       padding: 0.75rem;
       box-sizing: border-box;
     }

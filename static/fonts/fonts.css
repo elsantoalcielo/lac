@@ -125,3 +125,18 @@
   font-weight: 300 700;
   src: url(/fonts/CormorantGaramond-VariableFont_wght.ttf) format('truetype');
 }
+
+/* Lora and Alegreya above are declared at weight 400 only (used so by the older pages); these aliases expose the variable weight axis */
+@font-face {
+  font-family: 'Lora Var';
+  font-style: normal;
+  font-weight: 400 700;
+  src: url(/fonts/Lora-VariableFont_wght.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Alegreya Var';
+  font-style: normal;
+  font-weight: 400 900;
+  src: url(/fonts/Alegreya-VariableFont_wght.ttf) format('truetype');
+}

@@ -46,8 +46,8 @@
         </header>
 
         <div class="flex flex-col space-y-6 sm:space-y-8">
-          {#each sandwichMenu.sections as section}
-            <section>
+          {#each sandwichMenu.sections as section, index}
+            <section class:alegreya={index % 2 == 0} class:lora={index % 2 == 1}>
               {#if section.title}
                 <div class="flex items-center gap-3 mb-3 pb-1 border-b border-sepia-400/40">
                   <svg class="w-5 h-5 text-sepia-800 shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -196,7 +196,7 @@
 
   .price-col {
     flex: none;
-    width: 4.5rem;
+    width: 5rem;
     text-align: right;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
@@ -216,5 +216,29 @@
     line-height: 1.3;
     opacity: 0.8;
     margin-bottom: 0.45rem;
+  }
+
+  /* Alegreya and Lora semibold alternate from block to block, in a darker ink (chosen on /cafes/fonts) */
+  .alegreya {
+    font-family: "Alegreya Var", serif;
+  }
+
+  .lora {
+    font-family: "Lora Var", serif;
+  }
+
+  .alegreya h2,
+  .alegreya > div,
+  .alegreya svg,
+  .lora h2,
+  .lora > div,
+  .lora svg {
+    font-weight: 600;
+    color: #1a0f08;
+  }
+
+  .alegreya .description,
+  .lora .description {
+    opacity: 0.95;
   }
 </style>
